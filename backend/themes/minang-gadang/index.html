@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-minang"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="mg-ridge" viewBox="0 0 480 80" preserveAspectRatio="none">
+    <path d="M0 62C4 50 6 36 6 20C12 44 38 60 72 60C104 60 122 46 128 24C130 40 136 50 142 50C146 40 148 22 150 4C166 34 198 56 240 56C282 56 314 34 330 4C332 22 334 40 338 50C344 50 350 40 352 24C358 46 376 60 408 60C442 60 468 44 474 20C474 36 476 50 480 62V80H0z" fill="currentColor"/>
+    <path d="M0 62C4 50 6 36 6 20C12 44 38 60 72 60C104 60 122 46 128 24C130 40 136 50 142 50C146 40 148 22 150 4C166 34 198 56 240 56C282 56 314 34 330 4C332 22 334 40 338 50C344 50 350 40 352 24C358 46 376 60 408 60C442 60 468 44 474 20C474 36 476 50 480 62" fill="none" style="stroke:var(--ridge,#d4a437)" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+    <path d="M0 62C4 50 6 36 6 20C12 44 38 60 72 60C104 60 122 46 128 24C130 40 136 50 142 50C146 40 148 22 150 4C166 34 198 56 240 56C282 56 314 34 330 4C332 22 334 40 338 50C344 50 350 40 352 24C358 46 376 60 408 60C442 60 468 44 474 20C474 36 476 50 480 62" transform="translate(0 9)" fill="none" style="stroke:var(--ridge,#d4a437)" stroke-width="1" stroke-opacity=".5" vector-effect="non-scaling-stroke"/>
+    <g style="fill:var(--ridge,#d4a437)"><circle cx="6" cy="17" r="2.2"/><circle cx="128" cy="21" r="2.2"/><circle cx="150" cy="3" r="2.4"/><circle cx="330" cy="3" r="2.4"/><circle cx="352" cy="21" r="2.2"/><circle cx="474" cy="17" r="2.2"/></g>
+  </symbol>
+  <symbol id="mg-saik" viewBox="0 0 24 24">
+    <path d="M12 1l11 11-11 11L1 12z" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <path d="M12 6l6 6-6 6-6-6z" fill="currentColor"/>
+  </symbol>
+  <symbol id="mg-rabuang" viewBox="0 0 120 20">
+    <path d="M0 10h36M84 10h36" stroke="currentColor" stroke-width="1"/>
+    <path d="M36 3h14L43 17zM70 3h14l-7 14z" fill="currentColor"/>
+    <path d="M60 2l8 8-8 8-8-8z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <path d="M60 6.5l3.5 3.5-3.5 3.5-3.5-3.5z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+{{/* ================= COVER: tirai tenun ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="curtain" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="cover__inner">
+    {{with .C.Cover.Background}}<img class="cover__bg" src="{{.}}" alt="" decoding="async">{{end}}
+    <p class="cover__eyebrow">{{.C.Cover.Title}}</p>
+    <div class="kain cover__pic">
+      {{if .C.Cover.Photo}}<img class="kain__img" src="{{.C.Cover.Photo}}" alt="{{.Title}}" decoding="async">{{else}}<span class="kain__mono">{{initial (or $a.Nickname $a.FullName)}}<svg aria-hidden="true"><use href="#mg-saik"/></svg>{{initial (or $b.Nickname $b.FullName)}}</span>{{end}}
+    </div>
+    <div class="pita cover__pita">
+      <h1 class="cover__names"><span>{{or $a.Nickname $a.FullName}}</span><span class="amp">&amp;</span><span>{{or $b.Nickname $b.FullName}}</span></h1>
+    </div>
+    {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+    {{template "guest-greeting" .}}
+    <a class="btn cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+  </div>
+</section>
+
+<div class="stage">
+{{/* ================= PANEL SAMPING (desktop) ================= */}}
+<aside class="side" aria-hidden="true">
+  <div class="curtain curtain--side"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="side__inner">
+    <p class="side__eyebrow">Baralek Gadang</p>
+    <div class="pita side__pita">
+      <p class="side__names">{{or $a.Nickname $a.FullName}}<span>&amp;</span>{{or $b.Nickname $b.FullName}}</p>
+    </div>
+    {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+    <svg class="side__ridge"><use href="#mg-ridge"/></svg>
+  </div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec sec--maroon sec--opening" id="pembuka">
+    <p class="kicker" data-reveal>Baralek Gadang</p>
+    <h2 class="opening__greeting" data-reveal>{{.C.Opening.Greeting}}</h2>
+    <svg class="rabuang" data-reveal><use href="#mg-rabuang"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--black sec--quote" aria-label="Kutipan">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <blockquote class="quote" data-reveal>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--kain sec--couple" id="mempelai">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Marapulai &amp; Anak Daro</p>
+      <h2 class="pita__title">Kedua Mempelai</h2>
+    </header>
+    {{range $i, $p := .Couple}}
+    {{if $i}}<p class="couple__amp" data-reveal="zoom"><span>&amp;</span></p>{{end}}
+    <article class="person{{if $i}} person--alt{{end}}" data-reveal="{{if $i}}right{{else}}left{{end}}">
+      <div class="kain person__pic">{{if $p.Photo}}<img class="kain__img" src="{{$p.Photo}}" alt="{{$p.FullName}}" loading="lazy" decoding="async">{{else}}<span class="kain__mono">{{initial (or $p.Nickname $p.FullName)}}</span>{{end}}</div>
+      <div class="person__info">
+        <p class="person__role">{{$p.RoleLabel}}</p>
+        <h3 class="person__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+        {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{with $p.MotherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{end}}
+        {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </div>
+    </article>
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--maroon sec--countdown" id="hitung-mundur">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Hari nan Dinanti</p>
+      <h2 class="pita__title">Menghitung Hari</h2>
+    </header>
+    {{if .Day}}
+    <div class="dateband" data-reveal>
+      <span class="dateband__day">{{.DayName}}</span>
+      <span class="dateband__num">{{.Day}}</span>
+      <span class="dateband__month">{{.MonthName}}<br>{{.Year}}</span>
+    </div>
+    {{end}}
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--black sec--events" id="acara">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Wakatu jo Tampek</p>
+      <h2 class="pita__title">Rangkaian Acara</h2>
+    </header>
+    <div class="ledger">
+    {{range .Events}}
+    <article class="event{{if .Day}} has-date{{end}}{{if .IsPast}} is-past{{end}}" data-reveal>
+      {{if .Day}}
+      <div class="event__date">
+        <span class="event__day">{{.DayName}}</span>
+        <span class="event__num">{{.Day}}</span>
+        <span class="event__month">{{.MonthName}}</span>
+        <span class="event__year">{{.Year}}</span>
+      </div>
+      {{end}}
+      <div class="event__body">
+        <h3 class="event__name">{{.Name}}</h3>
+        {{if .IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+        {{with .TimeRange}}<p class="event__time">Pukul {{.}}</p>{{end}}
+        {{if or .Venue .Address}}
+        <div class="event__place">
+          {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+          {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+        </div>
+        {{end}}
+        {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+        {{template "event-actions" .}}
+      </div>
+    </article>
+    {{end}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET CHECK-IN ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--kain sec--ticket" id="tiket">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Tando Masuak</p>
+      <h2 class="pita__title">E-Tiket</h2>
+    </header>
+    <p class="lead" data-reveal>Kartu masuk pribadi Anda untuk registrasi tamu di lokasi acara.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE STREAMING ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--maroon sec--live" id="live">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Siaran Langsung</p>
+      <h2 class="pita__title">Saksikan dari Jauh</h2>
+    </header>
+    <div data-reveal>{{template "live-stream" .C.LiveStream}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--kain sec--story" id="cerita">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Carito Kito</p>
+      <h2 class="pita__title">Kisah Kami</h2>
+    </header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item{{if not .Date}} no-date{{end}}" data-reveal>
+        {{with .Date}}<p class="story__date">{{.}}</p>{{end}}
+        <div class="story__body">
+          {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+          {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec sec--black sec--gallery" id="galeri">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Kenangan</p>
+      <h2 class="pita__title">Galeri</h2>
+    </header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--maroon sec--gift" id="hadiah">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Tando Kasih</p>
+      <h2 class="pita__title">Hadiah Pernikahan</h2>
+    </header>
+    <div class="prose" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP & UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec sec--kain sec--rsvp" id="ucapan">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <header class="pita" data-reveal="fade">
+      <p class="pita__eyebrow">Doa jo Restu</p>
+      <h2 class="pita__title">RSVP &amp; Ucapan</h2>
+    </header>
+    <p class="lead" data-reveal>Kehadiran serta doa restu Anda adalah kehormatan bagi kami sekeluarga.</p>
+    <div class="rsvp-card" data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--black sec--closing" id="penutup">
+    <svg class="ridge" aria-hidden="true"><use href="#mg-ridge"/></svg>
+    <p class="kicker" data-reveal>Tarimo Kasih</p>
+    <h2 class="closing__title" data-reveal>Terima Kasih</h2>
+    <svg class="rabuang" data-reveal><use href="#mg-rabuang"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    <div class="pita closing__pita" data-reveal="fade">
+      <p class="closing__names">{{or $a.Nickname $a.FullName}} <span>&amp;</span> {{or $b.Nickname $b.FullName}}</p>
+    </div>
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="family__title">Turut Mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+  </section>
+
+  <footer class="footer">
+    <div class="songket-edge" aria-hidden="true"></div>
+    {{template "brand"}}
+  </footer>
+</main>
+</div>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#3f0a14{{end}}
+{{define "body-class"}}t-minang{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Work+Sans:wght@300;400;600&display=swap">
+{{end}}

@@ -1,0 +1,8 @@
+.git
+storage
+backups
+.env
+**/*.exe
+tools/ref-sheet.jpg
+deploy/dist
+deploy/backups

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-scrap"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="sb-heart" viewBox="0 0 48 46"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 41C10 31 3 22 5 13c2-7 10-9 15-4 2 2 3 4 4 6 1-3 3-6 7-7 6-2 12 2 11 9-1 9-9 17-18 24z"/><path d="M22 38C11 30 6 21 8 14c2-5 8-6 12-2" opacity=".55"/></g></symbol>
+  <symbol id="sb-arrow" viewBox="0 0 64 40"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 32C12 8 32 4 38 18c4 10-8 14-10 6s10-14 28-9"/><path d="M50 9l7 6-9 4"/></g></symbol>
+  <symbol id="sb-star" viewBox="0 0 40 40"><path d="M20 3l4.5 11 11.5 1.2-8.8 7.6 2.8 11.7L20 28.2l-10 6.3 2.8-11.7L4 15.2 15.5 14z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="sb-squiggle" viewBox="0 0 120 14"><path d="M2 9c7-7 11 5 18-1s11 5 18-1 11 5 18-1 11 5 18-1 11 5 18-1 11 5 18-1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="sb-flower" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 17c-4-9 4-14 5-6M23 19c8-5 12 3 4 5M22 23c5 8-3 12-4 4M17 22c-8 5-12-3-4-5M18 18c-6-6 0-12 3-4"/><circle cx="20" cy="20" r="2.4"/><path d="M20 26c1 6-1 10-3 13"/></g></symbol>
+</svg>
+
+{{/* ================= COVER: sampul album ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="cover__page" aria-hidden="true">
+    <svg class="doodle doodle--heart cover__doodle"><use href="#sb-heart"/></svg>
+  </div>
+  <div class="cover__board">
+    <div class="cover__stitch" aria-hidden="true"></div>
+    <div class="cover__inner">
+      <figure class="polaroid cover__polaroid">
+        <span class="tape tape--yellow tape--top" aria-hidden="true"></span>
+        <div class="polaroid__shot">
+          {{if .C.Cover.Photo}}<img class="polaroid__img" src="{{.C.Cover.Photo}}" alt="{{.Title}}" decoding="async">{{else}}<span class="sketch" aria-hidden="true">{{initial (or $a.Nickname $a.FullName)}}<svg><use href="#sb-heart"/></svg>{{initial (or $b.Nickname $b.FullName)}}</span>{{end}}
+        </div>
+        <figcaption class="polaroid__cap">kita, selamanya</figcaption>
+      </figure>
+      <div class="label cover__label">
+        <p class="cover__eyebrow">{{.C.Cover.Title}}</p>
+        <h1 class="cover__names">{{or $a.Nickname $a.FullName}} <span>&amp;</span> {{or $b.Nickname $b.FullName}}</h1>
+        {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+      </div>
+      <div class="luggage cover__guest">{{template "guest-greeting" .}}</div>
+      <a class="btn btn--primary cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+    </div>
+  </div>
+</section>
+
+{{/* ================= MEJA (desktop) ================= */}}
+<div class="desk" aria-hidden="true">
+  <figure class="polaroid desk__polaroid">
+    <span class="tape tape--denim tape--top"></span>
+    <div class="polaroid__shot">{{if .C.Cover.Photo}}<img class="polaroid__img" src="{{.C.Cover.Photo}}" alt="" loading="lazy" decoding="async">{{else}}<span class="sketch">{{initial (or $a.Nickname $a.FullName)}}<svg><use href="#sb-heart"/></svg>{{initial (or $b.Nickname $b.FullName)}}</span>{{end}}</div>
+    <figcaption class="polaroid__cap">{{or $a.Nickname $a.FullName}} &amp; {{or $b.Nickname $b.FullName}}</figcaption>
+  </figure>
+  {{with .FirstEvent}}<p class="desk__note">jangan lupa!<br><b>{{.DateLong}}</b></p>{{end}}
+  <svg class="doodle desk__star"><use href="#sb-star"/></svg>
+  <svg class="doodle desk__flower"><use href="#sb-flower"/></svg>
+  <svg class="doodle desk__heart"><use href="#sb-heart"/></svg>
+  <span class="tape tape--yellow desk__tape"></span>
+</div>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="page" id="pembuka">
+    <div class="shadow" data-reveal>
+      <div class="scrap scrap--lined scrap--torn">
+        <p class="dymo">{{if eq .C.EventType "ngunduh_mantu"}}Ngunduh Mantu{{else}}Undangan Pernikahan{{end}}</p>
+        <h2 class="hand hand--greet">{{.C.Opening.Greeting}}</h2>
+        <div class="prose">{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+        {{template "guest-pax" .}}
+      </div>
+    </div>
+    <svg class="doodle doodle--star opening__star"><use href="#sb-star"/></svg>
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="page page--tight" aria-label="Kutipan">
+    <div class="shadow" data-reveal>
+      <blockquote class="scrap quote">
+        <span class="tape tape--denim tape--tl" aria-hidden="true"></span>
+        <span class="tape tape--denim tape--br" aria-hidden="true"></span>
+        <p class="quote__text">“{{.Text}}”</p>
+        {{with .Source}}<footer class="quote__source">— {{.}}</footer>{{end}}
+      </blockquote>
+    </div>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="page" id="mempelai">
+    <header class="head" data-reveal>
+      <p class="dymo">Dua Tokoh Utama</p>
+      <h2 class="title">Si Dia &amp; Si Dia</h2>
+    </header>
+    <div class="duo" data-reveal>
+      {{range $i, $p := .Couple}}
+      <figure class="polaroid duo__pic duo__pic--{{$i}}">
+        <span class="tape tape--{{if $i}}denim{{else}}yellow{{end}} tape--top" aria-hidden="true"></span>
+        <div class="polaroid__shot">{{if $p.Photo}}<img class="polaroid__img" src="{{$p.Photo}}" alt="{{$p.FullName}}" loading="lazy" decoding="async">{{else}}<span class="sketch sketch--one" aria-hidden="true">{{initial (or $p.Nickname $p.FullName)}}</span>{{end}}</div>
+        <figcaption class="polaroid__cap">{{or $p.Nickname $p.FullName}}</figcaption>
+      </figure>
+      {{end}}
+      <svg class="doodle duo__heart"><use href="#sb-heart"/></svg>
+    </div>
+    {{range $i, $p := .Couple}}
+    <div class="shadow person-wrap person-wrap--{{$i}}" data-reveal="{{if $i}}right{{else}}left{{end}}">
+      <article class="scrap person">
+        <svg class="doodle person__arrow"><use href="#sb-arrow"/></svg>
+        <p class="person__role">{{$p.RoleLabel}}</p>
+        <h3 class="person__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+        {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{with $p.MotherLabel}}<p class="person__parent">{{if $p.FatherLabel}}&amp; {{end}}{{.}}</p>{{end}}
+        {{end}}
+        {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </article>
+    </div>
+    {{end}}
+  </section>
+
+  {{/* ---------- KISAH (didahulukan) ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="page page--story" id="cerita">
+    <header class="head" data-reveal>
+      <p class="dymo dymo--red">Love Story</p>
+      <h2 class="title">Cerita Kita</h2>
+    </header>
+    <ol class="story">
+      {{range $s := .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        <figure class="polaroid story__pic">
+          <span class="tape tape--top" aria-hidden="true"></span>
+          <div class="polaroid__shot">{{if $s.Photo}}<img class="polaroid__img" src="{{$s.Photo}}" alt="{{$s.Title}}" loading="lazy" decoding="async">{{else}}<span class="sketch sketch--date" aria-hidden="true">{{or $s.Date "♥"}}</span>{{end}}</div>
+          <figcaption class="polaroid__cap">{{or $s.Date $s.Title}}</figcaption>
+        </figure>
+        <div class="shadow story__note-wrap">
+          <div class="scrap scrap--note story__note">
+            {{with $s.Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+            {{with $s.Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+          </div>
+        </div>
+        <svg class="doodle story__arrow"><use href="#sb-arrow"/></svg>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="page" id="galeri">
+    <header class="head" data-reveal>
+      <p class="dymo">Isi Album</p>
+      <h2 class="title">Potret Kenangan</h2>
+    </header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="page" id="hitung-mundur">
+    <header class="head" data-reveal>
+      <p class="dymo">Tandai Kalender</p>
+      <h2 class="title">Tinggal Sebentar!</h2>
+    </header>
+    <p class="countdown__date" data-reveal>{{.DateLong}}</p>
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="countdown__save" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="page" id="acara">
+    <header class="head" data-reveal>
+      <p class="dymo">Catatan Penting</p>
+      <h2 class="title">Hari &amp; Tempat</h2>
+    </header>
+    {{range .Events}}
+    <div class="shadow event-wrap" data-reveal>
+      <article class="card event{{if .IsPast}} is-past{{end}}">
+        <span class="tape tape--yellow tape--top" aria-hidden="true"></span>
+        <h3 class="event__name">{{.Name}}</h3>
+        {{if .IsPast}}<p class="badge-past">sudah lewat ✓</p>{{end}}
+        {{with .DateLong}}<p class="event__line"><b>Tanggal</b> {{.}}</p>{{end}}
+        {{with .TimeRange}}<p class="event__line"><b>Jam</b> {{.}}</p>{{end}}
+        {{with .Venue}}<p class="event__line"><b>Tempat</b> {{.}}</p>{{end}}
+        {{with .Address}}<p class="event__line event__line--addr">{{.}}</p>{{end}}
+        {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+        {{template "event-actions" .}}
+      </article>
+    </div>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="page" id="tiket">
+    <header class="head" data-reveal>
+      <p class="dymo dymo--red">Tiket Masuk</p>
+      <h2 class="title">Simpan Tiket Ini</h2>
+    </header>
+    <p class="lead" data-reveal>Tunjukkan QR atau kode ini kepada penerima tamu di lokasi.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="page page--tight" id="live">
+    <div class="sticky" data-reveal>
+      <p class="sticky__hand">Nggak bisa datang? Nonton di sini ya!</p>
+      {{template "live-stream" .C.LiveStream}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="page" id="hadiah">
+    <header class="head" data-reveal>
+      <p class="dymo">Tanda Kasih</p>
+      <h2 class="title">Titip Hadiah</h2>
+    </header>
+    <div class="prose prose--kraft" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div class="tags" data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="page" id="ucapan">
+    <header class="head" data-reveal>
+      <p class="dymo">Buku Tamu</p>
+      <h2 class="title">Tulis Pesanmu</h2>
+    </header>
+    <div class="shadow" data-reveal>
+      <div class="notebook">{{template "rsvp-wishes" .}}</div>
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="page page--closing" id="penutup">
+    <figure class="polaroid closing__pic" data-reveal="zoom">
+      <span class="tape tape--yellow tape--tl" aria-hidden="true"></span>
+      <span class="tape tape--denim tape--br" aria-hidden="true"></span>
+      <div class="polaroid__shot polaroid__shot--thanks"><span class="closing__thanks">Terima kasih!</span><svg class="doodle closing__heart"><use href="#sb-heart"/></svg></div>
+      <figcaption class="polaroid__cap">{{or $a.Nickname $a.FullName}} &amp; {{or $b.Nickname $b.FullName}}</figcaption>
+    </figure>
+    <div class="shadow" data-reveal>
+      <div class="scrap scrap--torn-top closing">
+        <div class="prose">{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+        {{with .C.Closing.SignOff}}<p class="closing__signoff">{{.}}</p>{{end}}
+        {{with .C.Closing.From}}<p class="closing__from">{{.}}</p>{{end}}
+        {{with .C.Closing.Family}}
+        <div class="family">
+          <p class="family__title">Turut mengundang:</p>
+          <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+        </div>
+        {{end}}
+        <svg class="doodle closing__squiggle"><use href="#sb-squiggle"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">{{template "brand"}}</footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#3d5a80{{end}}
+{{define "body-class"}}t-scrap{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+{{end}}

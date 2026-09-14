@@ -1,0 +1,8 @@
+storage/
+backups/
+.env
+*.exe
+*.log
+tools/ref-sheet.jpg
+deploy/dist/
+deploy/backups/

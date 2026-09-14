@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-tropis"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="tm-monstera" viewBox="0 0 200 224">
+    <mask id="tm-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="224">
+      <path d="M100 212C44 208 6 166 6 108 6 52 46 12 100 16c54-4 94 36 94 92 0 58-38 100-94 104z" fill="#fff"/>
+      <g fill="#000">
+        <path d="M0 52l86 40-86-22zM0 100l88 24-88-6zM0 148l90 2-86 18zM18 194l74-22-58 36z"/>
+        <path d="M200 46l-86 42 86-22zM200 96l-88 24 88-8zM200 144l-90 4 86 16zM184 192l-76-22 60 38z"/>
+        <ellipse cx="70" cy="74" rx="5" ry="10" transform="rotate(-35 70 74)"/><ellipse cx="130" cy="70" rx="5" ry="10" transform="rotate(35 130 70)"/>
+        <ellipse cx="66" cy="136" rx="4" ry="9" transform="rotate(-75 66 136)"/><ellipse cx="134" cy="132" rx="4" ry="9" transform="rotate(75 134 132)"/>
+      </g>
+    </mask>
+    <rect width="200" height="224" fill="currentColor" mask="url(#tm-mask)"/>
+    <path d="M100 210C98 150 97 84 100 22" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M100 206v18" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="tm-palm" viewBox="0 0 200 200"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M10 196Q70 96 196 14"/><path d="M25.4 172.3Q38 177.7 56 175.5M25.4 172.3Q15.8 162.4 11.7 144.7M33 161.6Q48.7 168.9 71.5 166.7M33 161.6Q21.4 148.7 16.8 126.3M41.1 151Q59.4 160.2 86.4 158.4M41.1 151Q27.7 135.4 23.1 108.7M49.6 140.5Q70 151.5 100.6 150.3M49.6 140.5Q35 122.4 30.5 92.1M58.4 130.1Q80.4 142.7 113.7 142.3M58.4 130.1Q43.1 110 39.1 76.8M67.7 119.8Q90.5 133.8 125.8 134.3M67.7 119.8Q52 98.1 48.8 63M77.4 109.6Q100.4 124.6 136.6 126.1M77.4 109.6Q61.9 87 59.5 50.9M87.4 99.6Q110.1 115.1 146.2 117.5M87.4 99.6Q72.5 76.6 71.1 40.4M97.9 89.6Q119.5 105.3 154.6 108.4M97.9 89.6Q83.9 66.9 83.4 31.7M108.8 79.8Q128.9 95.1 161.9 98.8M108.8 79.8Q96.1 58 96.4 24.7M120 70.1Q138.1 84.5 168.3 88.6M120 70.1Q108.9 49.8 109.9 19.4M131.7 60.5Q147.4 73.5 173.9 77.8M131.7 60.5Q122.3 42.4 123.7 15.5M143.8 51Q156.7 62.2 179 66.3M143.8 51Q136.1 35.6 137.9 13M156.2 41.6Q166.3 50.7 183.8 54.3M156.2 41.6Q150.5 29.3 152.2 11.4M169.1 32.3Q176.1 38.9 188.6 41.7M169.1 32.3Q165.1 23.4 166.6 10.7M182.3 23.1Q186.4 27 193.6 28.8M182.3 23.1Q180.1 17.9 181.2 10.5"/></g></symbol>
+  <symbol id="tm-hibiscus" viewBox="0 0 40 40"><g fill="currentColor"><path d="M20 20C12 16 10 4 20 3c10 1 8 13 0 17z"/><path d="M20 20C12 16 10 4 20 3c10 1 8 13 0 17z" transform="rotate(72 20 20)"/><path d="M20 20C12 16 10 4 20 3c10 1 8 13 0 17z" transform="rotate(144 20 20)"/><path d="M20 20C12 16 10 4 20 3c10 1 8 13 0 17z" transform="rotate(216 20 20)"/><path d="M20 20C12 16 10 4 20 3c10 1 8 13 0 17z" transform="rotate(288 20 20)"/></g><circle cx="20" cy="20" r="3" fill="#f6d27a"/></symbol>
+</svg>
+
+{{/* ================= COVER ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="cover__top">
+    {{with or .C.Cover.Photo .C.Cover.Background}}<img class="cover__bg" src="{{.}}" alt="" decoding="async">{{end}}
+    <svg class="cover__leaf cover__leaf--a" aria-hidden="true"><use href="#tm-monstera"/></svg>
+    <svg class="cover__leaf cover__leaf--c" aria-hidden="true"><use href="#tm-monstera"/></svg>
+    <div class="cover__head">
+      <p class="tag">{{.C.Cover.Title}}</p>
+      <h1 class="cover__names"><span>{{or $a.Nickname $a.FullName}}</span><span><em>&amp;</em> {{or $b.Nickname $b.FullName}}</span></h1>
+      {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+    </div>
+  </div>
+  <div class="cover__bottom">
+    <svg class="cover__palm" aria-hidden="true"><use href="#tm-palm"/></svg>
+    <svg class="cover__leaf cover__leaf--b" aria-hidden="true"><use href="#tm-monstera"/></svg>
+    <div class="cover__foot">
+      {{template "guest-greeting" .}}
+      <a class="btn btn--primary cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+    </div>
+  </div>
+</section>
+
+{{/* ================= PANEL DESKTOP ================= */}}
+<aside class="side" aria-hidden="true">
+  <div class="side__green"></div>
+  <svg class="side__leaf side__leaf--a"><use href="#tm-monstera"/></svg>
+  <svg class="side__leaf side__leaf--b"><use href="#tm-monstera"/></svg>
+  <svg class="side__palm"><use href="#tm-palm"/></svg>
+  <div class="side__inner">
+    <p class="tag">{{.C.Cover.Title}}</p>
+    <p class="side__names">{{or $a.Nickname $a.FullName}}<br><em>&amp;</em> {{or $b.Nickname $b.FullName}}</p>
+    {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+  </div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="band band--cream" id="pembuka">
+    <svg class="band__palm band__palm--r" aria-hidden="true"><use href="#tm-palm"/></svg>
+    <p class="tag" data-reveal="left">{{if eq .C.EventType "ngunduh_mantu"}}Ngunduh Mantu{{else}}Undangan Pernikahan{{end}}</p>
+    <h2 class="title title--greet" data-reveal="left">{{.C.Opening.Greeting}}</h2>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <div class="leafy leafy--r" aria-hidden="true"><svg><use href="#tm-monstera"/></svg></div>
+  <section class="band band--green band--alt sec--quote" aria-label="Kutipan">
+    <p class="quote__mark" aria-hidden="true">“</p>
+    <blockquote class="quote" data-reveal>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI (dibelah diagonal) ---------- */}}
+  <section class="band band--split sec--couple" id="mempelai">
+    <svg class="split__leaf" aria-hidden="true"><use href="#tm-monstera"/></svg>
+    <header class="head" data-reveal="left">
+      <p class="tag">Dua Insan</p>
+      <h2 class="title">Sang Mempelai</h2>
+    </header>
+    {{range $i, $p := .Couple}}
+    <article class="person person--{{if $i}}second{{else}}first{{end}}" data-reveal="{{if $i}}right{{else}}left{{end}}">
+      <div class="person__photo">
+        <div class="person__frame">{{template "person-photo" $p}}</div>
+      </div>
+      <div class="person__text">
+        {{with $p.Nickname}}<p class="person__nick">{{.}}</p>{{end}}
+        <p class="person__role">{{$p.RoleLabel}}</p>
+        <h3 class="person__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+        {{with $p.ParentsLine}}<p class="person__parent">{{.}}</p>{{end}}
+        {{end}}
+        {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </div>
+    </article>
+    {{if not $i}}<p class="couple__amp" aria-hidden="true">&amp;</p>{{end}}
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <div class="leafy leafy--l" aria-hidden="true"><svg><use href="#tm-monstera"/></svg></div>
+  <section class="band band--coral band--alt sec--countdown" id="hitung-mundur">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--green">Hitung Mundur</p>
+      <h2 class="title">Menuju Hari H</h2>
+    </header>
+    <p class="countdown__date" data-reveal>{{.DateLong}}</p>
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="countdown__save" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="band band--cream sec--events" id="acara">
+    <header class="head" data-reveal="left">
+      <p class="tag">Catat Tanggalnya</p>
+      <h2 class="title">Rangkaian Acara</h2>
+    </header>
+    {{range .Events}}
+    <article class="event{{if .IsPast}} is-past{{end}}" data-reveal>
+      <div class="event__stub">
+        {{if .Day}}<span class="event__day">{{.DayName}}</span><span class="event__num">{{.Day}}</span><span class="event__month">{{.MonthName}} {{.Year}}</span>{{else}}<svg class="event__flower"><use href="#tm-hibiscus"/></svg>{{end}}
+      </div>
+      <div class="event__main">
+        <h3 class="event__name">{{.Name}}</h3>
+        {{if .IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+        {{with .TimeRange}}<p class="event__time">Pukul {{.}}</p>{{end}}
+        {{if or .Venue .Address}}
+        <div class="event__place">
+          {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+          {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+        </div>
+        {{end}}
+        {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+      </div>
+      {{template "event-actions" .}}
+    </article>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="band band--sand band--alt sec--ticket" id="tiket">
+    <header class="head" data-reveal="left">
+      <p class="tag">Kartu Masuk</p>
+      <h2 class="title">E-Tiket</h2>
+    </header>
+    <p class="lead" data-reveal>Kartu masuk pribadi Anda. Tunjukkan QR atau kode ini kepada penerima tamu.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="band band--green sec--live" id="live">
+    <header class="head" data-reveal="left">
+      <p class="tag">Siaran Langsung</p>
+      <h2 class="title">Ikut dari Jauh</h2>
+    </header>
+    <div data-reveal>{{template "live-stream" .C.LiveStream}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH ---------- */}}
+  {{if .C.LoveStory}}
+  <div class="leafy leafy--r" aria-hidden="true"><svg><use href="#tm-monstera"/></svg></div>
+  <section class="band band--cream band--alt sec--story" id="cerita">
+    <header class="head" data-reveal="left">
+      <p class="tag">Perjalanan</p>
+      <h2 class="title">Cerita Kami</h2>
+    </header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        {{with .Date}}<p class="story__date">{{.}}</p>{{end}}
+        <div class="story__body">
+          {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+          {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="band band--green sec--gallery" id="galeri">
+    <header class="head" data-reveal="left">
+      <p class="tag">Potret</p>
+      <h2 class="title">Galeri</h2>
+    </header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="band band--sand band--alt sec--gift" id="hadiah">
+    <svg class="band__palm band__palm--l" aria-hidden="true"><use href="#tm-palm"/></svg>
+    <header class="head" data-reveal="left">
+      <p class="tag">Tanda Kasih</p>
+      <h2 class="title">Amplop Digital</h2>
+    </header>
+    <div class="prose" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="band band--cream sec--rsvp" id="ucapan">
+    <header class="head" data-reveal="left">
+      <p class="tag">RSVP</p>
+      <h2 class="title">Kabari Kami</h2>
+    </header>
+    <p class="lead" data-reveal>Konfirmasi kehadiran dan tinggalkan doa terbaik untuk kami.</p>
+    <div class="panel" data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <div class="leafy leafy--l" aria-hidden="true"><svg><use href="#tm-monstera"/></svg></div>
+  <section class="band band--green band--alt sec--closing" id="penutup">
+    <svg class="closing__leaf" aria-hidden="true"><use href="#tm-monstera"/></svg>
+    <p class="tag" data-reveal="left">Sampai Jumpa</p>
+    <h2 class="title title--xl" data-reveal="left">Terima<br>Kasih</h2>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    <p class="closing__names" data-reveal>{{or $a.Nickname $a.FullName}} <em>&amp;</em> {{or $b.Nickname $b.FullName}}</p>
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="family__title">Turut Mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+    <footer class="footer">{{template "brand"}}</footer>
+  </section>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#1d4d3a{{end}}
+{{define "body-class"}}t-tropis{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Gloock&display=swap">
+{{end}}

@@ -1,0 +1,21 @@
+{{define "content"}}
+<section class="notfound" aria-labelledby="nf-title">
+  <div class="wrap notfound__in">
+    <svg class="notfound__art" viewBox="0 0 240 200" aria-hidden="true" focusable="false">
+      <path d="M40 196V96a80 80 0 0 1 160 0v100" fill="#F3E3E5" stroke="#B76E79" stroke-width="2"/>
+      <path d="M64 196V100a56 56 0 0 1 112 0v96" fill="none" stroke="#B76E79" stroke-width="1.2" stroke-dasharray="2 6" stroke-linecap="round"/>
+      <rect x="82" y="104" width="76" height="52" rx="6" fill="#FFFFFF" stroke="#3A2A35" stroke-width="2"/>
+      <path d="m82 110 38 26 38-26" fill="none" stroke="#3A2A35" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="120" cy="138" r="9" fill="#A35866"/>
+      <path d="M120 142.5s-4-2.4-4-5.1a2.2 2.2 0 0 1 4-1.3 2.2 2.2 0 0 1 4 1.3c0 2.7-4 5.1-4 5.1z" fill="#FBF7F2"/>
+      <text x="120" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#3A2A35">404</text>
+    </svg>
+    <h1 id="nf-title" class="display display--sm">Undangan ini <em>salah alamat</em>.</h1>
+    <p class="lead">Halaman yang Anda cari tidak ditemukan. Mungkin tautannya keliru atau halamannya sudah dipindahkan.</p>
+    <div class="hero__cta hero__cta--center">
+      <a class="btn btn--primary btn--lg" href="/">Kembali ke beranda</a>
+      <a class="btn btn--ghost btn--lg" href="/tema">Lihat katalog tema</a>
+    </div>
+  </div>
+</section>
+{{end}}

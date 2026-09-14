@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-floral"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="f-leaf" viewBox="0 0 20 40"><path d="M10 39C1.5 29 1.5 12 10 1c8.5 11 8.5 28 0 38z" fill="#8a9a7b" fill-opacity=".28" stroke="#5d6e52" stroke-width="1.2"/><path d="M10 37V7" stroke="#5d6e52" stroke-width=".8"/></symbol>
+  <symbol id="f-bloom" viewBox="0 0 40 40"><g fill="#d9a7a0" fill-opacity=".5" stroke="#b97f78" stroke-width="1"><ellipse cx="20" cy="10.5" rx="5.6" ry="8.5"/><ellipse cx="20" cy="10.5" rx="5.6" ry="8.5" transform="rotate(72 20 20)"/><ellipse cx="20" cy="10.5" rx="5.6" ry="8.5" transform="rotate(144 20 20)"/><ellipse cx="20" cy="10.5" rx="5.6" ry="8.5" transform="rotate(216 20 20)"/><ellipse cx="20" cy="10.5" rx="5.6" ry="8.5" transform="rotate(288 20 20)"/></g><circle cx="20" cy="20" r="3.4" fill="#8a9a7b" stroke="#5d6e52" stroke-width=".8"/></symbol>
+  <symbol id="f-spray" viewBox="0 0 150 150"><path d="M16 20C50 13 92 17 146 6" fill="none" stroke="#5d6e52" stroke-width="1.2" stroke-linecap="round"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="translate(42 15) rotate(58)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="translate(56 16) rotate(122)"/><use href="#f-leaf" x="-6" y="-24" width="12" height="24" transform="translate(78 15) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="translate(94 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="translate(116 11) rotate(64)"/><use href="#f-leaf" x="-4" y="-16" width="8" height="16" transform="translate(145 6) rotate(80)"/></symbol>
+  <symbol id="f-corner" viewBox="0 0 150 150"><use href="#f-spray" width="150" height="150"/><use href="#f-spray" width="150" height="150" transform="matrix(0 1 1 0 0 0)"/><path d="M22 22C44 42 60 54 88 66" fill="none" stroke="#5d6e52" stroke-width="1.1" stroke-linecap="round"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="translate(62 52) rotate(20)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="translate(74 59) rotate(150)"/><use href="#f-bloom" x="4" y="4" width="44" height="44"/><use href="#f-bloom" x="44" y="30" width="24" height="24"/><use href="#f-bloom" x="30" y="44" width="20" height="20"/><g fill="#b97f78"><circle cx="92" cy="30" r="2.4"/><circle cx="99" cy="35" r="1.8"/><circle cx="30" cy="92" r="2.4"/><circle cx="35" cy="99" r="1.8"/><circle cx="90" cy="68" r="2.2"/></g></symbol>
+  <symbol id="f-sprig" viewBox="0 0 200 24"><path d="M14 12h72M114 12h72" stroke="#8a9a7b" stroke-width="1"/><use href="#f-leaf" x="-4" y="-16" width="8" height="16" transform="translate(70 12) rotate(-62)"/><use href="#f-leaf" x="-4" y="-16" width="8" height="16" transform="translate(56 12) rotate(-118)"/><use href="#f-leaf" x="-4" y="-16" width="8" height="16" transform="translate(40 12) rotate(-62)"/><use href="#f-leaf" x="-4" y="-16" width="8" height="16" transform="translate(130 12) rotate(62)"/><use href="#f-leaf" x="-4" y="-16" width="8" height="16" transform="translate(144 12) rotate(118)"/><use href="#f-leaf" x="-4" y="-16" width="8" height="16" transform="translate(160 12) rotate(62)"/><use href="#f-bloom" x="88" y="0" width="24" height="24"/></symbol>
+  <symbol id="f-wreath" viewBox="0 0 200 200"><circle cx="100" cy="100" r="86" fill="none" stroke="#5d6e52" stroke-width="1.1"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(0 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(15 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(30 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(45 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(60 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(75 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(90 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(105 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(120 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(180 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(195 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(210 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(225 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(240 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(255 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(270 100 100) translate(100 14) rotate(118)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(285 100 100) translate(100 14) rotate(62)"/><use href="#f-leaf" x="-5" y="-20" width="10" height="20" transform="rotate(300 100 100) translate(100 14) rotate(118)"/><circle cx="175.9" cy="140.4" r="2" fill="#b97f78"/><circle cx="106.0" cy="185.8" r="2" fill="#b97f78"/><circle cx="24.1" cy="59.6" r="2" fill="#b97f78"/><circle cx="94.0" cy="14.2" r="2" fill="#b97f78"/><use href="#f-bloom" x="127.0" y="158.5" width="32" height="32"/><use href="#f-bloom" x="155.9" y="145.3" width="20" height="20"/><use href="#f-bloom" x="107.4" y="177.2" width="15" height="15"/><use href="#f-bloom" x="41.0" y="9.5" width="32" height="32"/><use href="#f-bloom" x="24.1" y="34.7" width="20" height="20"/><use href="#f-bloom" x="77.6" y="7.8" width="15" height="15"/></symbol>
+</svg>
+
+{{/* ================= COVER ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  {{with .C.Cover.Background}}<img class="cover__bg" src="{{.}}" alt="" decoding="async">{{end}}
+  <svg class="cover__corner cover__corner--tl"><use href="#f-corner"/></svg>
+  <svg class="cover__corner cover__corner--br"><use href="#f-corner"/></svg>
+  <div class="cover__inner">
+    <p class="cover__eyebrow">{{.C.Cover.Title}}</p>
+    <div class="wreath cover__wreath">
+      <svg class="wreath__svg"><use href="#f-wreath"/></svg>
+      {{if .C.Cover.Photo}}<img class="wreath__photo" src="{{.C.Cover.Photo}}" alt="{{.Title}}" decoding="async">{{else}}<span class="wreath__mono">{{initial (or $a.Nickname $a.FullName)}}<i>&amp;</i>{{initial (or $b.Nickname $b.FullName)}}</span>{{end}}
+    </div>
+    <h1 class="cover__names"><span>{{or $a.Nickname $a.FullName}}</span><span class="amp">&amp;</span><span>{{or $b.Nickname $b.FullName}}</span></h1>
+    {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+    {{template "guest-greeting" .}}
+    <a class="btn btn--primary cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+  </div>
+</section>
+
+<div class="stage">
+{{/* ================= PANEL SAMPING (desktop) ================= */}}
+<aside class="side" aria-hidden="true">
+  <svg class="side__corner side__corner--tl"><use href="#f-corner"/></svg>
+  <svg class="side__corner side__corner--br"><use href="#f-corner"/></svg>
+  <div class="side__inner">
+    <div class="wreath side__wreath">
+      <svg class="wreath__svg"><use href="#f-wreath"/></svg>
+      {{if .C.Cover.Photo}}<img class="wreath__photo" src="{{.C.Cover.Photo}}" alt="" loading="lazy" decoding="async">{{else}}<span class="wreath__mono">{{initial (or $a.Nickname $a.FullName)}}<i>&amp;</i>{{initial (or $b.Nickname $b.FullName)}}</span>{{end}}
+    </div>
+    <p class="side__eyebrow">{{.C.Cover.Title}}</p>
+    <p class="side__names">{{or $a.Nickname $a.FullName}} <span>&amp;</span> {{or $b.Nickname $b.FullName}}</p>
+    {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+  </div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec sec--opening" id="pembuka">
+    <svg class="orn orn--tr"><use href="#f-corner"/></svg>
+    <p class="eyebrow" data-reveal>{{if eq .C.EventType "ngunduh_mantu"}}Ngunduh Mantu{{else}}Undangan Pernikahan{{end}}</p>
+    <h2 class="opening__greeting" data-reveal>{{.C.Opening.Greeting}}</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--sage sec--quote" aria-label="Kutipan">
+    <svg class="quote__bloom" data-reveal="zoom"><use href="#f-bloom"/></svg>
+    <blockquote class="quote" data-reveal>
+      <p class="quote__text">“{{.Text}}”</p>
+      {{with .Source}}<footer class="quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--couple" id="mempelai">
+    <p class="eyebrow" data-reveal>Dua Hati, Satu Cinta</p>
+    <h2 class="title" data-reveal>Mempelai</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    {{range $i, $p := .Couple}}
+    {{if $i}}<p class="couple__amp" data-reveal="zoom">&amp;</p>{{end}}
+    <article class="person person--{{$p.Role}}" data-reveal>
+      <div class="person__photo">
+        <div class="person__frame">{{template "person-photo" $p}}</div>
+        <svg class="person__sprig"><use href="#f-corner"/></svg>
+      </div>
+      {{with $p.Nickname}}<p class="person__nick">{{.}}</p>{{end}}
+      <h3 class="person__name">{{$p.FullName}}</h3>
+      <p class="person__role">{{$p.RoleLabel}}</p>
+      {{if or $p.ChildOrder $p.ParentsLine}}
+      <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+      {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+      {{if and $p.FatherLabel $p.MotherLabel}}<p class="person__and">&amp;</p>{{end}}
+      {{with $p.MotherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+      {{end}}
+      {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+    </article>
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--blush sec--countdown" id="hitung-mundur">
+    <p class="eyebrow" data-reveal>Hitung Mundur</p>
+    <h2 class="title" data-reveal>Menuju Hari Bahagia</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <p class="countdown__date" data-reveal>{{.DateLong}}</p>
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--events" id="acara">
+    <p class="eyebrow" data-reveal>Waktu &amp; Tempat</p>
+    <h2 class="title" data-reveal>Rangkaian Acara</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    {{range .Events}}
+    <article class="event{{if .IsPast}} is-past{{end}}" data-reveal>
+      <svg class="event__bloom"><use href="#f-bloom"/></svg>
+      <h3 class="event__name">{{.Name}}</h3>
+      {{if .IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+      {{if .Day}}
+      <div class="event__date">
+        <span class="event__day">{{.DayName}}</span>
+        <span class="event__num">{{.Day}}</span>
+        <span class="event__month">{{.MonthName}} {{.Year}}</span>
+      </div>
+      {{end}}
+      {{with .TimeRange}}<p class="event__time">Pukul {{.}}</p>{{end}}
+      {{if or .Venue .Address}}
+      <div class="event__place">
+        {{template "icon-pin"}}
+        {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+        {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+      </div>
+      {{end}}
+      {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+      {{template "event-actions" .}}
+    </article>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET CHECK-IN ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--sage sec--ticket" id="tiket">
+    <p class="eyebrow" data-reveal>Kartu Masuk</p>
+    <h2 class="title" data-reveal>E-Tiket</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <p class="lead" data-reveal>Kartu masuk pribadi Anda untuk registrasi tamu di lokasi acara.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE STREAMING ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--live" id="live">
+    <p class="eyebrow" data-reveal>Siaran Langsung</p>
+    <h2 class="title" data-reveal>Saksikan Daring</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <div data-reveal>{{template "live-stream" .C.LiveStream}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--sage sec--story" id="cerita">
+    <svg class="orn orn--tl"><use href="#f-corner"/></svg>
+    <p class="eyebrow" data-reveal>Perjalanan Kami</p>
+    <h2 class="title" data-reveal>Kisah Cinta</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        <svg class="story__dot"><use href="#f-bloom"/></svg>
+        <div class="story__card">
+          {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with .Date}}<p class="story__date">{{.}}</p>{{end}}
+          {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+          {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec sec--gallery" id="galeri">
+    <p class="eyebrow" data-reveal>Momen Bahagia</p>
+    <h2 class="title" data-reveal>Galeri</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--blush sec--gift" id="hadiah">
+    <p class="eyebrow" data-reveal>Tanda Kasih</p>
+    <h2 class="title" data-reveal>Kado Pernikahan</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP & UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec sec--rsvp" id="ucapan">
+    <p class="eyebrow" data-reveal>Konfirmasi &amp; Doa</p>
+    <h2 class="title" data-reveal>Ucapan</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <p class="lead" data-reveal>Mohon konfirmasi kehadiran dan kirimkan doa restu untuk kedua mempelai.</p>
+    <div class="rsvp-card" data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--sage sec--closing" id="penutup">
+    <svg class="orn orn--tl"><use href="#f-corner"/></svg>
+    <svg class="orn orn--br"><use href="#f-corner"/></svg>
+    <p class="eyebrow" data-reveal>Dengan Penuh Cinta</p>
+    <h2 class="title" data-reveal>Terima Kasih</h2>
+    <svg class="divider" data-reveal><use href="#f-sprig"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    <p class="closing__names" data-reveal>{{or $a.Nickname $a.FullName}} <span>&amp;</span> {{or $b.Nickname $b.FullName}}</p>
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="family__title">Turut Mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+  </section>
+
+  <footer class="footer">
+    <svg class="footer__sprig"><use href="#f-sprig"/></svg>
+    {{template "brand"}}
+  </footer>
+</main>
+</div>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#f6f0e6{{end}}
+{{define "body-class"}}t-floral{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Parisienne&display=swap">
+{{end}}

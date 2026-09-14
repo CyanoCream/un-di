@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-lavender"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="la-cloud" viewBox="0 0 240 104"><g fill="currentColor"><circle cx="62" cy="64" r="34"/><circle cx="108" cy="46" r="44"/><circle cx="156" cy="58" r="34"/><circle cx="196" cy="74" r="24"/><circle cx="34" cy="80" r="22"/><rect x="14" y="66" width="208" height="36" rx="18"/></g></symbol>
+  <symbol id="la-bank" viewBox="0 0 400 140"><g fill="currentColor"><circle cx="40" cy="96" r="44"/><circle cx="104" cy="70" r="58"/><circle cx="180" cy="84" r="50"/><circle cx="250" cy="58" r="62"/><circle cx="330" cy="86" r="52"/><circle cx="386" cy="104" r="36"/><rect x="0" y="96" width="400" height="44"/></g></symbol>
+  <symbol id="la-star" viewBox="0 0 24 24"><path d="M12 0c.9 7.4 4 10.8 12 12-8 1.2-11.1 4.6-12 12-.9-7.4-4-10.8-12-12 8-1.2 11.1-4.6 12-12z" fill="currentColor"/></symbol>
+  <symbol id="la-stars" viewBox="0 0 120 28"><path d="M8 20C30 10 44 22 60 12s34 4 52 0" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="1.5 3.5" stroke-linecap="round"/><use href="#la-star" x="0" y="13" width="14" height="14"/><use href="#la-star" x="52" y="3" width="18" height="18"/><use href="#la-star" x="106" y="5" width="12" height="12"/><circle cx="32" cy="12" r="1.4" fill="currentColor"/><circle cx="86" cy="16" r="1.4" fill="currentColor"/></symbol>
+</svg>
+
+{{/* ================= LANGIT LATAR (tetap) ================= */}}
+<div class="sky" aria-hidden="true">
+  <svg class="sky__cloud sky__cloud--1"><use href="#la-cloud"/></svg>
+  <svg class="sky__cloud sky__cloud--2"><use href="#la-cloud"/></svg>
+  <svg class="sky__cloud sky__cloud--3"><use href="#la-cloud"/></svg>
+  <svg class="sky__cloud sky__cloud--4"><use href="#la-cloud"/></svg>
+  <svg class="sky__star sky__star--1"><use href="#la-star"/></svg>
+  <svg class="sky__star sky__star--2"><use href="#la-star"/></svg>
+  <svg class="sky__star sky__star--3"><use href="#la-star"/></svg>
+  <svg class="sky__star sky__star--4"><use href="#la-star"/></svg>
+  <svg class="sky__star sky__star--5"><use href="#la-star"/></svg>
+</div>
+
+{{/* ================= COVER ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="cover__sky" aria-hidden="true">
+    {{with .C.Cover.Background}}<img class="cover__bg" src="{{.}}" alt="" decoding="async">{{end}}
+    <svg class="cover__star cover__star--1"><use href="#la-star"/></svg>
+    <svg class="cover__star cover__star--2"><use href="#la-star"/></svg>
+    <svg class="cover__star cover__star--3"><use href="#la-star"/></svg>
+    <svg class="cover__star cover__star--4"><use href="#la-star"/></svg>
+  </div>
+  <div class="cover__bank cover__bank--l" aria-hidden="true"><svg viewBox="0 0 400 140" preserveAspectRatio="none"><use href="#la-bank"/></svg></div>
+  <div class="cover__bank cover__bank--r" aria-hidden="true"><svg viewBox="0 0 400 140" preserveAspectRatio="none"><use href="#la-bank"/></svg></div>
+  <div class="cover__inner">
+    <p class="cover__eyebrow">{{.C.Cover.Title}}</p>
+    <div class="puff-shadow"><div class="puff cover__puff">
+      {{if .C.Cover.Photo}}<img class="puff__img" src="{{.C.Cover.Photo}}" alt="{{.Title}}" decoding="async">{{else}}<span class="puff__mono">{{initial (or $a.Nickname $a.FullName)}}<i>&amp;</i>{{initial (or $b.Nickname $b.FullName)}}</span>{{end}}
+    </div></div>
+    <h1 class="cover__names"><span>{{or $a.Nickname $a.FullName}}</span><span class="amp">&amp;</span><span>{{or $b.Nickname $b.FullName}}</span></h1>
+    {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+    <div class="cover__guest">{{template "guest-greeting" .}}</div>
+    <a class="btn btn--primary cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+  </div>
+</section>
+
+{{/* ================= TEPI DESKTOP ================= */}}
+<aside class="side" aria-hidden="true">
+  <p class="side__eyebrow">{{.C.Cover.Title}}</p>
+  <p class="side__names">{{or $a.Nickname $a.FullName}}<span>&amp;</span>{{or $b.Nickname $b.FullName}}</p>
+  <svg class="side__stars"><use href="#la-stars"/></svg>
+  {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec" id="pembuka">
+    <div class="card card--open" data-reveal>
+      <svg class="card__perch card__perch--tl"><use href="#la-cloud"/></svg>
+      <p class="eyebrow">{{if eq .C.EventType "ngunduh_mantu"}}Ngunduh Mantu{{else}}Undangan Pernikahan{{end}}</p>
+      <h2 class="opening__greeting">{{.C.Opening.Greeting}}</h2>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <div class="prose">{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+      {{template "guest-pax" .}}
+    </div>
+  </section>
+
+  {{/* ---------- KUTIPAN (langsung di langit, tanpa kartu) ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--quote" aria-label="Kutipan">
+    <svg class="quote__star" data-reveal="zoom"><use href="#la-star"/></svg>
+    <blockquote class="quote" data-reveal>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--couple" id="mempelai">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Di Bawah Langit yang Sama</p>
+      <h2 class="title">Kedua Mempelai</h2>
+    </header>
+    {{range $i, $p := .Couple}}
+    {{if $i}}<p class="couple__amp" data-reveal="zoom"><span>&amp;</span></p>{{end}}
+    <div class="drift drift--{{if $i}}r{{else}}l{{end}}" data-reveal="{{if $i}}right{{else}}left{{end}}">
+      <article class="card person person--{{$p.Role}}">
+        <svg class="card__perch card__perch--{{if $i}}tl{{else}}tr{{end}}"><use href="#la-cloud"/></svg>
+        <div class="puff-shadow"><div class="puff person__puff">{{template "person-photo" $p}}</div></div>
+        <p class="person__role">{{$p.RoleLabel}}</p>
+        {{with $p.Nickname}}<p class="person__nick">{{.}}</p>{{end}}
+        <h3 class="person__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+        {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{with $p.MotherLabel}}<p class="person__parent">{{if $p.FatherLabel}}<span>&amp;</span> {{end}}{{.}}</p>{{end}}
+        {{end}}
+        {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </article>
+    </div>
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--countdown" id="hitung-mundur">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Menghitung Hari</p>
+      <h2 class="title">Sebentar Lagi</h2>
+    </header>
+    <p class="countdown__date" data-reveal>{{.DateLong}}</p>
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="countdown__save" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--events" id="acara">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Waktu &amp; Tempat</p>
+      <h2 class="title">Rangkaian Acara</h2>
+    </header>
+    {{range $e := .Events}}
+    <div class="drift drift--ev" data-reveal>
+      <article class="card event{{if $e.IsPast}} is-past{{end}}">
+        {{if $e.Day}}
+        <div class="event__moon" aria-hidden="true">
+          <span class="event__num">{{$e.Day}}</span>
+          <span class="event__mon">{{slice $e.MonthName 0 3}}</span>
+        </div>
+        {{end}}
+        <div class="event__body">
+          <h3 class="event__name">{{$e.Name}}</h3>
+          {{if $e.IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+          {{with $e.DateLong}}<p class="event__date">{{template "icon-calendar"}}<span>{{.}}</span></p>{{end}}
+          {{with $e.TimeRange}}<p class="event__time">Pukul {{.}}</p>{{end}}
+        </div>
+        {{if or $e.Venue $e.Address}}
+        <div class="event__place">
+          {{template "icon-pin"}}
+          <div>
+            {{with $e.Venue}}<p class="event__venue">{{.}}</p>{{end}}
+            {{with $e.Address}}<p class="event__address">{{.}}</p>{{end}}
+          </div>
+        </div>
+        {{end}}
+        {{with $e.Note}}<p class="event__note">{{.}}</p>{{end}}
+        {{template "event-actions" $e}}
+      </article>
+    </div>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--ticket" id="tiket">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Kartu Masuk</p>
+      <h2 class="title">E-Tiket Anda</h2>
+    </header>
+    <p class="lead" data-reveal>Tunjukkan kartu ini saat registrasi tamu di lokasi acara.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--live" id="live">
+    <div class="card card--live" data-reveal>
+      <p class="eyebrow">Tak Bisa Hadir?</p>
+      <h2 class="title title--sm">Saksikan dari Jauh</h2>
+      {{template "live-stream" .C.LiveStream}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH (rasi bintang) ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--story" id="cerita">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Rasi Perjalanan Kami</p>
+      <h2 class="title">Kisah Cinta</h2>
+    </header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        <svg class="story__node"><use href="#la-star"/></svg>
+        <div class="card story__card">
+          {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with .Date}}<p class="story__date">{{.}}</p>{{end}}
+          {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+          {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec sec--gallery" id="galeri">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Potongan Langit Kami</p>
+      <h2 class="title">Galeri</h2>
+    </header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--gift" id="hadiah">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Tanda Kasih</p>
+      <h2 class="title">Kirim Hadiah</h2>
+    </header>
+    <div class="prose prose--sky" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec sec--rsvp" id="ucapan">
+    <header class="head" data-reveal>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <p class="eyebrow">Kehadiran &amp; Doa</p>
+      <h2 class="title">Titip Ucapan</h2>
+    </header>
+    <div class="card card--form" data-reveal>
+      <svg class="card__perch card__perch--tr"><use href="#la-cloud"/></svg>
+      {{template "rsvp-wishes" .}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--closing" id="penutup">
+    <div class="card card--closing" data-reveal>
+      <svg class="card__perch card__perch--tl"><use href="#la-cloud"/></svg>
+      <svg class="card__perch card__perch--br"><use href="#la-cloud"/></svg>
+      <svg class="stars"><use href="#la-stars"/></svg>
+      <h2 class="title">Terima Kasih</h2>
+      <div class="prose">{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+      {{with .C.Closing.SignOff}}<p class="closing__signoff">{{.}}</p>{{end}}
+      {{with .C.Closing.From}}<p class="closing__from">{{.}}</p>{{end}}
+      <p class="closing__names">{{or $a.Nickname $a.FullName}} <span>&amp;</span> {{or $b.Nickname $b.FullName}}</p>
+      {{with .C.Closing.Family}}
+      <div class="family">
+        <p class="family__title">Turut Mengundang</p>
+        <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+      </div>
+      {{end}}
+    </div>
+  </section>
+
+  <footer class="footer">
+    <svg class="footer__star"><use href="#la-star"/></svg>
+    {{template "brand"}}
+  </footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#d6dcf2{{end}}
+{{define "body-class"}}t-lavender{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,100;1,9..144,300..600,100&family=Nunito:wght@400;600;700&display=swap">
+{{end}}

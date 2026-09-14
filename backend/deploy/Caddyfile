@@ -1,0 +1,37 @@
+# Semua host diteruskan ke SATU binary Go (apps/api), yang memilih tujuan dari Host header:
+#   <BASE_DOMAIN>, www.   → landing page
+#   admin.<BASE_DOMAIN>   → portal super admin (build apps/admin)
+#   app.<BASE_DOMAIN>     → portal customer (build apps/portal)
+#   <slug>.<BASE_DOMAIN>  → undangan
+#   domain customer       → undangan (setelah diverifikasi)
+#
+# Caddy build perlu plugin DNS Cloudflare untuk wildcard cert:
+#   xcaddy build --with github.com/caddy-dns/cloudflare
+# Env: BASE_DOMAIN, CF_API_TOKEN, ACME_EMAIL, APP_UPSTREAM (default 127.0.0.1:8080)
+
+{
+	email {$ACME_EMAIL}
+	on_demand_tls {
+		# Endpoint internal (loopback) menjawab 200 hanya untuk custom domain terverifikasi.
+		ask http://{$APP_INTERNAL:127.0.0.1:8081}/internal/tls/ask
+	}
+}
+
+# Domain platform + semua subdomain: SATU wildcard cert via DNS challenge.
+# Jangan pakai on-demand untuk subdomain → kena rate limit Let's Encrypt (50 cert / domain / minggu).
+{$BASE_DOMAIN}, *.{$BASE_DOMAIN} {
+	tls {
+		dns cloudflare {env.CF_API_TOKEN}
+	}
+	encode zstd gzip
+	reverse_proxy {$APP_UPSTREAM:127.0.0.1:8080}
+}
+
+# Domain milik customer: cert terbit otomatis saat request pertama.
+https:// {
+	tls {
+		on_demand
+	}
+	encode zstd gzip
+	reverse_proxy {$APP_UPSTREAM:127.0.0.1:8080}
+}

@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-mb"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}{{$hero := or .C.Cover.Photo .C.Cover.Background}}
+
+{{/* ================= COVER: layar bioskop ber-letterbox ================= */}}
+<section class="cover{{if $hero}} cover--photo{{end}}" data-cover aria-label="Sampul undangan">
+  <div class="cover__film">
+    <div class="cover__band cover__band--top">
+      <span>{{.C.Cover.Title}}</span>
+      {{with .FirstEvent}}<span>{{.Day}} · {{.MonthName}} · {{.Year}}</span>{{end}}
+    </div>
+    <div class="cover__frame">
+      {{with $hero}}<img class="cover__img" src="{{.}}" alt="" decoding="async">{{end}}
+      <span class="cover__bloom" aria-hidden="true"></span>
+      <span class="cover__bloom cover__bloom--sm" aria-hidden="true"></span>
+      <div class="cover__inner">
+        <p class="cover__kicker">Sebuah kisah cinta</p>
+        <h1 class="cover__names">
+          <span class="cover__name">{{or $a.Nickname $a.FullName}}</span>
+          <span class="cover__amp">&amp;</span>
+          <span class="cover__name">{{or $b.Nickname $b.FullName}}</span>
+        </h1>
+        {{with .FirstEvent}}<p class="cover__premiere">Tayang perdana <b>{{.DateLong}}</b></p>{{end}}
+        <div class="cover__foot">
+          {{template "guest-greeting" .}}
+          <a class="btn btn--primary cover__open" href="#pembuka" data-open>{{template "icon-play"}}<span>Buka Undangan</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="cover__band cover__band--bottom" aria-hidden="true"><span class="cover__reel"></span><span>Undangan Pernikahan</span></div>
+  </div>
+</section>
+
+{{/* ================= LATAR DESKTOP ================= */}}
+<aside class="backdrop" aria-hidden="true">
+  <span class="backdrop__bloom"></span>
+  <span class="backdrop__bloom backdrop__bloom--r"></span>
+  <p class="backdrop__title"><span>{{or $a.Nickname $a.FullName}}</span><em>&amp;</em><span>{{or $b.Nickname $b.FullName}}</span></p>
+  {{with .FirstEvent}}<p class="backdrop__date">{{.DateLong}}</p>{{end}}
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PROLOG ---------- */}}
+  <section class="scene scene--prolog" id="pembuka">
+    <p class="slate" data-reveal><span>Adegan</span>Prolog</p>
+    <h2 class="scene__title scene__title--greet" data-reveal>{{.C.Opening.Greeting}}</h2>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+    <span class="scene__bloom scene__bloom--prolog" aria-hidden="true"></span>
+  </section>
+
+  {{/* ---------- KUTIPAN: teks layar ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="scene scene--quote" aria-label="Kutipan">
+    <blockquote class="subtitle" data-reveal="fade">
+      <p class="subtitle__text">{{.Text}}</p>
+      {{with .Source}}<footer class="subtitle__src">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- PEMERAN ---------- */}}
+  <section class="cast" id="mempelai">
+    <header class="cast__head scene--card">
+      <p class="slate" data-reveal><span>Adegan</span>Pemeran Utama</p>
+      <h2 class="scene__title" data-reveal>Dua jiwa,<br>satu cerita.</h2>
+    </header>
+    {{range $i, $p := .Couple}}
+    <article class="poster poster--{{$p.Role}}{{if $i}} poster--alt{{end}}">
+      <div class="poster__frame" data-reveal="fade">
+        {{template "person-photo" $p}}
+        <span class="poster__shade" aria-hidden="true"></span>
+        <div class="poster__caption">
+          <p class="poster__role">{{$p.RoleLabel}}</p>
+          <h3 class="poster__nick">{{or $p.Nickname $p.FullName}}</h3>
+        </div>
+      </div>
+      <div class="credit" data-reveal>
+        <p class="credit__full">{{$p.FullName}}</p>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <dl class="credit__rows">
+          <dt>{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</dt>
+          <dd>{{with $p.FatherLabel}}<span>{{.}}</span>{{end}}{{with $p.MotherLabel}}<span>{{.}}</span>{{end}}</dd>
+        </dl>
+        {{end}}
+        {{with $p.Instagram}}<a class="credit__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </div>
+    </article>
+    {{end}}
+  </section>
+
+  {{/* ---------- SEGERA TAYANG ---------- */}}
+  {{with .FirstEvent}}
+  <section class="scene scene--leader" id="hitung-mundur">
+    <p class="slate" data-reveal><span>Adegan</span>Segera Tayang</p>
+    <h2 class="scene__title" data-reveal>Menuju hari<br>bahagia</h2>
+    <p class="leader__date" data-reveal>{{.DateLong}}</p>
+    <div class="leader" data-reveal="zoom">{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="leader__cta" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- JADWAL TAYANG ---------- */}}
+  {{if .Events}}
+  <section class="scene scene--events" id="acara">
+    <p class="slate" data-reveal><span>Adegan</span>Jadwal Tayang</p>
+    <h2 class="scene__title" data-reveal>Rangkaian<br>acara</h2>
+    <div class="showtimes">
+    {{range .Events}}
+      <article class="show{{if .IsPast}} is-past{{end}}" data-reveal>
+        <div class="show__when">
+          {{if .Day}}<span class="show__day">{{.Day}}</span><span class="show__month">{{.MonthName}} {{.Year}}</span>{{end}}
+        </div>
+        <div class="show__body">
+          <p class="show__dayname">{{.DayName}}{{if .IsPast}} · <span class="badge-past">Telah selesai</span>{{end}}</p>
+          <h3 class="show__name">{{.Name}}</h3>
+          {{with .TimeRange}}<p class="show__time">{{.}}</p>{{end}}
+          {{with .Venue}}<p class="show__venue">{{.}}</p>{{end}}
+          {{with .Address}}<p class="show__address">{{.}}</p>{{end}}
+          {{with .Note}}<p class="show__note">{{.}}</p>{{end}}
+          {{template "event-actions" .}}
+        </div>
+      </article>
+    {{end}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="scene scene--ticket" id="tiket">
+    <p class="slate" data-reveal><span>Adegan</span>Karcis Anda</p>
+    <h2 class="scene__title" data-reveal>E-Tiket</h2>
+    <p class="prose" data-reveal>Kartu masuk pribadi untuk registrasi tamu di lokasi acara.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="scene scene--live" id="live">
+    <p class="slate" data-reveal><span>Adegan</span>Siaran Langsung</p>
+    <h2 class="scene__title" data-reveal>Saksikan dari<br>mana saja</h2>
+    <div data-reveal>{{template "live-stream" .C.LiveStream}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- BABAK CERITA ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="scene scene--story" id="cerita">
+    <p class="slate" data-reveal><span>Adegan</span>Kilas Balik</p>
+    <h2 class="scene__title" data-reveal>Kisah kami</h2>
+    <ol class="reel">
+      {{range $i, $s := .C.LoveStory}}
+      <li class="reel__item" data-reveal>
+        <p class="reel__act">Babak {{add $i 1}}{{with $s.Date}} <b>{{.}}</b>{{end}}</p>
+        {{with $s.Photo}}<img class="reel__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+        {{with $s.Title}}<h3 class="reel__title">{{.}}</h3>{{end}}
+        {{with $s.Text}}<div class="reel__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- CUPLIKAN ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="scene scene--gallery" id="galeri">
+    <p class="slate" data-reveal><span>Adegan</span>Cuplikan</p>
+    <h2 class="scene__title" data-reveal>Galeri</h2>
+    <div class="strip" data-reveal="fade">{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="scene scene--gift" id="hadiah">
+    <p class="slate" data-reveal><span>Adegan</span>Tanda Kasih</p>
+    <h2 class="scene__title" data-reveal>Hadiah</h2>
+    <div class="prose" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="scene scene--rsvp" id="ucapan">
+    <p class="slate" data-reveal><span>Adegan</span>Ulasan Penonton</p>
+    <h2 class="scene__title" data-reveal>Ucapan &amp;<br>kehadiran</h2>
+    <p class="prose" data-reveal>Mohon konfirmasi kehadiran Anda dan titipkan doa restu untuk kami.</p>
+    <div data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KREDIT PENUTUP ---------- */}}
+  <section class="scene scene--credits" id="penutup">
+    <span class="scene__bloom scene__bloom--end" aria-hidden="true"></span>
+    <p class="slate" data-reveal><span>Adegan</span>Epilog</p>
+    <h2 class="credits__big" data-reveal>Terima<br>kasih</h2>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="credits__signoff" data-reveal>{{.}}</p>{{end}}
+    <dl class="roll" data-reveal>
+      {{range .Couple}}<div class="roll__row"><dt>{{.RoleLabel}}</dt><dd>{{.FullName}}</dd></div>{{end}}
+      {{with .C.Closing.From}}<div class="roll__row"><dt>Dengan hormat</dt><dd>{{.}}</dd></div>{{end}}
+      {{with .C.Closing.Family}}<div class="roll__row"><dt>Turut mengundang</dt><dd>{{range .}}<span>{{.}}</span>{{end}}</dd></div>{{end}}
+    </dl>
+    <p class="credits__end" data-reveal><span>{{or $a.Nickname $a.FullName}}</span> &amp; <span>{{or $b.Nickname $b.FullName}}</span></p>
+    <p class="credits__fin" data-reveal>— awal dari selamanya —</p>
+  </section>
+
+  <footer class="footer">{{template "brand"}}</footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#0b090a{{end}}
+{{define "body-class"}}t-mb{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600&display=swap">
+{{end}}

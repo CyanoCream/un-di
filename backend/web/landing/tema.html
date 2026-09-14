@@ -1,0 +1,39 @@
+{{define "content"}}
+<section class="subhero" aria-labelledby="tema-title">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Beranda</a><span aria-hidden="true">/</span><span aria-current="page">Tema</span></nav>
+    <h1 id="tema-title" class="display display--sm">Katalog tema <em>undangan digital</em></h1>
+    <p class="lead">{{len .Themes}} tema original dengan palet, tipografi, dan animasi pembuka yang berbeda. Coba demo setiap tema dengan data contoh—tema dipilih sekali, jadi pastikan Anda jatuh cinta dulu.</p>
+  </div>
+</section>
+
+<section class="section section--tight catalog" aria-labelledby="daftar-tema">
+  <div class="wrap">
+    <h2 id="daftar-tema" class="sr">Daftar tema</h2>
+    {{if .Themes}}
+    {{template "theme-filter" .}}
+    <p class="catalog__count" data-count aria-live="polite">Menampilkan {{.Visible}} tema{{if .ActiveLabel}} kategori {{.ActiveLabel}}{{end}}</p>
+    <ul class="themes" data-themes>
+      {{range .Themes}}{{template "theme-card" (themeCard . $.RegisterURL false $.ActiveCategory)}}{{end}}
+    </ul>
+    <p class="themes__empty" data-empty{{if .Visible}} hidden{{end}}>Belum ada tema di kategori ini. <a href="/tema">Lihat semua tema</a>.</p>
+    {{else}}
+    <p class="themes__empty">Katalog tema sedang disiapkan. Silakan kembali sebentar lagi.</p>
+    {{end}}
+  </div>
+</section>
+
+<section class="final final--compact" aria-labelledby="final-title">
+  <div class="wrap final__in">
+    <h2 id="final-title" class="display display--sm">Sudah menemukan <em>yang pas</em>?</h2>
+    <p>Daftar, pilih paket, lalu kunci tema favorit Anda. {{if .WhatsAppURL}}Ragu memilih? Admin siap membantu.{{end}}</p>
+    <div class="final__cta">
+      <a class="btn btn--light btn--lg" href="{{.RegisterURL}}">Buat Undangan Sekarang <svg width="20" height="20" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      {{if .WhatsAppURL}}<a class="btn btn--outline-light btn--lg" href="{{.WhatsAppURL}}" target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="#i-whatsapp"/></svg> Tanya Admin</a>
+      {{else}}<a class="btn btn--outline-light btn--lg" href="/#harga">Lihat Harga</a>{{end}}
+    </div>
+  </div>
+</section>
+
+{{template "demo-dialog" .}}
+{{end}}

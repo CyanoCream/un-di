@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-tb"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="tb-sun" viewBox="0 0 120 120">
+    <g stroke="#fffaf2" stroke-width="20" stroke-linecap="round" fill="#fffaf2"><circle cx="60" cy="60" r="30"/><path d="M60 8v10M60 102v10M8 60h10M102 60h10M23 23l7 7M90 90l7 7M97 23l-7 7M30 90l-7 7"/></g>
+    <g stroke="#c9713f" stroke-width="7" stroke-linecap="round"><path d="M60 8v10M60 102v10M8 60h10M102 60h10M23 23l7 7M90 90l7 7M97 23l-7 7M30 90l-7 7"/></g>
+    <circle cx="60" cy="60" r="30" fill="#c9713f"/><circle cx="60" cy="60" r="19" fill="none" stroke="#f6d9b6" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="tb-pampas" viewBox="0 0 120 240">
+    <g fill="#fffaf2" stroke="#fffaf2" stroke-linejoin="round" stroke-linecap="round"><path d="M68 12C112 46 110 130 62 166 18 130 24 48 68 12Z" stroke-width="8"/><path d="M58 236C60 190 62 120 68 24" fill="none" stroke-width="14"/></g>
+    <path d="M58 236C60 190 62 120 68 24" fill="none" stroke="#9a7458" stroke-width="3" stroke-linecap="round"/>
+    <path d="M68.0 30.0q-4.5 -1.8 -9.1 -5.0M68.0 34.0q4.5 -1.8 9.1 -5.0M67.6 38.0q-6.7 -2.7 -13.4 -7.6M67.6 42.0q6.7 -2.7 13.4 -7.6M67.2 46.0q-8.8 -3.5 -17.6 -10.2M67.2 50.0q8.8 -3.5 17.6 -10.2M66.8 54.0q-10.7 -4.3 -21.3 -12.8M66.8 58.0q10.7 -4.3 21.3 -12.8M66.4 62.0q-12.3 -4.9 -24.6 -15.1M66.4 66.0q12.3 -4.9 24.6 -15.1M66.0 70.0q-13.6 -5.4 -27.1 -17.2M66.0 74.0q13.6 -5.4 27.1 -17.2M65.6 78.0q-14.4 -5.8 -28.9 -18.8M65.6 82.0q14.4 -5.8 28.9 -18.8M65.2 86.0q-14.9 -6.0 -29.8 -19.9M65.2 90.0q14.9 -6.0 29.8 -19.9M64.8 94.0q-14.9 -6.0 -29.8 -20.4M64.8 98.0q14.9 -6.0 29.8 -20.4M64.4 102.0q-14.4 -5.8 -28.9 -20.2M64.4 106.0q14.4 -5.8 28.9 -20.2M64.0 110.0q-13.6 -5.4 -27.1 -19.4M64.0 114.0q13.6 -5.4 27.1 -19.4M63.6 118.0q-12.3 -4.9 -24.6 -18.0M63.6 122.0q12.3 -4.9 24.6 -18.0M63.2 126.0q-10.7 -4.3 -21.3 -16.0M63.2 130.0q10.7 -4.3 21.3 -16.0M62.8 134.0q-8.8 -3.5 -17.6 -13.5M62.8 138.0q8.8 -3.5 17.6 -13.5M62.4 142.0q-6.7 -2.7 -13.4 -10.5M62.4 146.0q6.7 -2.7 13.4 -10.5M62.0 150.0q-4.6 -1.8 -9.1 -7.3M62.0 154.0q4.6 -1.8 9.1 -7.3" fill="none" stroke="#d8b48a" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M67.6 42q6.7-2.7 13.4-7.6M66.4 66q12.3-4.9 24.6-15.1M65.2 90q14.9-6 29.8-19.9M64 114q13.6-5.4 27.1-19.4M62.8 138q8.8-3.5 17.6-13.5" fill="none" stroke="#b98d63" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="tb-leaf" viewBox="0 0 160 120">
+    <g fill="#fffaf2" stroke="#fffaf2" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"><path d="M10 110C50 80 100 50 150 12" fill="none" stroke-width="16"/><ellipse cx="40" cy="78" rx="15" ry="9" transform="rotate(-60 40 78)"/><ellipse cx="54" cy="92" rx="15" ry="9" transform="rotate(10 54 92)"/><ellipse cx="78" cy="52" rx="15" ry="9" transform="rotate(-60 78 52)"/><ellipse cx="94" cy="68" rx="15" ry="9" transform="rotate(10 94 68)"/><ellipse cx="116" cy="28" rx="14" ry="8" transform="rotate(-60 116 28)"/><ellipse cx="132" cy="42" rx="14" ry="8" transform="rotate(10 132 42)"/></g>
+    <path d="M10 110C50 80 100 50 150 12" fill="none" stroke="#8d6a4f" stroke-width="3" stroke-linecap="round"/>
+    <g fill="#8e9a6e"><ellipse cx="40" cy="78" rx="15" ry="9" transform="rotate(-60 40 78)"/><ellipse cx="94" cy="68" rx="15" ry="9" transform="rotate(10 94 68)"/><ellipse cx="116" cy="28" rx="14" ry="8" transform="rotate(-60 116 28)"/></g>
+    <g fill="#a9b28a"><ellipse cx="54" cy="92" rx="15" ry="9" transform="rotate(10 54 92)"/><ellipse cx="78" cy="52" rx="15" ry="9" transform="rotate(-60 78 52)"/><ellipse cx="132" cy="42" rx="14" ry="8" transform="rotate(10 132 42)"/></g>
+  </symbol>
+  <symbol id="tb-spark" viewBox="0 0 60 60">
+    <path d="M30 4C33 22 38 27 56 30 38 33 33 38 30 56 27 38 22 33 4 30 22 27 27 22 30 4Z" fill="#fffaf2" stroke="#fffaf2" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M30 4C33 22 38 27 56 30 38 33 33 38 30 56 27 38 22 33 4 30 22 27 27 22 30 4Z" fill="#e0a45e"/>
+  </symbol>
+</svg>
+
+{{/* ================= COVER: matahari terbit ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="cover__sky" aria-hidden="true">
+    <span class="cover__sun"></span>
+    <span class="cover__ring"></span>
+    <svg class="stk cover__pampas"><use href="#tb-pampas"/></svg>
+    <svg class="stk cover__pampas cover__pampas--b"><use href="#tb-pampas"/></svg>
+    <svg class="stk cover__spark"><use href="#tb-spark"/></svg>
+  </div>
+  <div class="cover__inner">
+    <p class="pill pill--tilt cover__title">{{.C.Cover.Title}}</p>
+    {{with .C.Cover.Photo}}<div class="blob cover__photo"><img src="{{.}}" alt="" decoding="async"></div>{{end}}
+    <h1 class="cover__names">
+      <span>{{or $a.Nickname $a.FullName}}</span>
+      <span class="cover__names-b"><i>&amp;</i> {{or $b.Nickname $b.FullName}}</span>
+    </h1>
+    {{with .FirstEvent}}<p class="pill pill--terra cover__date">{{.Day}} {{.MonthName}} {{.Year}}</p>{{end}}
+    <div class="note cover__guest">
+      {{template "guest-greeting" .}}
+      <a class="btn btn--primary cover__open" href="#pembuka" data-open><span>Buka Undangan</span>{{template "icon-mail"}}</a>
+    </div>
+  </div>
+</section>
+
+{{/* ================= LATAR SAMPING (desktop) ================= */}}
+<aside class="side" aria-hidden="true">
+  <span class="side__sun"></span>
+  <svg class="stk side__pampas"><use href="#tb-pampas"/></svg>
+  <svg class="stk side__leaf"><use href="#tb-leaf"/></svg>
+  <div class="side__text">
+    <p class="pill">{{.C.Cover.Title}}</p>
+    <p class="side__names">{{or $a.Nickname $a.FullName}}<br><i>&amp;</i> {{or $b.Nickname $b.FullName}}</p>
+    {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+  </div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec collage collage--opening" id="pembuka">
+    <svg class="stk opening__sun" data-reveal="zoom"><use href="#tb-sun"/></svg>
+    <p class="kicker" data-reveal>Halo, sahabat terkasih</p>
+    <h2 class="big opening__greeting" data-reveal>{{.C.Opening.Greeting}}</h2>
+    <div class="note note--r opening__note" data-reveal="right">
+      <div class="prose">{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+      {{template "guest-pax" .}}
+    </div>
+    <svg class="stk opening__leaf" data-reveal="left"><use href="#tb-leaf"/></svg>
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--quote" aria-label="Kutipan">
+    <blockquote class="cutout" data-reveal>
+      <svg class="stk cutout__spark"><use href="#tb-spark"/></svg>
+      <p class="cutout__text">{{.Text}}</p>
+      {{with .Source}}<footer class="cutout__src">— {{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--couple" id="mempelai">
+    <header class="head" data-reveal><p class="kicker">Yang berbahagia</p><h2 class="big">Kami<br>berdua</h2></header>
+    {{range $i, $p := .Couple}}
+    {{if $i}}<p class="couple__amp" data-reveal="zoom" aria-hidden="true"><span>&amp;</span></p>{{end}}
+    <article class="person person--{{$p.Role}}{{if $i}} person--flip{{end}}">
+      <div class="blob person__photo" data-reveal="zoom">{{template "person-photo" $p}}</div>
+      <p class="pill pill--terra person__nick" data-reveal>{{or $p.Nickname $p.FullName}}</p>
+      <div class="person__info" data-reveal>
+        <p class="kicker">{{$p.RoleLabel}}</p>
+        <h3 class="person__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+        {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{with $p.MotherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{end}}
+        {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </div>
+    </article>
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--count" id="hitung-mundur">
+    <svg class="stk count__pampas" data-reveal="left"><use href="#tb-pampas"/></svg>
+    <header class="head head--r" data-reveal><p class="kicker">Tinggal sebentar lagi</p><h2 class="big">Menuju<br>hari H</h2></header>
+    <p class="pill pill--tilt count__date" data-reveal>{{.DateLong}}</p>
+    <div class="pebbles" data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="count__cta" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--events" id="acara">
+    <header class="head" data-reveal><p class="kicker">Catat tanggalnya</p><h2 class="big">Rangkaian<br>acara</h2></header>
+    {{range .Events}}
+    <article class="event{{if .IsPast}} is-past{{end}}" data-reveal>
+      {{if .Day}}<p class="event__stamp"><b>{{.Day}}</b><span>{{.MonthName}}</span><span>{{.Year}}</span></p>{{end}}
+      <div class="note event__card">
+        <p class="kicker">{{.DayName}}{{if .IsPast}} · <span class="badge-past">sudah lewat</span>{{end}}</p>
+        <h3 class="event__name">{{.Name}}</h3>
+        {{with .TimeRange}}<p class="event__time">{{.}}</p>{{end}}
+        {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+        {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+        {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+        {{template "event-actions" .}}
+      </div>
+    </article>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--ticket" id="tiket">
+    <header class="head head--r" data-reveal><p class="kicker">Bawa saat datang</p><h2 class="big">Tiket<br>masuk</h2></header>
+    <div class="ticket-wrap" data-reveal>
+      <svg class="stk ticket-wrap__sun"><use href="#tb-sun"/></svg>
+      {{template "checkin-ticket" .}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--live" id="live">
+    <div class="note note--milk" data-reveal>
+      <svg class="stk live__spark"><use href="#tb-spark"/></svg>
+      {{template "live-stream" .C.LiveStream}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--story" id="cerita">
+    <header class="head" data-reveal><p class="kicker">Dari awal hingga kini</p><h2 class="big">Cerita<br>kita</h2></header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        {{with .Date}}<p class="story__year">{{.}}</p>{{end}}
+        <div class="note story__card">
+          {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+          {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec sec--gallery" id="galeri">
+    <header class="head head--r" data-reveal><p class="kicker">Potongan momen</p><h2 class="big">Galeri</h2></header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--gift" id="hadiah">
+    <header class="head" data-reveal><p class="kicker">Tanda kasih</p><h2 class="big">Kirim<br>hadiah</h2></header>
+    <div class="prose gift__lead" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP & UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec sec--rsvp" id="ucapan">
+    <header class="head head--r" data-reveal><p class="kicker">Kabari kami ya</p><h2 class="big">Ucapan &amp;<br>kehadiran</h2></header>
+    <div class="note rsvp-note" data-reveal>
+      <svg class="stk rsvp-note__leaf"><use href="#tb-leaf"/></svg>
+      <p class="prose rsvp__lead">Mohon konfirmasi kehadiran Anda dan titipkan doa restu untuk kami.</p>
+      {{template "rsvp-wishes" .}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--closing" id="penutup">
+    <span class="closing__sun" aria-hidden="true"></span>
+    <p class="kicker" data-reveal>Sampai jumpa</p>
+    <h2 class="closing__big" data-reveal>Terima<br><i>kasih!</i></h2>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    <p class="pill pill--terra pill--tilt closing__names" data-reveal>{{or $a.Nickname $a.FullName}} &amp; {{or $b.Nickname $b.FullName}}</p>
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="kicker">Turut mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+    <svg class="stk closing__pampas"><use href="#tb-pampas"/></svg>
+    <svg class="stk closing__pampas closing__pampas--b"><use href="#tb-pampas"/></svg>
+  </section>
+
+  <footer class="footer">{{template "brand"}}</footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#f1e4d0{{end}}
+{{define "body-class"}}t-tb{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Young+Serif&display=swap">
+{{end}}

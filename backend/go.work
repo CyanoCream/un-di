@@ -1,0 +1,16 @@
+go 1.26.0
+
+use (
+	./app
+	./kernel
+	./migrations
+	./services/audit
+	./services/auth
+	./services/billing
+	./services/dashboard
+	./services/invitation
+	./services/landing
+	./services/media
+	./services/theme
+	./services/user
+)

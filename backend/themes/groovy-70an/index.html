@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-gv"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="gv-burst" viewBox="0 0 200 200"><path d="M100.0 2.0L113.5 15.1L130.3 6.8L139.0 23.4L157.6 20.7L160.8 39.2L179.3 42.4L176.6 61.0L193.2 69.7L184.9 86.5L198.0 100.0L184.9 113.5L193.2 130.3L176.6 139.0L179.3 157.6L160.8 160.8L157.6 179.3L139.0 176.6L130.3 193.2L113.5 184.9L100.0 198.0L86.5 184.9L69.7 193.2L61.0 176.6L42.4 179.3L39.2 160.8L20.7 157.6L23.4 139.0L6.8 130.3L15.1 113.5L2.0 100.0L15.1 86.5L6.8 69.7L23.4 61.0L20.7 42.4L39.2 39.2L42.4 20.7L61.0 23.4L69.7 6.8L86.5 15.1Z" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/></symbol>
+  <symbol id="gv-flower" viewBox="0 0 100 100"><g fill="currentColor"><circle cx="50" cy="22" r="20"/><circle cx="78" cy="50" r="20"/><circle cx="50" cy="78" r="20"/><circle cx="22" cy="50" r="20"/><circle cx="70" cy="30" r="20"/><circle cx="70" cy="70" r="20"/><circle cx="30" cy="70" r="20"/><circle cx="30" cy="30" r="20"/></g><circle cx="50" cy="50" r="15" fill="#4b2616"/></symbol>
+</svg>
+
+{{/* ================= COVER: piringan hitam ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="cover__deco" aria-hidden="true">
+    <div class="vinyl cover__vinyl">
+      <span class="vinyl__label">
+        {{with .C.Cover.Photo}}<img class="vinyl__photo" src="{{.}}" alt="" decoding="async">{{else}}<b>{{initial (or $a.Nickname $a.FullName)}}<i>&amp;</i>{{initial (or $b.Nickname $b.FullName)}}</b>{{end}}
+      </span>
+    </div>
+    <svg class="cover__badge" viewBox="0 0 200 200">
+      <defs><path id="gv-circ" d="M100 100m-72 0a72 72 0 1 1 144 0a72 72 0 1 1-144 0"/></defs>
+      <use href="#gv-burst" class="cover__badge-bg"/>
+      <text class="cover__badge-text"><textPath href="#gv-circ" textLength="448" lengthAdjust="spacing">Undangan Pernikahan ✦ Edisi Spesial ✦ </textPath></text>
+      <use href="#gv-flower" x="70" y="70" width="60" height="60" class="cover__badge-flower"/>
+    </svg>
+    <svg class="flower cover__flower"><use href="#gv-flower"/></svg>
+  </div>
+  <div class="cover__inner">
+    <p class="cover__title">{{.C.Cover.Title}}</p>
+    <h1 class="cover__names">
+      <span>{{or $a.Nickname $a.FullName}}</span>
+      <span class="cover__amp">&amp;</span>
+      <span>{{or $b.Nickname $b.FullName}}</span>
+    </h1>
+    {{with .FirstEvent}}<p class="chip cover__date">{{.DayName}} · {{.Day}} {{.MonthName}} {{.Year}}</p>{{end}}
+    <div class="cover__guest">
+      {{template "guest-greeting" .}}
+      <a class="btn btn--primary cover__open" href="#pembuka" data-open>{{template "icon-disc"}}<span>Buka Undangan</span></a>
+    </div>
+  </div>
+  <div class="stripes cover__stripes" aria-hidden="true"></div>
+</section>
+
+{{/* ================= LATAR SAMPING (desktop) ================= */}}
+<aside class="side" aria-hidden="true">
+  <div class="side__card">
+    <p class="side__title">{{.C.Cover.Title}}</p>
+    <p class="side__names">{{or $a.Nickname $a.FullName}}<span>&amp;</span>{{or $b.Nickname $b.FullName}}</p>
+    {{with .FirstEvent}}<p class="chip">{{.DateLong}}</p>{{end}}
+  </div>
+  <div class="vinyl side__vinyl"><span class="vinyl__label"><b>{{initial (or $a.Nickname $a.FullName)}}<i>&amp;</i>{{initial (or $b.Nickname $b.FullName)}}</b></span></div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec sec--cream sec--opening" id="pembuka">
+    <svg class="burst opening__burst" data-reveal="zoom" viewBox="0 0 200 200" aria-hidden="true"><use href="#gv-burst"/><text x="100" y="94" text-anchor="middle">Halo,</text><text x="100" y="124" text-anchor="middle">sobat!</text></svg>
+    <h2 class="groovy opening__greeting" data-reveal>{{.C.Opening.Greeting}}</h2>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--orange sec--quote" aria-label="Kutipan">
+    <blockquote class="quote" data-reveal>
+      <span class="quote__mark" aria-hidden="true">“</span>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="chip chip--cream quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--mustard sec--couple" id="mempelai">
+    <header class="head" data-reveal><p class="head__side">Side A &amp; B</p><h2 class="groovy head__title">Duet Kami</h2></header>
+    {{range $i, $p := .Couple}}
+    <article class="person{{if $i}} person--b{{end}}" data-reveal>
+      <div class="person__disc">
+        <svg class="person__burst" aria-hidden="true"><use href="#gv-burst"/></svg>
+        <div class="person__photo">{{template "person-photo" $p}}</div>
+        <span class="person__side" aria-hidden="true">{{if $i}}B{{else}}A{{end}}</span>
+      </div>
+      <div class="person__info">
+        <p class="chip chip--brown">{{$p.RoleLabel}}</p>
+        <h3 class="person__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+        {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{with $p.MotherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{end}}
+        {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </div>
+    </article>
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--brown sec--count" id="hitung-mundur">
+    <header class="head head--center" data-reveal><p class="head__side">Segera diputar</p><h2 class="groovy head__title">Menuju Hari H</h2></header>
+    <p class="chip chip--mustard count__date" data-reveal>{{.DateLong}}</p>
+    <div class="badges" data-reveal="zoom">{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="count__cta" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--cream sec--events" id="acara">
+    <header class="head" data-reveal><p class="head__side">Daftar putar</p><h2 class="groovy head__title">Rangkaian Acara</h2></header>
+    {{range $i, $e := .Events}}
+    <article class="track{{if $e.IsPast}} is-past{{end}}" data-reveal>
+      <div class="vinyl track__vinyl" aria-hidden="true"><span class="vinyl__label">{{if $e.Day}}<b class="track__day">{{$e.Day}}</b><small>{{$e.MonthName}}</small>{{end}}</span></div>
+      <div class="track__body">
+        <p class="track__no">Track 0{{add $i 1}} · {{$e.DayName}}{{if $e.Day}}, {{$e.Day}} {{$e.MonthName}} {{$e.Year}}{{end}}</p>
+        <h3 class="track__name">{{$e.Name}}</h3>
+        {{if $e.IsPast}}<p class="chip chip--brown">Acara telah selesai</p>{{end}}
+        {{with $e.TimeRange}}<p class="track__time">{{.}}</p>{{end}}
+        {{with $e.Venue}}<p class="track__venue">{{.}}</p>{{end}}
+        {{with $e.Address}}<p class="track__address">{{.}}</p>{{end}}
+        {{with $e.Note}}<p class="track__note">{{.}}</p>{{end}}
+        {{template "event-actions" $e}}
+      </div>
+    </article>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--orange sec--ticket" id="tiket">
+    <header class="head head--center" data-reveal><p class="head__side">Tiket konser</p><h2 class="groovy head__title">E-Tiket</h2></header>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--mustard sec--live" id="live">
+    <div class="live-wrap" data-reveal>
+      <svg class="flower live__flower" aria-hidden="true"><use href="#gv-flower"/></svg>
+      {{template "live-stream" .C.LiveStream}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH: tracklist ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--cream sec--story" id="cerita">
+    <header class="head" data-reveal><p class="head__side">Tracklist</p><h2 class="groovy head__title">Lagu Kisah Kami</h2></header>
+    <ol class="tracklist">
+      {{range $i, $s := .C.LoveStory}}
+      <li class="tracklist__item" data-reveal>
+        <span class="tracklist__no" aria-hidden="true">{{add $i 1}}</span>
+        <div class="tracklist__body">
+          <p class="tracklist__head">{{with $s.Title}}<strong class="tracklist__title">{{.}}</strong>{{end}}{{with $s.Date}}<span class="tracklist__date">{{.}}</span>{{end}}</p>
+          {{with $s.Photo}}<img class="tracklist__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with $s.Text}}<div class="tracklist__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec sec--mustard sec--gallery" id="galeri">
+    <header class="head head--center" data-reveal><p class="head__side">Sampul album</p><h2 class="groovy head__title">Galeri</h2></header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--brown sec--gift" id="hadiah">
+    <header class="head" data-reveal><p class="head__side">Tanda kasih</p><h2 class="groovy head__title">Kirim Hadiah</h2></header>
+    <div class="prose gift__lead" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP & UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec sec--cream sec--rsvp" id="ucapan">
+    <header class="head" data-reveal><p class="head__side">Request &amp; salam</p><h2 class="groovy head__title">Ucapan &amp; Kehadiran</h2></header>
+    <p class="prose rsvp__lead" data-reveal>Mohon konfirmasi kehadiran Anda dan titipkan doa restu untuk kami.</p>
+    <div class="panel" data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--orange sec--closing" id="penutup">
+    <h2 class="groovy closing__big" data-reveal>Terima<br>Kasih!</h2>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    <p class="closing__names" data-reveal>{{or $a.Nickname $a.FullName}} <span>&amp;</span> {{or $b.Nickname $b.FullName}}</p>
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="chip chip--cream">Turut Mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+    <div class="vinyl closing__vinyl" aria-hidden="true"><span class="vinyl__label"><b>{{initial (or $a.Nickname $a.FullName)}}<i>&amp;</i>{{initial (or $b.Nickname $b.FullName)}}</b></span></div>
+  </section>
+
+  <footer class="footer"><div class="stripes" aria-hidden="true"></div>{{template "brand"}}</footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#f7ead0{{end}}
+{{define "body-class"}}t-gv{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Shrikhand&display=swap">
+{{end}}

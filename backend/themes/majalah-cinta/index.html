@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-mj"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}{{$hero := or .C.Cover.Photo .C.Cover.Background}}
+
+{{/* ================= COVER: sampul majalah ================= */}}
+<section class="cover{{if $hero}} cover--photo{{end}}" data-cover aria-label="Sampul undangan">
+  <div class="cover__page">
+    {{with $hero}}<img class="cover__img" src="{{.}}" alt="" decoding="async">{{end}}
+    <div class="cover__strip">
+      <span>Edisi Pernikahan</span>
+      <span>{{with .FirstEvent}}No. {{.Day}} · {{.MonthName}} {{.Year}}{{else}}Edisi Spesial{{end}}</span>
+    </div>
+    <p class="masthead" aria-hidden="true">Cinta</p>
+    <p class="cover__tagline">Majalah kabar bahagia · Harga: doa restu</p>
+
+    <div class="cover__mid">
+    <ul class="coverlines">
+      <li><b>Eksklusif</b>{{or $a.Nickname $a.FullName}} &amp; {{or $b.Nickname $b.FullName}} siap melangkah bersama <i>hal. 04</i></li>
+      <li><b>Agenda</b>Catat tanggal &amp; lokasinya <i>hal. 07</i></li>
+      <li><b>Surat Pembaca</b>Kirim doa restu Anda <i>hal. 15</i></li>
+    </ul>
+    {{if not $hero}}<div class="cover__art" aria-hidden="true"><span class="cover__art-a">{{initial (or $a.Nickname $a.FullName)}}</span><span class="cover__art-b">{{initial (or $b.Nickname $b.FullName)}}</span></div>{{end}}
+    </div>
+
+    <div class="cover__main">
+      <p class="cover__kicker">{{.C.Cover.Title}} · The Wedding Issue</p>
+      <h1 class="cover__names"><span>{{or $a.Nickname $a.FullName}}</span><span class="cover__amp">&amp;</span><span>{{or $b.Nickname $b.FullName}}</span></h1>
+      {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+    </div>
+
+    <div class="cover__foot">
+      <div class="label-sub">
+        <p class="label-sub__head">Label Pelanggan</p>
+        {{template "guest-greeting" .}}
+        <a class="btn btn--primary cover__open" href="#pembuka" data-open><span>Buka Undangan</span><span aria-hidden="true">→</span></a>
+      </div>
+      <div class="barcode" aria-hidden="true"><span class="barcode__bars"></span><span class="barcode__num">{{with .FirstEvent}}{{.Year}} · {{.Day}}{{else}}0000{{end}}</span></div>
+    </div>
+  </div>
+</section>
+
+{{/* ================= PANEL SAMPING (desktop) ================= */}}
+<aside class="side" aria-hidden="true">
+  <p class="side__mast">Cinta</p>
+  <div class="side__info">
+    <p class="side__kicker">The Wedding Issue</p>
+    <p class="side__names">{{or $a.Nickname $a.FullName}} &amp; {{or $b.Nickname $b.FullName}}</p>
+    {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+  </div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- DAFTAR ISI + SURAT REDAKSI ---------- */}}
+  <section class="page page--toc" id="pembuka">
+    <header class="folio"><span>Cinta · Edisi Pernikahan</span><span>Hal. 02</span></header>
+    <h2 class="rubric" data-reveal>Daftar Isi</h2>
+    <ol class="toc" data-reveal>
+      <li><a href="#mempelai"><b>04</b><span>Profil kedua mempelai</span></a></li>
+      {{if .FirstEvent}}<li><a href="#hitung-mundur"><b>06</b><span>Hitung mundur hari H</span></a></li>{{end}}
+      {{if .Events}}<li><a href="#acara"><b>07</b><span>Agenda &amp; lokasi acara</span></a></li>{{end}}
+      {{if .C.LoveStory}}<li><a href="#cerita"><b>10</b><span>Laporan utama: kisah kami</span></a></li>{{end}}
+      {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}<li><a href="#galeri"><b>12</b><span>Foto esai</span></a></li>{{end}}
+      {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}<li><a href="#hadiah"><b>14</b><span>Rubrik tanda kasih</span></a></li>{{end}}
+      {{if .C.RSVP.Enabled}}<li><a href="#ucapan"><b>15</b><span>Surat pembaca</span></a></li>{{end}}
+    </ol>
+    <article class="letter" data-reveal>
+      <p class="letter__kicker">Dari Redaksi</p>
+      <h3 class="letter__title">{{.C.Opening.Greeting}}</h3>
+      <div class="letter__body dropcap">{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+      <p class="letter__sign">— {{or $a.Nickname $a.FullName}} &amp; {{or $b.Nickname $b.FullName}}</p>
+      {{template "guest-pax" .}}
+    </article>
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="page page--red" aria-label="Kutipan">
+    <blockquote class="pullquote" data-reveal>
+      <p class="pullquote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="pullquote__src">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- PROFIL ---------- */}}
+  <section class="page page--profile" id="mempelai">
+    <header class="folio"><span>Profil</span><span>Hal. 04</span></header>
+    <h2 class="rubric" data-reveal>Profil</h2>
+    <p class="standfirst" data-reveal>Mengenal lebih dekat dua sosok yang menjadi sampul edisi kali ini.</p>
+    {{range $i, $p := .Couple}}
+    <article class="profile{{if $i}} profile--b{{end}}" data-reveal>
+      <figure class="profile__fig">
+        <div class="profile__photo">{{template "person-photo" $p}}</div>
+        <figcaption class="profile__cap">{{$p.RoleLabel}}{{with $p.Instagram}} · Foto: @{{.}}{{end}}</figcaption>
+      </figure>
+      <div class="profile__text">
+        <p class="profile__kicker">{{$p.RoleLabel}}</p>
+        <h3 class="profile__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="profile__body dropcap">{{with $p.ChildOrder}}{{.}}{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}}{{end}}{{with $p.ParentsLine}} dari pasangan {{.}}{{end}}. Sahabat memanggilnya <b>{{or $p.Nickname $p.FullName}}</b>.</p>
+        {{end}}
+        {{with $p.Instagram}}<a class="profile__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>Ikuti @{{.}}</span></a>{{end}}
+      </div>
+    </article>
+    {{if not $i}}<p class="profile__amp" aria-hidden="true">&amp;</p>{{end}}
+    {{end}}
+  </section>
+
+  {{/* ---------- TENGGAT ---------- */}}
+  {{with .FirstEvent}}
+  <section class="page page--black" id="hitung-mundur">
+    <header class="folio"><span>Tenggat</span><span>Hal. 06</span></header>
+    <h2 class="rubric rubric--light" data-reveal>Tenggat</h2>
+    <p class="deadline__head" data-reveal>Menuju hari bahagia, {{.DateLong}}</p>
+    <div class="deadline" data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="deadline__cta" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- AGENDA ---------- */}}
+  {{if .Events}}
+  <section class="page page--agenda" id="acara">
+    <header class="folio"><span>Agenda</span><span>Hal. 07</span></header>
+    <h2 class="rubric" data-reveal>Agenda</h2>
+    <p class="standfirst" data-reveal>Jadwal lengkap acara. Simpan tanggalnya dan jangan sampai terlewat.</p>
+    <div class="agenda">
+    {{range .Events}}
+      <article class="agenda__item{{if .IsPast}} is-past{{end}}" data-reveal>
+        <div class="agenda__date">{{if .Day}}<b>{{.Day}}</b><span>{{.MonthName}}<br>{{.Year}}</span>{{end}}</div>
+        <div class="agenda__body">
+          <p class="agenda__day">{{.DayName}}{{if .IsPast}} · <span class="badge-past">Telah berlangsung</span>{{end}}</p>
+          <h3 class="agenda__name">{{.Name}}</h3>
+          {{with .TimeRange}}<p class="agenda__time">{{.}}</p>{{end}}
+          {{with .Venue}}<p class="agenda__venue">{{.}}</p>{{end}}
+          {{with .Address}}<p class="agenda__address">{{.}}</p>{{end}}
+          {{with .Note}}<p class="agenda__note">{{.}}</p>{{end}}
+          {{template "event-actions" .}}
+        </div>
+      </article>
+    {{end}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KUPON TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="page page--coupon" id="tiket">
+    <header class="folio"><span>Kupon</span><span>Hal. 08</span></header>
+    <h2 class="rubric" data-reveal>Kupon Masuk</h2>
+    <p class="standfirst" data-reveal>Tunjukkan kupon pribadi ini kepada penerima tamu di lokasi acara.</p>
+    <div class="coupon" data-reveal><span class="coupon__cut" aria-hidden="true">✂ gunting di sini</span>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- SIARAN ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="page page--live" id="live">
+    <div class="adbox" data-reveal>
+      <p class="adbox__tag">Siaran</p>
+      {{template "live-stream" .C.LiveStream}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LAPORAN UTAMA ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="page page--feature" id="cerita">
+    <header class="folio"><span>Laporan Utama</span><span>Hal. 10</span></header>
+    <p class="feature__kicker" data-reveal>Laporan Utama</p>
+    <h2 class="feature__title" data-reveal>Jalan panjang menuju pelaminan</h2>
+    <p class="feature__byline" data-reveal>Teks: Redaksi Cinta</p>
+    <div class="columns" data-reveal>
+      {{range $i, $s := .C.LoveStory}}
+      <div class="columns__item">
+        {{with $s.Photo}}<img class="columns__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+        <h3 class="columns__head">{{with $s.Date}}<span>{{.}}</span>{{end}}{{$s.Title}}</h3>
+        {{with $s.Text}}<div class="columns__text{{if not $i}} dropcap{{end}}">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+      </div>
+      {{if eq $i 0}}{{with $s.Title}}<p class="columns__pull">“{{.}}”</p>{{end}}{{end}}
+      {{end}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- FOTO ESAI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="page page--gallery" id="galeri">
+    <header class="folio"><span>Foto Esai</span><span>Hal. 12</span></header>
+    <h2 class="rubric" data-reveal>Foto Esai</h2>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RUBRIK TANDA KASIH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="page page--gift" id="hadiah">
+    <header class="folio"><span>Tanda Kasih</span><span>Hal. 14</span></header>
+    <h2 class="rubric" data-reveal>Tanda Kasih</h2>
+    <div class="standfirst gift__lead" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div class="classifieds" data-reveal>
+      <p class="classifieds__tag">Info Rekening</p>
+      {{template "gift-accounts" .}}
+    </div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- SURAT PEMBACA ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="page page--letters" id="ucapan">
+    <header class="folio"><span>Surat Pembaca</span><span>Hal. 15</span></header>
+    <h2 class="rubric" data-reveal>Surat Pembaca</h2>
+    <p class="standfirst" data-reveal>Konfirmasi kehadiran Anda dan kirimkan ucapan terbaik. Surat pilihan tampil di bawah.</p>
+    <div data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- SAMPUL BELAKANG ---------- */}}
+  <section class="page page--back" id="penutup">
+    <header class="folio"><span>Penutup</span><span>Hal. 16</span></header>
+    <h2 class="back__big" data-reveal>Terima<br>kasih.</h2>
+    <div class="back__body" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="back__signoff" data-reveal>{{.}}</p>{{end}}
+    <dl class="colophon" data-reveal>
+      <p class="colophon__head">Redaksi</p>
+      <div><dt>Pemimpin redaksi</dt><dd>{{$a.FullName}} &amp; {{$b.FullName}}</dd></div>
+      {{with .C.Closing.From}}<div><dt>Penerbit</dt><dd>{{.}}</dd></div>{{end}}
+      {{with .C.Closing.Family}}<div><dt>Turut mengundang</dt><dd>{{range .}}<span>{{.}}</span>{{end}}</dd></div>{{end}}
+      {{with .FirstEvent}}<div><dt>Terbit</dt><dd>{{.DateLong}}</dd></div>{{end}}
+    </dl>
+    <p class="back__mast" aria-hidden="true">Cinta</p>
+  </section>
+
+  <footer class="footer">{{template "brand"}}</footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#d7141e{{end}}
+{{define "body-class"}}t-mj{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Libre+Franklin:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap">
+{{end}}

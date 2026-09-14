@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-cm"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+
+{{/* ================= COVER: plakat akrilik bertumpuk ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="cover__wrap">
+    <div class="deck deck--cover">
+      <div class="glass cover__card">
+        <span class="glint" aria-hidden="true"></span>
+        <div class="cover__top">
+          <p class="etch">{{.C.Cover.Title}}</p>
+          {{with .FirstEvent}}<p class="etch cover__date">{{.Day}}.{{.MonthName}}.{{.Year}}</p>{{end}}
+        </div>
+        {{with .C.Cover.Photo}}<img class="cover__photo" src="{{.}}" alt="" decoding="async">{{end}}
+        <h1 class="cover__names">
+          <span class="foil">{{or $a.Nickname $a.FullName}}</span>
+          <span class="cover__amp" aria-hidden="true">&amp;</span><span class="visually-hidden">dan</span>
+          <span class="foil cover__name-b">{{or $b.Nickname $b.FullName}}</span>
+        </h1>
+        {{with .FirstEvent}}<p class="cover__day">{{.DateLong}}</p>{{end}}
+      </div>
+    </div>
+    <div class="glass tag cover__guest">
+      {{template "guest-greeting" .}}
+      <a class="btn btn--primary cover__open" href="#pembuka" data-open><span>Buka Undangan</span>{{template "icon-mail"}}</a>
+    </div>
+  </div>
+</section>
+
+{{/* ================= PLAKAT SAMPING (desktop) ================= */}}
+<aside class="plaque" aria-hidden="true">
+  <div class="deck">
+    <div class="glass plaque__card">
+      <p class="etch">{{.C.Cover.Title}}</p>
+      <p class="plaque__names"><span class="foil">{{or $a.Nickname $a.FullName}}</span><em>&amp;</em><span class="foil">{{or $b.Nickname $b.FullName}}</span></p>
+      {{with .FirstEvent}}<p class="etch">{{.DateLong}}</p>{{end}}
+    </div>
+  </div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec" id="pembuka">
+    <div class="deck" data-reveal>
+      <div class="glass card card--center">
+        <p class="plate">Salam Hangat</p>
+        <h2 class="card__title">{{.C.Opening.Greeting}}</h2>
+        <span class="rule" aria-hidden="true"></span>
+        <div class="prose">{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+        {{template "guest-pax" .}}
+      </div>
+    </div>
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--quote" aria-label="Kutipan">
+    <blockquote class="glass quote" data-reveal>
+      <span class="quote__mark" aria-hidden="true">“</span>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="etch quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--couple" id="mempelai">
+    <header class="head" data-reveal><p class="etch">Kedua Mempelai</p><h2 class="head__title">Dua hati,<br><em>satu janji</em></h2></header>
+    <div class="couple">
+    {{range $i, $p := .Couple}}
+      {{if $i}}<span class="glass couple__amp" aria-hidden="true">&amp;</span>{{end}}
+      <article class="deck person person--{{$p.Role}}" data-reveal="{{if $i}}right{{else}}left{{end}}">
+        <div class="glass card person__card">
+          <div class="person__ring">{{template "person-photo" $p}}</div>
+          <p class="plate person__role">{{$p.RoleLabel}}</p>
+          <h3 class="person__name">{{$p.FullName}}</h3>
+          {{if or $p.ChildOrder $p.ParentsLine}}
+          <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+          {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+          {{with $p.MotherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+          {{end}}
+          {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+        </div>
+      </article>
+    {{end}}
+    </div>
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--count" id="hitung-mundur">
+    <header class="head head--center" data-reveal><p class="etch">Menghitung Hari</p><h2 class="head__title">{{.DayName}}, <em>{{.Day}} {{.MonthName}}</em> {{.Year}}</h2></header>
+    <div class="blocks" data-reveal="zoom">{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="count__cta" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--events" id="acara">
+    <header class="head" data-reveal><p class="etch">Waktu &amp; Tempat</p><h2 class="head__title">Rangkaian <em>acara</em></h2></header>
+    <div class="events">
+    {{range .Events}}
+      <article class="deck event{{if .IsPast}} is-past{{end}}" data-reveal>
+        <div class="glass card event__card">
+          <div class="event__strip">
+            <span class="event__dayname">{{.DayName}}</span>
+            {{if .Day}}<span class="event__date"><b>{{.Day}}</b> {{.MonthName}} {{.Year}}</span>{{end}}
+          </div>
+          {{if .IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+          <h3 class="event__name">{{.Name}}</h3>
+          {{with .TimeRange}}<p class="event__time">{{.}}</p>{{end}}
+          {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+          {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+          {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+          {{template "event-actions" .}}
+        </div>
+      </article>
+    {{end}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--ticket" id="tiket">
+    <header class="head head--center" data-reveal><p class="etch">Kartu Masuk</p><h2 class="head__title">E-<em>Tiket</em></h2></header>
+    <div class="deck" data-reveal><div class="glass card">{{template "checkin-ticket" .}}</div></div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--live" id="live">
+    <div class="deck" data-reveal><div class="glass card card--center">
+      <p class="plate">Siaran Langsung</p>
+      {{template "live-stream" .C.LiveStream}}
+    </div></div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--story" id="cerita">
+    <header class="head" data-reveal><p class="etch">Perjalanan Kami</p><h2 class="head__title">Kisah <em>cinta</em></h2></header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="glass story__item" data-reveal>
+        {{with .Date}}<p class="story__date">{{.}}</p>{{end}}
+        {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+        {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+        {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec sec--gallery" id="galeri">
+    <header class="head" data-reveal><p class="etch">Momen Kami</p><h2 class="head__title">Galeri <em>foto</em></h2></header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--gift" id="hadiah">
+    <header class="head" data-reveal><p class="etch">Tanda Kasih</p><h2 class="head__title">Amplop <em>digital</em></h2></header>
+    <div class="prose sec__lead" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP & UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec sec--rsvp" id="ucapan">
+    <header class="head" data-reveal><p class="etch">Konfirmasi &amp; Doa</p><h2 class="head__title">Ucapan <em>&amp; kehadiran</em></h2></header>
+    <div class="deck" data-reveal><div class="glass card">
+      <p class="prose sec__lead">Mohon konfirmasi kehadiran Anda dan titipkan doa restu untuk kami.</p>
+      {{template "rsvp-wishes" .}}
+    </div></div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--closing" id="penutup">
+    <div class="deck" data-reveal>
+      <div class="glass card card--center closing">
+        <span class="glint" aria-hidden="true"></span>
+        <p class="plate">Terima Kasih</p>
+        <div class="prose">{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+        {{with .C.Closing.SignOff}}<p class="closing__signoff">{{.}}</p>{{end}}
+        <span class="rule" aria-hidden="true"></span>
+        {{with .C.Closing.From}}<p class="etch closing__from">{{.}}</p>{{end}}
+        <p class="closing__names"><span class="foil">{{or $a.Nickname $a.FullName}}</span> <em>&amp;</em> <span class="foil">{{or $b.Nickname $b.FullName}}</span></p>
+        {{with .C.Closing.Family}}
+        <div class="family">
+          <p class="etch">Turut Mengundang</p>
+          <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+        </div>
+        {{end}}
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">{{template "brand"}}</footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#f4efe8{{end}}
+{{define "body-class"}}t-cm{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Albert+Sans:wght@300;400;500;600&display=swap">
+{{end}}

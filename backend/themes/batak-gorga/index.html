@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-batak"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+{{$na := or $a.Nickname $a.FullName}}{{$nb := or $b.Nickname $b.FullName}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="bg-tolu" viewBox="-54 -54 108 108">
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <g style="stroke:var(--g-out,#efe9dc)" stroke-width="7">
+        <path id="bg-hook" d="M0-6C-4-14-6-22-2-30A16 16 0 0 1 30-30A12 12 0 0 1 6-30A8 8 0 0 1 22-30A4 4 0 0 1 14-30"/>
+        <use href="#bg-hook" transform="rotate(120)"/><use href="#bg-hook" transform="rotate(240)"/>
+      </g>
+      <g style="stroke:var(--g-in,#a4161a)" stroke-width="3">
+        <use href="#bg-hook"/><use href="#bg-hook" transform="rotate(120)"/><use href="#bg-hook" transform="rotate(240)"/>
+      </g>
+    </g>
+    <circle r="9" style="fill:var(--g-in,#a4161a);stroke:var(--g-out,#efe9dc)" stroke-width="3"/>
+  </symbol>
+  <symbol id="bg-meol" viewBox="0 0 120 40">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+      <path d="M2 30C20 30 26 8 44 8A10 10 0 0 1 44 28A6 6 0 0 1 44 16A2.5 2.5 0 0 1 44 21"/>
+      <path d="M118 10C100 10 94 32 76 32A10 10 0 0 1 76 12A6 6 0 0 1 76 24A2.5 2.5 0 0 1 76 19"/>
+    </g>
+    <path d="M60 12l6 8-6 8-6-8z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+{{/* ================= COVER: kain ulos ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  {{with .C.Cover.Background}}<img class="cover__bg" src="{{.}}" alt="" decoding="async">{{end}}
+  <div class="cover__band" aria-hidden="true"></div>
+  <div class="cover__inner">
+    <div class="cover__top">
+      <span class="tag tag--black">Horas!</span>
+      <p class="cover__eyebrow">{{.C.Cover.Title}}</p>
+    </div>
+    <h1 class="cover__names">
+      <span class="cover__n1{{if gt (len $na) 9}} is-long{{else if gt (len $na) 7}} is-mid{{else if gt (len $na) 5}} is-six{{end}}">{{$na}}</span>
+      <span class="cover__amp"><i>&amp;</i></span>
+      <span class="cover__n2{{if gt (len $nb) 9}} is-long{{else if gt (len $nb) 7}} is-mid{{else if gt (len $nb) 5}} is-six{{end}}">{{$nb}}</span>
+    </h1>
+    {{with .FirstEvent}}
+    <div class="cover__date">
+      <span class="cover__day">{{.Day}}</span>
+      <span class="cover__month">{{.MonthName}} {{.Year}}<small>{{.DayName}}</small></span>
+    </div>
+    {{end}}
+    {{if .C.Cover.Photo}}<img class="cover__photo" src="{{.C.Cover.Photo}}" alt="{{.Title}}" decoding="async">{{end}}
+    {{template "guest-greeting" .}}
+    <a class="btn btn--bone cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+  </div>
+  <div class="cover__fringe" aria-hidden="true"></div>
+</section>
+
+<div class="stage">
+{{/* ================= PANEL SAMPING (desktop) ================= */}}
+<aside class="side" aria-hidden="true">
+  {{with or .C.Cover.Background .C.Cover.Photo}}<img class="side__bg" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+  <div class="side__inner">
+    <svg class="side__tolu"><use href="#bg-tolu"/></svg>
+    <p class="side__eyebrow"><span class="tag tag--black">Horas!</span> {{.C.Cover.Title}}</p>
+    <p class="side__names"><span>{{$na}}</span><i>&amp;</i><span>{{$nb}}</span></p>
+    {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+  </div>
+  <div class="side__ulos"></div>
+</aside>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec sec--bone sec--opening" id="pembuka">
+    <svg class="opening__tolu" aria-hidden="true"><use href="#bg-tolu"/></svg>
+    <header class="head" data-reveal="left">
+      <p class="tag tag--red">Salam Pembuka</p>
+      <h2 class="opening__greeting">{{.C.Opening.Greeting}}</h2>
+    </header>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+  </section>
+
+  <div class="band" aria-hidden="true"></div>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--black sec--quote" aria-label="Kutipan">
+    <span class="quote__mark" aria-hidden="true">&ldquo;</span>
+    <blockquote class="quote" data-reveal>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="quote__source"><span class="tag tag--red">{{.}}</span></footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--red sec--couple" id="mempelai">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--black">Pesta Unjuk</p>
+      <h2 class="head__title">Kedua<br>Mempelai</h2>
+    </header>
+    {{range $i, $p := .Couple}}
+    {{if $i}}<p class="couple__amp" aria-hidden="true" data-reveal="zoom"><span>&amp;</span></p>{{end}}
+    <article class="person person--{{$i}}" data-reveal="{{if $i}}right{{else}}left{{end}}">
+      <div class="person__pic">{{template "person-photo" $p}}</div>
+      <p class="tag tag--black person__role">{{$p.RoleLabel}}</p>
+      <h3 class="person__name">{{$p.FullName}}</h3>
+      {{if or $p.ChildOrder $p.ParentsLine}}
+      <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+      {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+      {{if and $p.FatherLabel $p.MotherLabel}}<p class="person__and">&amp;</p>{{end}}
+      {{with $p.MotherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+      {{end}}
+      {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+    </article>
+    {{end}}
+  </section>
+
+  <div class="ulos" aria-hidden="true"></div>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--black sec--countdown" id="hitung-mundur">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--red">Hari Bahagia</p>
+      <h2 class="head__title">Hitung<br>Mundur</h2>
+    </header>
+    <p class="countdown__date" data-reveal>{{.DateLong}}</p>
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="countdown__save" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  <div class="band" aria-hidden="true"></div>
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--bone sec--events" id="acara">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--red">Waktu &amp; Tempat</p>
+      <h2 class="head__title">Rangkaian<br>Acara</h2>
+    </header>
+    {{range $i, $e := .Events}}
+    <article class="event{{if .IsPast}} is-past{{end}}" data-reveal>
+      <div class="event__head">
+        <span class="event__no" aria-hidden="true">{{add $i 1}}</span>
+        <h3 class="event__name">{{.Name}}</h3>
+      </div>
+      <div class="event__body">
+        {{if .Day}}
+        <div class="event__date">
+          <span class="event__num">{{.Day}}</span>
+          <span class="event__month">{{.MonthName}}</span>
+          <span class="event__year">{{.Year}}</span>
+        </div>
+        {{end}}
+        <div class="event__info">
+          {{if .IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+          {{with .DayName}}<p class="event__day">{{.}}</p>{{end}}
+          {{with .TimeRange}}<p class="event__time">{{.}}</p>{{end}}
+          {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+          {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+          {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+        </div>
+      </div>
+      {{template "event-actions" .}}
+    </article>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET CHECK-IN ---------- */}}
+  {{if .Checkin}}
+  <div class="ulos" aria-hidden="true"></div>
+  <section class="sec sec--red sec--ticket" id="tiket">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--black">Kartu Masuk</p>
+      <h2 class="head__title">E-Tiket</h2>
+    </header>
+    <p class="lead" data-reveal>Kartu masuk pribadi Anda untuk registrasi tamu di lokasi acara.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE STREAMING ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--black sec--live" id="live">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--red">Siaran Langsung</p>
+      <h2 class="head__title">Live<br>Streaming</h2>
+    </header>
+    <div data-reveal>{{template "live-stream" .C.LiveStream}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--bone sec--story" id="cerita">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--red">Perjalanan Kami</p>
+      <h2 class="head__title">Kisah<br>Cinta</h2>
+    </header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        {{with .Date}}<p class="story__date">{{.}}</p>{{end}}
+        <div class="story__body">
+          {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+          {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <div class="band" aria-hidden="true"></div>
+  <section class="sec sec--black sec--gallery" id="galeri">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--red">Momen</p>
+      <h2 class="head__title">Galeri</h2>
+    </header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <div class="ulos" aria-hidden="true"></div>
+  <section class="sec sec--red sec--gift" id="hadiah">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--black">Tanda Kasih</p>
+      <h2 class="head__title">Kado<br>Pernikahan</h2>
+    </header>
+    <div class="prose" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP & UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <div class="band" aria-hidden="true"></div>
+  <section class="sec sec--bone sec--rsvp" id="ucapan">
+    <header class="head" data-reveal="left">
+      <p class="tag tag--red">Kehadiran &amp; Doa</p>
+      <h2 class="head__title">RSVP &amp;<br>Ucapan</h2>
+    </header>
+    <p class="lead" data-reveal>Kehadiran dan doa restu Anda adalah kehormatan bagi kami dan keluarga.</p>
+    <div class="rsvp-card" data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <div class="ulos" aria-hidden="true"></div>
+  <section class="sec sec--black sec--closing" id="penutup">
+    <svg class="closing__tolu" aria-hidden="true" data-reveal="zoom"><use href="#bg-tolu"/></svg>
+    <h2 class="closing__title" data-reveal>Mauliate<span class="tag tag--red">Terima Kasih</span></h2>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    <p class="closing__names" data-reveal><span>{{$na}}</span><i>&amp;</i><span>{{$nb}}</span></p>
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="family__title">Turut Mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+  </section>
+
+  <footer class="footer">
+    <div class="footer__fringe" aria-hidden="true"></div>
+    <svg class="footer__meol" aria-hidden="true"><use href="#bg-meol"/></svg>
+    {{template "brand"}}
+  </footer>
+</main>
+</div>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#a4161a{{end}}
+{{define "body-class"}}t-batak{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Big+Shoulders+Display:wght@600;800;900&display=swap">
+{{end}}

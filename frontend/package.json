@@ -1,0 +1,15 @@
+{
+  "name": "undangan-digital-frontend",
+  "private": true,
+  "workspaces": [
+    "apps/admin",
+    "apps/portal",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:admin": "npm run dev -w @undangan/admin",
+    "dev:portal": "npm run dev -w @undangan/portal",
+    "dev": "npm run dev:portal & npm run dev:admin",
+    "build": "npm run build -w @undangan/admin && npm run build -w @undangan/portal"
+  }
+}

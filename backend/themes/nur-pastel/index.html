@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-nur"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="np-rosette" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="50" cy="50" r="48"/><circle cx="50" cy="50" r="44.5" stroke-width=".6"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5" transform="rotate(45 50 50)"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5" transform="rotate(90 50 50)"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5" transform="rotate(135 50 50)"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5" transform="rotate(180 50 50)"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5" transform="rotate(225 50 50)"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5" transform="rotate(270 50 50)"/><ellipse cx="50" cy="28" rx="8.5" ry="16.5" transform="rotate(315 50 50)"/><circle cx="50" cy="50" r="8"/></g><g fill="currentColor"><circle cx="64.5" cy="14.9" r="1.6"/><circle cx="85.1" cy="35.5" r="1.6"/><circle cx="85.1" cy="64.5" r="1.6"/><circle cx="64.5" cy="85.1" r="1.6"/><circle cx="35.5" cy="85.1" r="1.6"/><circle cx="14.9" cy="64.5" r="1.6"/><circle cx="14.9" cy="35.5" r="1.6"/><circle cx="35.5" cy="14.9" r="1.6"/><circle cx="50" cy="50" r="2.4"/></g></symbol>
+  <symbol id="np-ring" viewBox="0 0 100 100"><g fill="none" stroke="currentColor"><circle cx="50" cy="50" r="49" stroke-width=".5"/><circle cx="50" cy="50" r="47" stroke-width=".9"/></g><g fill="currentColor"><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z"/><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z" transform="rotate(45 50 50)"/><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z" transform="rotate(90 50 50)"/><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z" transform="rotate(135 50 50)"/><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z" transform="rotate(180 50 50)"/><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z" transform="rotate(225 50 50)"/><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z" transform="rotate(270 50 50)"/><path d="M50 .2l1.4 2.8L50 5.8 48.6 3z" transform="rotate(315 50 50)"/></g></symbol>
+  <symbol id="np-crescent" viewBox="0 0 100 100"><path d="M52.3 10A40 40 0 1 0 85.6 68.3A34 34 0 1 1 52.3 10Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M47.5 16.5A34 34 0 1 0 78.5 70" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray="1 3" stroke-linecap="round"/><circle cx="78" cy="30" r="1.8" fill="currentColor"/><circle cx="88" cy="46" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="np-rule" viewBox="0 0 220 24"><g stroke="currentColor" fill="none" stroke-width=".8"><path d="M4 12h86M130 12h86"/><path d="M70 9h20M70 15h20M130 9h20M130 15h20" stroke-width=".5"/></g><use href="#np-rosette" x="98" y="0" width="24" height="24"/></symbol>
+</svg>
+
+{{/* ================= COVER ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  {{with .C.Cover.Background}}<img class="cover__bg" src="{{.}}" alt="" decoding="async">{{end}}
+  <div class="cover__glow" aria-hidden="true"></div>
+  <div class="cover__inner">
+    <svg class="cover__moon" aria-hidden="true"><use href="#np-crescent"/></svg>
+    <p class="cover__eyebrow">{{.C.Cover.Title}}</p>
+    <div class="medal cover__medal">
+      <svg class="medal__ring"><use href="#np-ring"/></svg>
+      <div class="medal__lobe">
+        {{if .C.Cover.Photo}}<img class="medal__img" src="{{.C.Cover.Photo}}" alt="{{.Title}}" decoding="async">{{else}}<svg class="medal__rosette" aria-hidden="true"><use href="#np-rosette"/></svg>{{end}}
+      </div>
+    </div>
+    <h1 class="cover__names"><span>{{or $a.Nickname $a.FullName}}</span><span class="amp">&amp;</span><span>{{or $b.Nickname $b.FullName}}</span></h1>
+    {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+    <div class="notch cover__guest">{{template "guest-greeting" .}}</div>
+    <a class="btn btn--primary cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+  </div>
+</section>
+
+{{/* ================= TEPI DESKTOP ================= */}}
+<div class="flank" aria-hidden="true">
+  <svg class="flank__rosette flank__rosette--l"><use href="#np-rosette"/></svg>
+  <svg class="flank__rosette flank__rosette--r"><use href="#np-rosette"/></svg>
+  <svg class="flank__moon"><use href="#np-crescent"/></svg>
+  <p class="flank__names">{{or $a.Nickname $a.FullName}} · {{or $b.Nickname $b.FullName}}</p>
+</div>
+
+<main class="main" id="utama">
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec sec--opening" id="pembuka">
+    <svg class="moon-sm" data-reveal="zoom"><use href="#np-crescent"/></svg>
+    <p class="eyebrow" data-reveal>{{if eq .C.EventType "ngunduh_mantu"}}Ngunduh Mantu{{else if eq .C.Religion "islam"}}Walimatul 'Ursy{{else}}Undangan Pernikahan{{end}}</p>
+    <h2 class="opening__greeting" data-reveal>{{.C.Opening.Greeting}}</h2>
+    <svg class="rule" data-reveal><use href="#np-rule"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--quote" aria-label="Kutipan">
+    <div class="quote-medal" data-reveal="zoom"><svg><use href="#np-rosette"/></svg></div>
+    <blockquote class="quote" data-reveal>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--couple" id="mempelai">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">{{if eq .C.Religion "islam"}}Dengan Ridha-Nya{{else}}Dua Hati Dipersatukan{{end}}</p>
+      <h2 class="title">Kedua Mempelai</h2>
+    </header>
+    {{range $i, $p := .Couple}}
+    {{if $i}}<div class="couple__amp" data-reveal="zoom"><svg><use href="#np-ring"/></svg><span>&amp;</span></div>{{end}}
+    <article class="person person--{{$p.Role}}" data-reveal>
+      <div class="medal person__medal">
+        <svg class="medal__ring"><use href="#np-ring"/></svg>
+        <div class="medal__lobe">{{template "person-photo" $p}}</div>
+      </div>
+      <p class="person__role">{{$p.RoleLabel}}</p>
+      <h3 class="person__name">{{$p.FullName}}</h3>
+      {{if or $p.ChildOrder $p.ParentsLine}}
+      <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+      {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+      {{with $p.MotherLabel}}<p class="person__parent">{{if $p.FatherLabel}}<span>&amp;</span> {{end}}{{.}}</p>{{end}}
+      {{end}}
+      {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+    </article>
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--blush sec--countdown" id="hitung-mundur">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Menanti Hari</p>
+      <h2 class="title">Yang Dinanti</h2>
+    </header>
+    <p class="countdown__date" data-reveal>{{.DateLong}}</p>
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div class="countdown__save" data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--events" id="acara">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Waktu &amp; Tempat</p>
+      <h2 class="title">Rangkaian Acara</h2>
+    </header>
+    {{range .Events}}
+    <article class="notch event{{if .IsPast}} is-past{{end}}" data-reveal>
+      <h3 class="event__name">{{.Name}}</h3>
+      {{if .IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+      {{if .Day}}
+      <div class="event__date">
+        <span class="event__side">{{.DayName}}</span>
+        <span class="event__orb"><svg><use href="#np-ring"/></svg><b>{{.Day}}</b></span>
+        <span class="event__side">{{.MonthName}}<br>{{.Year}}</span>
+      </div>
+      {{end}}
+      {{with .TimeRange}}<p class="event__time">{{.}}</p>{{end}}
+      {{if or .Venue .Address}}
+      <div class="event__place">
+        {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+        {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+      </div>
+      {{end}}
+      {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+      {{template "event-actions" .}}
+    </article>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--blush" id="tiket">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Kartu Masuk</p>
+      <h2 class="title">E-Tiket</h2>
+    </header>
+    <p class="lead" data-reveal>Tunjukkan kartu ini kepada penerima tamu di lokasi acara.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec" id="live">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Siaran Langsung</p>
+      <h2 class="title">Doa dari Jauh</h2>
+    </header>
+    <div data-reveal>{{template "live-stream" .C.LiveStream}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH: fase bulan ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--story" id="cerita">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Dari Sabit Menuju Purnama</p>
+      <h2 class="title">Kisah Kami</h2>
+    </header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        <span class="story__phase" aria-hidden="true"></span>
+        {{with .Date}}<p class="story__date">{{.}}</p>{{end}}
+        {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+        {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+        {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec" id="galeri">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Momen Berharga</p>
+      <h2 class="title">Galeri</h2>
+    </header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--blush" id="hadiah">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Tanda Kasih</p>
+      <h2 class="title">Hadiah</h2>
+    </header>
+    <div class="prose" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec" id="ucapan">
+    <header class="head" data-reveal>
+      <svg class="head__rosette"><use href="#np-rosette"/></svg>
+      <p class="eyebrow">Kehadiran &amp; Doa</p>
+      <h2 class="title">Ucapan</h2>
+    </header>
+    <p class="lead" data-reveal>Mohon doa restu serta konfirmasi kehadiran Anda.</p>
+    <div class="notch form-card" data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--closing" id="penutup">
+    <svg class="closing__moon" data-reveal="zoom"><use href="#np-crescent"/></svg>
+    <p class="eyebrow" data-reveal>{{if eq .C.Religion "islam"}}Jazakumullahu Khairan{{else}}Dengan Penuh Syukur{{end}}</p>
+    <h2 class="title" data-reveal>Terima Kasih</h2>
+    <svg class="rule" data-reveal><use href="#np-rule"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    <div class="closing__medal" data-reveal="zoom">
+      <svg class="closing__ring"><use href="#np-ring"/></svg>
+      <svg class="closing__rosette"><use href="#np-rosette"/></svg>
+      <p class="closing__names">{{or $a.Nickname $a.FullName}}<span>&amp;</span>{{or $b.Nickname $b.FullName}}</p>
+    </div>
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="family__title">Turut Mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+  </section>
+
+  <footer class="footer">
+    <svg class="rule"><use href="#np-rule"/></svg>
+    {{template "brand"}}
+  </footer>
+</main>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#f6e3dc{{end}}
+{{define "body-class"}}t-nur{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Jost:wght@300;400;500&display=swap">
+{{end}}

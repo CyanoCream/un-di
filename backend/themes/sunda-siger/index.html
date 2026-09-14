@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="id">
+<head>
+{{template "head-meta" .}}
+{{template "theme-fonts" .}}
+<link rel="stylesheet" href="{{.Theme}}/style.css">
+</head>
+<body class="t-sunda"{{if .Preview}} data-preview="1"{{end}}>
+{{$a := index .Couple 0}}{{$b := index .Couple 1}}
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="ss-siger" viewBox="0 0 240 124">
+    <path d="M60.4 72.3L41 57.5M79.9 49.6L69 31M160.1 49.6L171 31M179.6 72.3L199 57.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    <g fill="currentColor"><circle cx="44.4" cy="57.5" r="1.9"/><circle cx="42" cy="60.7" r="1.9"/><circle cx="38.2" cy="59.5" r="1.9"/><circle cx="38.2" cy="55.5" r="1.9"/><circle cx="42" cy="54.2" r="1.9"/><circle cx="41" cy="57.5" r="1.3" fill="var(--siger-fill,#f3e2a4)"/><circle cx="72.4" cy="31" r="1.9"/><circle cx="70.1" cy="34.2" r="1.9"/><circle cx="66.3" cy="33" r="1.9"/><circle cx="66.3" cy="29" r="1.9"/><circle cx="70.1" cy="27.8" r="1.9"/><circle cx="69" cy="31" r="1.3" fill="var(--siger-fill,#f3e2a4)"/><circle cx="174.4" cy="31" r="1.9"/><circle cx="172" cy="34.2" r="1.9"/><circle cx="168.2" cy="33" r="1.9"/><circle cx="168.2" cy="29" r="1.9"/><circle cx="172" cy="27.8" r="1.9"/><circle cx="171" cy="31" r="1.3" fill="var(--siger-fill,#f3e2a4)"/><circle cx="202.4" cy="57.5" r="1.9"/><circle cx="200.1" cy="60.7" r="1.9"/><circle cx="196.3" cy="59.5" r="1.9"/><circle cx="196.3" cy="55.5" r="1.9"/><circle cx="200.1" cy="54.2" r="1.9"/><circle cx="199" cy="57.5" r="1.3" fill="var(--siger-fill,#f3e2a4)"/></g>
+    <path d="M60.7 115.1L34.9 113.9Q16.3 108.3 35.5 106.1Q18.2 98.9 37.6 98.4Q21.8 89.6 41.2 90.9Q27.2 80.7 46.2 83.7Q34.3 72.2 52.4 76.7Q42.5 64.1 59.4 69.9Q51.6 56 66.7 62.5Q61.1 46.9 74.3 53.4Q71.4 36 83.3 42.3Q84 23.8 95.4 30.9Q100.7 13.4 111.6 23.2Q120.7 9 129.6 23.5Q140.5 13.9 145.5 31.6Q156.9 24.6 157.4 43.1Q169.4 36.8 166.2 54.1Q179.5 47.6 173.8 63Q189 56.6 181.1 70.4Q198 64.7 188.1 77.2Q206.3 72.8 194.2 84.1Q213.2 81.3 199.1 91.4Q218.4 90.2 202.6 98.9Q222 99.5 204.6 106.7L179.3 115.1L178.6 111.1L177.3 107.1L175.4 103.2L173 99.4L170 95.9L166.6 92.5L162.7 89.5L158.3 86.7L153.6 84.2L148.5 82L143.2 80.2L137.6 78.8L131.8 77.8L125.9 77.2L120 77L114.1 77.2L108.2 77.8L102.4 78.8L96.8 80.2L91.5 82L86.4 84.2L81.7 86.7L77.3 89.5L73.4 92.5L70 95.9L67 99.4L64.6 103.2L62.7 107.1L61.4 111.1L60.7 115.1Z" fill="var(--siger-fill,#f3e2a4)" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+    <path d="M36.4 111.9L37.6 106.3L39.7 100.8L42.5 95.5L46 90.4L50.3 85.6L55.2 81L60.7 76.8L66.8 73.1L73.5 69.7L80.5 66.8L88 64.4L95.7 62.5L103.7 61.1L111.8 60.3L120 60L128.2 60.3L136.3 61.1L144.3 62.5L152 64.4L159.5 66.8L166.5 69.7L173.2 73.1L179.3 76.8L184.8 81L189.7 85.6L194 90.4L197.5 95.5L200.3 100.8L202.4 106.3L203.6 111.9" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="1.2 2.6" stroke-linecap="round"/>
+    <path d="M54.7 109.8C49.4 111.8 45.7 107.6 42.7 103C47.5 100.2 52.7 98.2 56.5 102.4ZM60.5 98.4C54.6 98.9 51.8 93.9 49.8 88.5C55.3 87 61.1 86.5 64 91.6ZM70.3 88.3C64.3 87.2 62.6 81.4 61.9 75.6C67.8 75.7 73.7 76.8 75.4 82.6ZM83.4 80.2C77.8 77.3 77.6 71.1 78.3 65.1C84.1 66.9 89.6 69.8 89.9 76.1ZM99 74.7C94.4 70.1 95.8 63.8 98.1 58C103.2 61.6 107.8 66.1 106.4 72.5ZM133.6 72.5C132.2 66.1 136.8 61.6 141.9 58C144.2 63.8 145.6 70.1 141 74.7ZM150.1 76.1C150.4 69.8 155.9 66.9 161.7 65.1C162.4 71.1 162.2 77.3 156.6 80.2ZM164.6 82.6C166.3 76.8 172.2 75.7 178.1 75.6C177.4 81.4 175.7 87.2 169.7 88.3ZM176 91.6C178.9 86.5 184.7 87 190.2 88.5C188.2 93.9 185.4 98.9 179.5 98.4ZM183.5 102.4C187.3 98.2 192.5 100.2 197.3 103C194.3 107.6 190.6 111.8 185.3 109.8ZM113.4 73C108 58.3 113.4 43.6 120 31C126.6 43.6 132 58.3 126.6 73ZM116.7 66C114 58.3 116.7 50.6 120 44C123.3 50.6 126 58.3 123.3 66Z" fill="var(--siger-fill2,#fffaf0)" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/>
+    <g fill="currentColor"><circle cx="45.1" cy="111.2" r="1.9"/><circle cx="48.5" cy="97.6" r="1.9"/><circle cx="57" cy="84.7" r="1.9"/><circle cx="69" cy="72.1" r="1.9"/><circle cx="82.1" cy="54.9" r="1.9"/><circle cx="157.9" cy="54.9" r="1.9"/><circle cx="171" cy="72.1" r="1.9"/><circle cx="183" cy="84.7" r="1.9"/><circle cx="191.5" cy="97.6" r="1.9"/><circle cx="194.9" cy="111.2" r="1.9"/></g>
+    <path d="M60.6 118L60.9 113.7L61.8 109.5L63.5 105.3L65.7 101.3L68.5 97.5L71.9 93.9L75.8 90.6L80.2 87.5L85.1 84.8L90.3 82.5L95.8 80.5L101.6 79L107.6 77.9L113.8 77.2L120 77L126.2 77.2L132.4 77.9L138.4 79L144.2 80.5L149.7 82.5L154.9 84.8L159.8 87.5L164.2 90.6L168.1 93.9L171.5 97.5L174.3 101.3L176.5 105.3L178.2 109.5L179.1 113.7L179.4 118L164.9 118L164.7 114.8L164 111.6L162.7 108.4L161.1 105.4L158.9 102.5L156.4 99.8L153.4 97.3L150.1 95L146.4 92.9L142.5 91.2L138.3 89.7L133.9 88.5L129.3 87.7L124.7 87.2L120 87L115.3 87.2L110.7 87.7L106.1 88.5L101.7 89.7L97.5 91.2L93.6 92.9L89.9 95L86.6 97.3L83.6 99.8L81.1 102.5L78.9 105.4L77.3 108.4L76 111.6L75.3 114.8L75.1 118Z" fill="currentColor"/>
+    <g fill="var(--siger-fill,#f3e2a4)"><circle cx="68.1" cy="114.2" r="1.5"/><circle cx="70.9" cy="105.7" r="1.5"/><circle cx="76.7" cy="97.9" r="1.5"/><circle cx="85.1" cy="91.2" r="1.5"/><circle cx="95.5" cy="86.2" r="1.5"/><circle cx="107.4" cy="83.1" r="1.5"/><circle cx="120" cy="82" r="1.5"/><circle cx="132.6" cy="83.1" r="1.5"/><circle cx="144.5" cy="86.2" r="1.5"/><circle cx="154.9" cy="91.2" r="1.5"/><circle cx="163.3" cy="97.9" r="1.5"/><circle cx="169.1" cy="105.7" r="1.5"/><circle cx="171.9" cy="114.2" r="1.5"/></g>
+    <path d="M120 8l5 7-5 7-5-7z" fill="var(--siger-fill,#f3e2a4)" stroke="currentColor" stroke-width="1.2"/>
+    <g fill="currentColor"><circle cx="65.4" cy="126" r="1.4"/><circle cx="64.8" cy="132" r="1.4"/><circle cx="66.4" cy="138" r="2.2"/><circle cx="174.6" cy="126" r="1.4"/><circle cx="175.2" cy="132" r="1.4"/><circle cx="173.6" cy="138" r="2.2"/></g>
+    <g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M67.8 120q-3 8 -1 16"/><path d="M172.2 120q3 8 1 16"/></g>
+  </symbol>
+  <symbol id="ss-awi" viewBox="0 0 240 40">
+    <path d="M14 12.2h92M134 12.2h92M14 15.8h92M134 15.8h92" stroke="currentColor" stroke-width="1" fill="none"/>
+    <path d="M14 12.2a1.8 1.8 0 0 0 0 3.6M226 12.2a1.8 1.8 0 0 1 0 3.6M40 10.6v6.8M42.5 10.6v6.8M197.5 10.6v6.8M200 10.6v6.8M70 10.6v6.8M72.5 10.6v6.8M167.5 10.6v6.8M170 10.6v6.8" stroke="currentColor" stroke-width="1" fill="none"/>
+    <path d="M82 16Q72.5 25.1 45.1 25.2Q65.8 14 82 16ZM84 16Q81.5 26.8 61.7 37.5Q71.3 20.7 84 16ZM87 16Q90.3 23.6 81.7 37.3Q80.5 23.4 87 16ZM158 16Q170.6 12.5 194.9 25.2Q171.3 25.4 158 16ZM156 16Q166.9 18.1 178.3 37.5Q161.2 28.5 156 16ZM153 16Q159.4 21.2 158.3 37.3Q150.8 25.6 153 16Z" fill="currentColor" fill-opacity=".22" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/>
+    <path d="M82 16L52.5 23.4M84 16L66.2 33.2M87 16L82.7 33.1M158 16L187.5 23.4M156 16L173.8 33.2M153 16L157.3 33.1" stroke="currentColor" stroke-width=".6" fill="none"/>
+    <path d="M120 7l6 7-6 7-6-7z" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="120" cy="14" r="2" fill="currentColor"/>
+  </symbol>
+  <symbol id="ss-awi-v" viewBox="0 0 62 420">
+    <path d="M27 424V0M35 424V0" stroke="currentColor" stroke-width="1.1" fill="none"/>
+    <path d="M25 70h12M25 73h12M25 150h12M25 153h12M25 235h12M25 238h12M25 325h12M25 328h12M25 400h12M25 403h12" stroke="currentColor" stroke-width="1" fill="none"/>
+    <path d="M27 71Q18.2 82.5 -11.8 91.7Q8.9 74.5 27 71ZM27 71Q25.2 83.3 6.9 103.2Q15.1 81.5 27 71ZM27 71Q17.5 74.2 -2.7 66.8Q15.7 65.3 27 71ZM35 151Q49.5 151.9 73.8 171.7Q48 164 35 151ZM35 151Q45.3 158 55.1 183.2Q39.2 166.3 35 151ZM35 151Q43.3 145.3 64.7 146.8Q47.4 153.3 35 151ZM27 236Q18.2 247.5 -11.8 256.7Q8.9 239.5 27 236ZM27 236Q25.2 248.3 6.9 268.2Q15.1 246.5 27 236ZM27 236Q17.5 239.2 -2.7 231.8Q15.7 230.3 27 236ZM35 326Q49.5 326.9 73.8 346.7Q48 339 35 326ZM35 326Q45.3 333 55.1 358.2Q39.2 341.3 35 326ZM35 326Q43.3 320.3 64.7 321.8Q47.4 328.3 35 326ZM27 401Q18.2 412.5 -11.8 421.7Q8.9 404.5 27 401ZM27 401Q25.2 413.3 6.9 433.2Q15.1 411.5 27 401ZM27 401Q17.5 404.2 -2.7 396.8Q15.7 395.3 27 401Z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/>
+    <path d="M27 71L-4.1 87.5M27 71L10.9 96.8M27 71L3.2 67.7M35 151L66.1 167.5M35 151L51.1 176.8M35 151L58.8 147.7M27 236L-4.1 252.5M27 236L10.9 261.8M27 236L3.2 232.7M35 326L66.1 342.5M35 326L51.1 351.8M35 326L58.8 322.7M27 401L-4.1 417.5M27 401L10.9 426.8M27 401L3.2 397.7" stroke="currentColor" stroke-width=".55" fill="none"/>
+  </symbol>
+  <symbol id="ss-leaf" viewBox="0 0 40 16"><path d="M3 8Q13.2 2 37 8Q16.6 13.4 3 8Z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="1"/><path d="M3 8L30.2 8" stroke="currentColor" stroke-width=".7"/></symbol>
+</svg>
+
+{{/* ================= SAMPUL: lembar naskah digulung ================= */}}
+<section class="cover" data-cover aria-label="Sampul undangan">
+  <div class="cover__sheet">
+    <div class="rod rod--top" aria-hidden="true"></div>
+    {{with .C.Cover.Background}}<img class="cover__bg" src="{{.}}" alt="" decoding="async">{{end}}
+    <svg class="cover__awi cover__awi--l" aria-hidden="true"><use href="#ss-awi-v"/></svg>
+    <svg class="cover__awi cover__awi--r" aria-hidden="true"><use href="#ss-awi-v"/></svg>
+    <div class="cover__inner">
+      <p class="cover__eyebrow">{{.C.Cover.Title}}</p>
+      <div class="crest">
+        <span class="crest__rays" aria-hidden="true"></span>
+        <svg class="crest__siger" aria-hidden="true"><use href="#ss-siger"/></svg>
+        <div class="crest__plate">
+          {{if .C.Cover.Photo}}<img class="crest__img" src="{{.C.Cover.Photo}}" alt="{{.Title}}" decoding="async">{{else}}<span class="crest__mono">{{initial (or $a.Nickname $a.FullName)}}<i>&amp;</i>{{initial (or $b.Nickname $b.FullName)}}</span>{{end}}
+        </div>
+      </div>
+      <h1 class="cover__names"><span>{{or $a.Nickname $a.FullName}}</span><span class="amp">&amp;</span><span>{{or $b.Nickname $b.FullName}}</span></h1>
+      {{with .FirstEvent}}<p class="cover__date">{{.DateLong}}</p>{{end}}
+      {{template "guest-greeting" .}}
+      <a class="btn cover__open" href="#pembuka" data-open>{{template "icon-mail"}}<span>Buka Undangan</span></a>
+    </div>
+  </div>
+  <div class="rod rod--bottom cover__rod" aria-hidden="true"></div>
+</section>
+
+<div class="stage">
+{{/* ================= PANEL SAMPING (desktop) ================= */}}
+<aside class="side" aria-hidden="true">
+  {{with or .C.Cover.Background .C.Cover.Photo}}<img class="side__bg" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+  <svg class="side__awi side__awi--l"><use href="#ss-awi-v"/></svg>
+  <svg class="side__awi side__awi--r"><use href="#ss-awi-v"/></svg>
+  <div class="side__inner">
+    <div class="side__crest"><span class="crest__rays"></span><svg class="side__siger"><use href="#ss-siger"/></svg></div>
+    <p class="side__eyebrow">{{.C.Cover.Title}}</p>
+    <p class="side__names">{{or $a.Nickname $a.FullName}}<span>&amp;</span>{{or $b.Nickname $b.FullName}}</p>
+    <svg class="side__awi-h"><use href="#ss-awi"/></svg>
+    {{with .FirstEvent}}<p class="side__date">{{.DateLong}}</p>{{end}}
+  </div>
+</aside>
+
+<main class="main" id="utama">
+  <div class="rod rod--top" aria-hidden="true"></div>
+  <div class="scroll">
+
+  {{/* ---------- PEMBUKA ---------- */}}
+  <section class="sec sec--opening" id="pembuka">
+    <span class="folio" aria-hidden="true"></span>
+    <svg class="opening__siger" data-reveal="zoom" aria-hidden="true"><use href="#ss-siger"/></svg>
+    <p class="eyebrow" data-reveal>Wilujeng Sumping</p>
+    <h2 class="opening__greeting" data-reveal>{{.C.Opening.Greeting}}</h2>
+    <svg class="awi" data-reveal aria-hidden="true"><use href="#ss-awi"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Opening.Text}}<p>{{.}}</p>{{end}}</div>
+    {{template "guest-pax" .}}
+  </section>
+
+  {{/* ---------- KUTIPAN ---------- */}}
+  {{with .C.Quote}}{{if .Text}}
+  <section class="sec sec--quote" aria-label="Kutipan">
+    <blockquote class="quote" data-reveal>
+      <svg class="quote__leaf" aria-hidden="true"><use href="#ss-leaf"/></svg>
+      <p class="quote__text">{{.Text}}</p>
+      {{with .Source}}<footer class="quote__source">{{.}}</footer>{{end}}
+    </blockquote>
+  </section>
+  {{end}}{{end}}
+
+  {{/* ---------- MEMPELAI ---------- */}}
+  <section class="sec sec--couple" id="mempelai">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Pangantén</p>
+      <h2 class="title">Kedua Mempelai</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    {{range $i, $p := .Couple}}
+    {{if $i}}<p class="couple__amp" data-reveal="zoom" aria-hidden="true"><svg><use href="#ss-leaf"/></svg><span>&amp;</span><svg class="flip"><use href="#ss-leaf"/></svg></p>{{end}}
+    <article class="person{{if $i}} person--alt{{end}}" data-reveal="{{if $i}}right{{else}}left{{end}}">
+      <div class="person__frame">
+        <div class="person__pic">{{if not $p.Photo}}<svg class="person__siger" aria-hidden="true"><use href="#ss-siger"/></svg>{{end}}{{template "person-photo" $p}}</div>
+      </div>
+      <div class="person__text">
+        <p class="person__role">{{$p.RoleLabel}}</p>
+        <h3 class="person__name">{{$p.FullName}}</h3>
+        {{if or $p.ChildOrder $p.ParentsLine}}
+        <p class="person__child">{{with $p.ChildOrder}}{{.}} dari{{else}}{{if eq $p.Role "groom"}}Putra{{else}}Putri{{end}} dari{{end}}</p>
+        {{with $p.FatherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{if and $p.FatherLabel $p.MotherLabel}}<p class="person__and">&amp;</p>{{end}}
+        {{with $p.MotherLabel}}<p class="person__parent">{{.}}</p>{{end}}
+        {{end}}
+        {{with $p.Instagram}}<a class="person__ig" href="https://instagram.com/{{.}}" target="_blank" rel="noopener">{{template "icon-instagram"}}<span>@{{.}}</span></a>{{end}}
+      </div>
+    </article>
+    {{end}}
+  </section>
+
+  {{/* ---------- HITUNG MUNDUR ---------- */}}
+  {{with .FirstEvent}}
+  <section class="sec sec--wash sec--countdown" id="hitung-mundur">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Ngantosan Dinten Bagja</p>
+      <h2 class="title">Menghitung Hari</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <p class="countdown__date" data-reveal>{{.DateLong}}</p>
+    <div data-reveal>{{template "countdown" $}}</div>
+    {{if not .IsPast}}<div data-reveal>{{template "save-date" $}}</div>{{end}}
+  </section>
+  {{end}}
+
+  {{/* ---------- ACARA ---------- */}}
+  {{if .Events}}
+  <section class="sec sec--events" id="acara">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Waktos &amp; Tempat</p>
+      <h2 class="title">Rangkaian Acara</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <div class="events">
+    {{range .Events}}
+    <article class="event{{if .IsPast}} is-past{{end}}" data-reveal>
+      {{if .Day}}
+      <div class="event__when">
+        <span class="event__day">{{.DayName}}</span>
+        <span class="event__num">{{.Day}}</span>
+        <span class="event__month">{{.MonthName}}</span>
+        <span class="event__year">{{.Year}}</span>
+      </div>
+      {{end}}
+      <div class="event__body">
+        <h3 class="event__name">{{.Name}}</h3>
+        {{if .IsPast}}<p class="badge-past">Acara telah selesai</p>{{end}}
+        {{with .TimeRange}}<p class="event__time">Pukul {{.}}</p>{{end}}
+        {{if or .Venue .Address}}
+        <div class="event__place">
+          {{with .Venue}}<p class="event__venue">{{.}}</p>{{end}}
+          {{with .Address}}<p class="event__address">{{.}}</p>{{end}}
+        </div>
+        {{end}}
+        {{with .Note}}<p class="event__note">{{.}}</p>{{end}}
+        {{template "event-actions" .}}
+      </div>
+    </article>
+    {{end}}
+    </div>
+  </section>
+  {{end}}
+
+  {{/* ---------- E-TIKET CHECK-IN ---------- */}}
+  {{if .Checkin}}
+  <section class="sec sec--wash sec--ticket" id="tiket">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Kartu Masuk</p>
+      <h2 class="title">E-Tiket</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <p class="lead" data-reveal>Kartu masuk pribadi Anda untuk registrasi tamu di lokasi acara.</p>
+    <div data-reveal>{{template "checkin-ticket" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- LIVE STREAMING ---------- */}}
+  {{if .C.LiveStream.URL}}
+  <section class="sec sec--live" id="live">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Siaran Langsung</p>
+      <h2 class="title">Saksikan dari Jauh</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <div data-reveal>{{template "live-stream" .C.LiveStream}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- KISAH ---------- */}}
+  {{if .C.LoveStory}}
+  <section class="sec sec--story" id="cerita">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Carita Urang</p>
+      <h2 class="title">Kisah Kami</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <ol class="story">
+      {{range .C.LoveStory}}
+      <li class="story__item" data-reveal>
+        <p class="story__date">{{.Date}}</p>
+        <div class="story__body">
+          {{with .Title}}<h3 class="story__title">{{.}}</h3>{{end}}
+          {{with .Photo}}<img class="story__photo" src="{{.}}" alt="" loading="lazy" decoding="async">{{end}}
+          {{with .Text}}<div class="story__text">{{range paras .}}<p>{{.}}</p>{{end}}</div>{{end}}
+        </div>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{/* ---------- GALERI ---------- */}}
+  {{if or .C.Gallery.Photos (youtubeEmbed .C.Gallery.VideoURL)}}
+  <section class="sec sec--gallery" id="galeri">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Lembar Kenangan</p>
+      <h2 class="title">Galeri</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <div data-reveal>{{template "gallery-grid" .C.Gallery.Photos}}</div>
+    <div class="gallery__video" data-reveal>{{template "video" .C.Gallery.VideoURL}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- HADIAH ---------- */}}
+  {{if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}
+  <section class="sec sec--wash sec--gift" id="hadiah">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Tanda Kasih</p>
+      <h2 class="title">Kado Pernikahan</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <div class="prose" data-reveal>{{range paras .C.Gift.Text}}<p>{{.}}</p>{{end}}</div>
+    <div data-reveal>{{template "gift-accounts" .}}</div>
+    <div data-reveal>{{template "gift-confirm" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- RSVP & UCAPAN ---------- */}}
+  {{if .C.RSVP.Enabled}}
+  <section class="sec sec--rsvp" id="ucapan">
+    <span class="folio" aria-hidden="true"></span>
+    <header class="head" data-reveal>
+      <p class="eyebrow">Konfirmasi &amp; Doa Restu</p>
+      <h2 class="title">Kehadiran &amp; Ucapan</h2>
+      <svg class="awi" aria-hidden="true"><use href="#ss-awi"/></svg>
+    </header>
+    <p class="lead" data-reveal>Tuliskan konfirmasi kehadiran serta doa restu Anda pada lembar ini.</p>
+    <div class="rsvp-sheet" data-reveal>{{template "rsvp-wishes" .}}</div>
+  </section>
+  {{end}}
+
+  {{/* ---------- PENUTUP ---------- */}}
+  <section class="sec sec--closing" id="penutup">
+    <span class="folio" aria-hidden="true"></span>
+    <div class="closing__crest" data-reveal="zoom"><span class="crest__rays" aria-hidden="true"></span><svg class="closing__siger" aria-hidden="true"><use href="#ss-siger"/></svg></div>
+    <h2 class="title closing__title" data-reveal>Hatur Nuhun</h2>
+    <svg class="awi" data-reveal aria-hidden="true"><use href="#ss-awi"/></svg>
+    <div class="prose" data-reveal>{{range paras .C.Closing.Text}}<p>{{.}}</p>{{end}}</div>
+    {{with .C.Closing.SignOff}}<p class="closing__signoff" data-reveal>{{.}}</p>{{end}}
+    {{with .C.Closing.From}}<p class="closing__from" data-reveal>{{.}}</p>{{end}}
+    <p class="closing__names" data-reveal>{{or $a.Nickname $a.FullName}} <span>&amp;</span> {{or $b.Nickname $b.FullName}}</p>
+    {{with .C.Closing.Family}}
+    <div class="family" data-reveal>
+      <p class="family__title">Turut Mengundang</p>
+      <ul class="family__list">{{range .}}<li>{{.}}</li>{{end}}</ul>
+    </div>
+    {{end}}
+  </section>
+
+  </div>
+  <div class="rod rod--bottom" aria-hidden="true"></div>
+  <footer class="footer">{{template "brand"}}</footer>
+</main>
+</div>
+
+{{template "dock" .}}
+{{template "music-player" .C.Music}}
+{{template "scripts" .}}
+</body>
+</html>
+{{define "theme-color"}}#d4ede3{{end}}
+{{define "body-class"}}t-sunda{{end}}
+{{define "theme-fonts"}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kurale&family=Nunito+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap">
+{{end}}

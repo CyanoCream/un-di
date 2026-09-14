@@ -1,0 +1,8 @@
+{
+  "name": "Royal Navy",
+  "description": "Formal dan mewah: biru navy pekat dengan emas sampanye, garis art-deco, kipas sunburst, dan bingkai bertingkat.",
+  "tags": ["mewah", "formal", "art-deco", "elegan", "gelap"],
+  "colors": ["#0d1830", "#1d3363", "#d6bd8f", "#f4ecdc"],
+  "fonts": ["Cinzel", "Josefin Sans"],
+  "category": "elegan"
+}

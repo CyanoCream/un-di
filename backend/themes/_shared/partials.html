@@ -1,0 +1,281 @@
+{{/*
+  Partial bersama untuk semua tema. Struktural saja (class hook, tanpa gaya visual);
+  tema menata lewat assets/style.css dan boleh override partial mana pun dengan
+  {{define "nama"}} yang sama di index.html-nya.
+
+  Konvensi id section (dipakai dock/nav): #pembuka #mempelai #hitung-mundur #acara
+  #live #cerita #galeri #hadiah #ucapan #penutup #tiket
+*/}}
+
+{{define "theme-color"}}#ffffff{{end}}
+
+{{define "meta-description"}}Dengan penuh sukacita kami mengundang Bapak/Ibu/Saudara/i untuk hadir di hari bahagia {{.Title}}{{with .FirstEvent}}, {{.DateLong}}{{with .Venue}} di {{.}}{{end}}{{end}}.{{end}}
+
+{{/* head-meta: dipanggil dengan PageData di dalam <head>, sebelum link font & CSS tema. */}}
+{{define "head-meta"}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{.C.Cover.Title}} {{.Title}}</title>
+<meta name="description" content="{{template "meta-description" .}}">
+<meta name="theme-color" content="{{template "theme-color"}}">
+{{if .Preview}}<meta name="robots" content="noindex, nofollow">{{end}}
+{{with .URL}}<link rel="canonical" href="{{.}}">{{end}}
+<meta property="og:type" content="website">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="{{.C.Cover.Title}} {{.Title}}">
+<meta property="og:description" content="{{template "meta-description" .}}">
+{{with .URL}}<meta property="og:url" content="{{.}}">{{end}}
+{{if .OGImage}}<meta property="og:image" content="{{.OGImage}}">
+<meta name="twitter:card" content="summary_large_image">{{else}}<meta name="twitter:card" content="summary">{{end}}
+<link rel="stylesheet" href="{{.Shared}}/base.css">
+{{end}}
+
+{{/* ---------- Ikon (24px, stroke currentColor) ---------- */}}
+{{define "icon-calendar"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>{{end}}
+{{define "icon-pin"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>{{end}}
+{{define "icon-copy"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>{{end}}
+{{define "icon-heart"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.8C19.5 15.4 12 20 12 20z"/></svg>{{end}}
+{{define "icon-image"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 4 3.5 3-2.5 4 3.5"/></svg>{{end}}
+{{define "icon-gift"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M2.5 9h19M12 9v11M12 9c-1-3-3.5-5-5-4s-.5 4 5 4zm0 0c1-3 3.5-5 5-4s.5 4-5 4z"/></svg>{{end}}
+{{define "icon-chat"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5.5h16v10.5H9.5L4 20z"/><path d="M8 10h8M8 13h5"/></svg>{{end}}
+{{define "icon-live"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="2"/><path d="M8.2 8.2a5.4 5.4 0 0 0 0 7.6M15.8 8.2a5.4 5.4 0 0 1 0 7.6M5.3 5.3a9.5 9.5 0 0 0 0 13.4M18.7 5.3a9.5 9.5 0 0 1 0 13.4"/></svg>{{end}}
+{{define "icon-instagram"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6"/></svg>{{end}}
+{{define "icon-play"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z"/></svg>{{end}}
+{{define "icon-mail"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="M4 6.5l8 6 8-6"/></svg>{{end}}
+{{define "icon-home"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 11l8-6.5 8 6.5V20h-5v-5.5H9V20H4z"/></svg>{{end}}
+{{define "icon-ticket"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 7a1.5 1.5 0 0 1 1.5-1.5h14A1.5 1.5 0 0 1 20.5 7v2.5a2.5 2.5 0 0 0 0 5V17a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17v-2.5a2.5 2.5 0 0 0 0-5z"/><path d="M14.5 6v2.5M14.5 11v2M14.5 15.5V18"/></svg>{{end}}
+{{define "icon-disc"}}<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5.5a6.5 6.5 0 0 0-6.5 6.5M12 18.5a6.5 6.5 0 0 0 6.5-6.5"/></svg>{{end}}
+
+{{/* ---------- Tamu ---------- */}}
+{{define "guest-greeting"}}
+<div class="guest">
+  <p class="guest__label">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+  <p class="guest__name">{{if .GuestName}}{{.GuestName}}{{else}}Tamu Undangan{{end}}</p>
+  {{with .Guest}}{{if gt .Pax 0}}<p class="guest__pax">Undangan untuk {{.Pax}} orang</p>{{end}}{{end}}
+  <p class="guest__note">*Mohon maaf apabila ada kesalahan penulisan nama/gelar</p>
+</div>
+{{end}}
+
+{{/* guest-pax: info jumlah tamu untuk ditaruh dekat salam pembuka. */}}
+{{define "guest-pax"}}{{with .Guest}}{{if gt .Pax 0}}<p class="guest-pax">{{template "icon-mail"}}<span>Undangan untuk {{.Pax}} orang</span></p>{{end}}{{end}}{{end}}
+
+{{/* ---------- Foto mempelai / placeholder monogram (dipanggil dengan PersonView) ---------- */}}
+{{define "person-photo"}}{{if .Photo}}<img class="person__img" src="{{.Photo}}" alt="{{.FullName}}" loading="lazy" decoding="async">{{else}}<span class="monogram" aria-hidden="true">{{initial (or .Nickname .FullName)}}</span>{{end}}{{end}}
+
+{{/* ---------- Hitung mundur (PageData) ---------- */}}
+{{define "countdown"}}{{with .FirstEvent}}
+<div class="countdown" data-countdown="{{.ISO}}"{{if .EndTime}} data-countdown-end="{{.Date}}T{{.EndTime}}:00{{slice .ISO 19}}"{{end}}>
+  <div class="countdown__item"><span class="countdown__num" data-cd="d">00</span><span class="countdown__label">Hari</span></div>
+  <div class="countdown__item"><span class="countdown__num" data-cd="h">00</span><span class="countdown__label">Jam</span></div>
+  <div class="countdown__item"><span class="countdown__num" data-cd="m">00</span><span class="countdown__label">Menit</span></div>
+  <div class="countdown__item"><span class="countdown__num" data-cd="s">00</span><span class="countdown__label">Detik</span></div>
+  <p class="countdown__done" data-cd-done hidden>Acara sedang/telah berlangsung</p>
+</div>
+{{end}}{{end}}
+
+{{/* save-date: tombol Simpan Tanggal untuk acara pertama (PageData). */}}
+{{define "save-date"}}{{with .FirstEvent}}{{if .CalendarURL}}<a class="btn btn--save-date" href="{{.CalendarURL}}" target="_blank" rel="noopener">{{template "icon-calendar"}}<span>Simpan Tanggal</span></a>{{end}}{{end}}{{end}}
+
+{{/* ---------- Tombol acara (EventView) ---------- */}}
+{{define "event-actions"}}{{if or .CalendarURL .MapsLink}}
+<div class="event__actions">
+  {{if and .CalendarURL (not .IsPast)}}<a class="btn btn--calendar" href="{{.CalendarURL}}" target="_blank" rel="noopener">{{template "icon-calendar"}}<span>Simpan Tanggal</span></a>{{end}}
+  {{if .MapsLink}}<a class="btn btn--maps" href="{{.MapsLink}}" target="_blank" rel="noopener">{{template "icon-pin"}}<span>Lihat Lokasi</span></a>{{end}}
+</div>
+{{end}}{{end}}
+
+{{/* ---------- Live streaming (LiveStream) ---------- */}}
+{{define "live-stream"}}{{if .URL}}
+<div class="live">
+  <p class="live__badge"><span class="live__dot" aria-hidden="true"></span>Live Streaming{{with .Platform}} · {{.}}{{end}}</p>
+  {{with .Note}}<p class="live__note">{{.}}</p>{{end}}
+  <a class="btn btn--live" href="{{.URL}}" target="_blank" rel="noopener">{{template "icon-live"}}<span>Tonton Siaran Langsung</span></a>
+</div>
+{{end}}{{end}}
+
+{{/* ---------- Galeri (slice foto) ---------- */}}
+{{define "gallery-grid"}}{{if .}}
+<div class="gallery" data-gallery>
+  {{range $i, $p := .}}<a class="gallery__item" href="{{$p}}"><img class="gallery__img" src="{{$p}}" alt="Foto galeri {{add $i 1}}" loading="lazy" decoding="async"></a>{{end}}
+</div>
+{{end}}{{end}}
+
+{{/* ---------- Video YouTube (URL mentah); iframe baru dimuat saat diklik ---------- */}}
+{{define "video"}}{{with youtubeEmbed .}}
+<div class="video" data-yt="{{.}}">
+  <button type="button" class="video__play">{{template "icon-play"}}<span>Putar Video</span></button>
+</div>
+{{end}}{{end}}
+
+{{/* ---------- Hadiah (PageData) ---------- */}}
+{{define "gift-accounts"}}{{with .C.Gift}}
+{{if .Accounts}}
+<div class="gift__accounts">
+  {{range .Accounts}}
+  <div class="gift-card gift-card--{{if eq .Type "ewallet"}}ewallet{{else}}bank{{end}}">
+    <p class="gift-card__provider">{{.Provider}}</p>
+    <p class="gift-card__number">{{.Number}}</p>
+    {{with .Holder}}<p class="gift-card__holder">a.n. {{.}}</p>{{end}}
+    <button type="button" class="btn btn--copy" data-copy="{{.Number}}" data-copy-msg="Nomor {{.Provider}} disalin">{{template "icon-copy"}}<span>Salin Nomor</span></button>
+  </div>
+  {{end}}
+</div>
+{{end}}
+{{with .Address}}{{if .Address}}
+<div class="gift-address">
+  <p class="gift-address__title">{{template "icon-gift"}}<span>Kirim Kado</span></p>
+  {{with .Recipient}}<p class="gift-address__recipient">{{.}}</p>{{end}}
+  {{with .Phone}}<p class="gift-address__phone">{{.}}</p>{{end}}
+  <p class="gift-address__text">{{.Address}}</p>
+  <button type="button" class="btn btn--copy" data-copy="{{with .Recipient}}{{.}}{{end}}{{with .Phone}} ({{.}}){{end}} — {{.Address}}" data-copy-msg="Alamat disalin">{{template "icon-copy"}}<span>Salin Alamat</span></button>
+</div>
+{{end}}{{end}}
+{{end}}{{end}}
+
+{{/* ---------- Konfirmasi hadiah (PageData; taruh di section hadiah) ---------- */}}
+{{define "gift-confirm"}}{{if .GiftConfirm}}
+<div class="gift-confirm" data-gift-confirm>
+{{if and (eq .AccessMode "guest_only") (not .Guest)}}
+  <p class="rsvp__notice gift-confirm__notice">Gunakan link undangan pribadi Anda untuk mengisi konfirmasi hadiah.</p>
+{{else}}
+  <button type="button" class="btn btn--confirm" data-gift-open aria-expanded="false" aria-controls="gift-form">{{template "icon-gift"}}<span>Konfirmasi Kirim Hadiah</span></button>
+  <form class="gift-form" id="gift-form" data-gift-form data-invitation="{{.InvitationID}}" novalidate hidden>
+    <p class="gift-form__title">Konfirmasi Kirim Hadiah</p>
+    {{if .Preview}}<p class="rsvp__notice">Mode pratinjau: formulir tidak mengirim data.</p>{{end}}
+    <div class="field">
+      <label class="field__label" for="gift-name">Nama</label>
+      <input class="field__input" id="gift-name" name="name" type="text" value="{{.GuestName}}" minlength="2" maxlength="100" autocomplete="name" placeholder="Nama Anda" required>
+    </div>
+    <fieldset class="field field--choices">
+      <legend class="field__label">Jenis Hadiah</legend>
+      <div class="choices">
+        <label class="choice"><input class="visually-hidden" type="radio" name="type" value="transfer" checked><span class="choice__box">Transfer</span></label>
+        <label class="choice"><input class="visually-hidden" type="radio" name="type" value="kado"><span class="choice__box">Kado</span></label>
+      </div>
+    </fieldset>
+    {{with .C.Gift.Accounts}}
+    <div class="field" data-gift-transfer>
+      <label class="field__label" for="gift-account">Tujuan</label>
+      <select class="field__input" id="gift-account" name="account_label">
+        {{range .}}<option>{{.Provider}} · {{.Number}}{{with .Holder}} a.n. {{.}}{{end}}</option>{{end}}
+        <option>Lainnya</option>
+      </select>
+    </div>
+    {{end}}
+    <div class="field" data-gift-transfer>
+      <label class="field__label" for="gift-amount">Nominal (opsional)</label>
+      <input class="field__input" id="gift-amount" name="amount" type="text" inputmode="numeric" autocomplete="off" maxlength="15" placeholder="Rp 0" data-rupiah>
+    </div>
+    <div class="field">
+      <label class="field__label" for="gift-message">Pesan (opsional)</label>
+      <textarea class="field__input" id="gift-message" name="message" rows="3" maxlength="500" placeholder="Pesan untuk kedua mempelai"></textarea>
+    </div>
+    <div class="field">
+      <span class="field__label" id="gift-file-label">Foto Bukti</span>
+      <label class="gift-form__file">
+        <input class="visually-hidden" type="file" name="file" accept="image/*" aria-labelledby="gift-file-label" required data-gift-file>
+        <span class="gift-form__drop">{{template "icon-image"}}<span data-gift-file-name>Pilih foto bukti transfer / kado</span></span>
+      </label>
+      <img class="gift-form__preview" data-gift-preview alt="Pratinjau foto bukti" hidden>
+      <small class="gift-form__hint">JPG, PNG, atau WebP · maks. 5 MB</small>
+    </div>
+    {{with .Guest}}<input type="hidden" name="guest_code" value="{{.Code}}">{{end}}
+    <button type="submit" class="btn btn--submit">Kirim Konfirmasi</button>
+    <p class="rsvp__status" data-gift-status role="status" aria-live="polite" hidden></p>
+  </form>
+{{end}}
+</div>
+{{end}}{{end}}
+
+{{/* ---------- Tiket check-in (PageData; tampil bila .Checkin) ---------- */}}
+{{define "checkin-ticket"}}{{if .Checkin}}{{with .Guest}}
+<div class="ticket" data-ticket>
+  <div class="ticket__card">
+    <p class="ticket__label" data-tk="label">E-Tiket · Kartu Masuk</p>
+    <p class="ticket__event" data-tk="event">{{$.Title}}</p>
+    {{with $.FirstEvent}}<p class="ticket__date" data-tk="date">{{.DateLong}}</p>{{end}}
+    <p class="ticket__name" data-tk="name">{{.Name}}</p>
+    {{if gt .Pax 0}}<p class="ticket__pax" data-tk="pax">Berlaku untuk {{.Pax}} orang</p>{{end}}
+    <div class="ticket__qr">{{$.GuestQR}}</div>
+    <p class="ticket__code-label">Kode Undangan</p>
+    <p class="ticket__code" data-tk="code">{{.Code}}</p>
+    <button type="button" class="btn btn--copy ticket__copy" data-copy="{{.Code}}" data-copy-msg="Kode undangan disalin">{{template "icon-copy"}}<span>Salin Kode</span></button>
+    <p class="ticket__hint" data-tk="hint">Tunjukkan QR ini atau sebutkan kode kepada penerima tamu di lokasi acara.</p>
+  </div>
+  <button type="button" class="btn btn--ticket" data-ticket-save>{{template "icon-image"}}<span>Simpan Tiket</span></button>
+</div>
+{{end}}{{end}}{{end}}
+
+{{/* ---------- Tema: kelas body & font (override di index.html tema; dipakai gate.html) ---------- */}}
+{{define "body-class"}}{{end}}
+{{define "theme-fonts"}}{{end}}
+
+{{/* ---------- RSVP + ucapan (PageData; panggil hanya jika .C.RSVP.Enabled) ---------- */}}
+{{define "rsvp-wishes"}}
+{{if and (eq .AccessMode "guest_only") (not .Guest)}}
+<p class="rsvp__notice rsvp__notice--guest">Gunakan link undangan pribadi Anda untuk mengisi konfirmasi kehadiran &amp; ucapan.</p>
+{{else}}
+<form class="rsvp" data-wishes-form data-invitation="{{.InvitationID}}" novalidate>
+  {{if .Preview}}<p class="rsvp__notice">Mode pratinjau: formulir tidak mengirim data.</p>{{end}}
+  <div class="field">
+    <label class="field__label" for="rsvp-name">Nama</label>
+    <input class="field__input" id="rsvp-name" name="name" type="text" value="{{.GuestName}}" minlength="2" maxlength="100" autocomplete="name" placeholder="Nama Anda" required>
+  </div>
+  <fieldset class="field field--choices">
+    <legend class="field__label">Konfirmasi Kehadiran</legend>
+    <div class="choices">
+      <label class="choice"><input class="visually-hidden" type="radio" name="attendance" value="hadir" required><span class="choice__box">Hadir</span></label>
+      <label class="choice"><input class="visually-hidden" type="radio" name="attendance" value="tidak"><span class="choice__box">Tidak Hadir</span></label>
+      <label class="choice"><input class="visually-hidden" type="radio" name="attendance" value="ragu"><span class="choice__box">Masih Ragu</span></label>
+    </div>
+  </fieldset>
+  {{$max := .C.RSVP.MaxPax}}{{with .Guest}}{{if and (gt .Pax 0) (lt .Pax $max)}}{{$max = .Pax}}{{end}}{{end}}
+  <div class="field" data-pax-field>
+    <label class="field__label" for="rsvp-pax">Jumlah Tamu</label>
+    <select class="field__input" id="rsvp-pax" name="pax">{{range seq $max}}<option value="{{.}}">{{.}} orang</option>{{end}}</select>
+  </div>
+  <div class="field">
+    <label class="field__label" for="rsvp-message">Ucapan &amp; Doa</label>
+    <textarea class="field__input" id="rsvp-message" name="message" rows="4" maxlength="1000" placeholder="Tuliskan ucapan dan doa restu"></textarea>
+  </div>
+  {{with .Guest}}<input type="hidden" name="guest_code" value="{{.Code}}">{{end}}
+  <button type="submit" class="btn btn--submit">Kirim Ucapan</button>
+  <p class="rsvp__status" data-form-status role="status" aria-live="polite" hidden></p>
+</form>
+{{end}}
+{{if .C.RSVP.ShowWishes}}
+<div class="wishes" data-wishes data-invitation="{{.InvitationID}}">
+  <div class="wishes__stats">
+    <div class="wishes__stat wishes__stat--hadir"><span class="wishes__stat-num" data-stat="hadir">0</span><span class="wishes__stat-label">Hadir</span></div>
+    <div class="wishes__stat wishes__stat--tidak"><span class="wishes__stat-num" data-stat="tidak">0</span><span class="wishes__stat-label">Tidak Hadir</span></div>
+    <div class="wishes__stat wishes__stat--ragu"><span class="wishes__stat-num" data-stat="ragu">0</span><span class="wishes__stat-label">Masih Ragu</span></div>
+  </div>
+  <p class="wishes__total"><span data-stat="total">0</span> ucapan</p>
+  <ol class="wishes__list" data-wishes-list></ol>
+  <p class="wishes__empty" data-wishes-empty hidden>Belum ada ucapan. Jadilah yang pertama memberi doa restu.</p>
+  <button type="button" class="btn btn--more" data-wishes-more hidden>Muat ucapan lainnya</button>
+</div>
+{{end}}
+{{end}}
+
+{{/* ---------- Dock navigasi bawah (PageData, opsional per tema) ---------- */}}
+{{define "dock"}}
+<nav class="dock" data-dock aria-label="Navigasi undangan" hidden>
+  <a class="dock__link" href="#pembuka">{{template "icon-home"}}<span class="dock__label">Beranda</span></a>
+  <a class="dock__link" href="#mempelai">{{template "icon-heart"}}<span class="dock__label">Mempelai</span></a>
+  {{if .Events}}<a class="dock__link" href="#acara">{{template "icon-calendar"}}<span class="dock__label">Acara</span></a>{{end}}
+  {{if .Checkin}}<a class="dock__link" href="#tiket">{{template "icon-ticket"}}<span class="dock__label">Tiket</span></a>{{else if .C.Gallery.Photos}}<a class="dock__link" href="#galeri">{{template "icon-image"}}<span class="dock__label">Galeri</span></a>{{else if and .C.Gift.Enabled (or .C.Gift.Accounts .C.Gift.Address.Address)}}<a class="dock__link" href="#hadiah">{{template "icon-gift"}}<span class="dock__label">Hadiah</span></a>{{end}}
+  {{if .C.RSVP.Enabled}}<a class="dock__link" href="#ucapan">{{template "icon-chat"}}<span class="dock__label">Ucapan</span></a>{{end}}
+</nav>
+{{end}}
+
+{{/* ---------- Musik (Music) ---------- */}}
+{{define "music-player"}}{{if and .Enabled .URL}}
+<audio class="music" data-music data-start="{{.StartAt}}" src="{{.URL}}" loop preload="none"></audio>
+<button type="button" class="music-toggle" data-music-toggle aria-pressed="false" aria-label="Putar musik"{{with .Title}} title="{{.}}"{{end}} hidden>{{template "icon-disc"}}</button>
+{{end}}{{end}}
+
+{{/* ---------- Footer merek ---------- */}}
+{{define "brand"}}<p class="brand">Dibuat dengan <span aria-label="cinta">♥</span> di Undangan Digital</p>{{end}}
+
+{{define "scripts"}}<script src="{{.Shared}}/runtime.js" defer></script>{{end}}

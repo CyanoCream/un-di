@@ -1,0 +1,8 @@
+{
+  "name": "Majalah Cinta",
+  "description": "Undangan bergaya majalah edisi pernikahan: sampul bermasthead merah, daftar isi, profil, pull-quote, dan surat pembaca untuk ucapan tamu.",
+  "tags": ["majalah", "editorial", "modern", "merah", "tipografi"],
+  "colors": ["#d7141e", "#121212", "#fffdf9", "#d9d4cc"],
+  "fonts": ["Abril Fatface", "Libre Franklin"],
+  "category": "modern"
+}

@@ -1,0 +1,302 @@
+/* Scrapbook Polaroid — kertas kraft, denim, selotip kuning, coretan tangan */
+.t-scrap{
+  --kraft:#c9a57b;--kraft-l:#e9d6b4;--denim:#3d5a80;--denim-d:#2c4260;--tape:#f2cf5b;--paper:#fdfaf2;--red:#b33a2e;
+  --bg:var(--kraft);--ink:#2b2622;--muted:#5b4b3b;--accent:var(--denim-d);--surface:var(--paper);--line:#cdbb9f;
+  --font-display:"Caveat","Comic Sans MS",cursive;--font-body:"Courier Prime","Courier New",monospace;
+  --radius:4px;--dock-h:76px;--col:480px;
+  --torn-b:polygon(0 0,100% 0,100% calc(100% - 8px),96.7% calc(100% - 6px),93.3% calc(100% - 4px),90% calc(100% - 6px),86.7% calc(100% - 1px),83.3% calc(100% - 5px),80% calc(100% - 8px),76.7% calc(100% - 8px),73.3% calc(100% - 5px),70% calc(100% - 6px),66.7% calc(100% - 4px),63.3% calc(100% - 1px),60% calc(100% - 3px),56.7% 100%,53.3% calc(100% - 6px),50% calc(100% - 5px),46.7% 100%,43.3% 100%,40% calc(100% - 7px),36.7% calc(100% - 5px),33.3% calc(100% - 3px),30% calc(100% - 8px),26.7% calc(100% - 6px),23.3% calc(100% - 6px),20% 100%,16.7% calc(100% - 2px),13.3% calc(100% - 5px),10% calc(100% - 4px),6.7% calc(100% - 7px),3.3% calc(100% - 1px),0 100%);
+  --torn-t:polygon(0 7px,3.3% 2px,6.7% 0,10% 7px,13.3% 3px,16.7% 6px,20% 7px,23.3% 9px,26.7% 3px,30% 2px,33.3% 9px,36.7% 7px,40% 7px,43.3% 6px,46.7% 1px,50% 6px,53.3% 8px,56.7% 2px,60% 4px,63.3% 7px,66.7% 4px,70% 2px,73.3% 2px,76.7% 3px,80% 1px,83.3% 4px,86.7% 8px,90% 8px,93.3% 1px,96.7% 8px,100% 5px,100% 100%,0 100%);
+  --grid:linear-gradient(rgba(61,90,128,.13) 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,rgba(61,90,128,.13) 1px,transparent 1px) 0 0/16px 16px;
+  background:var(--kraft) url(kraft.svg);font-size:15.5px;line-height:1.6
+}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.doodle{display:block;pointer-events:none}
+
+/* ---------- tombol: stiker kotak ---------- */
+.t-scrap .btn{padding:.66rem 1.05rem;border:2px solid var(--ink);border-radius:3px;background:var(--tape);color:var(--ink);font:700 .8rem/1.2 var(--font-body);letter-spacing:.06em;text-transform:uppercase;box-shadow:3px 3px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+.t-scrap .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.t-scrap .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.t-scrap .btn--maps,.t-scrap .btn--copy,.t-scrap .btn--more,.t-scrap .btn--ticket{background:#fff}
+.t-scrap .btn.is-copied{background:#bfe3c4}
+
+/* ---------- elemen scrapbook ---------- */
+.shadow{filter:drop-shadow(0 8px 9px rgba(60,38,14,.3))}
+.tape{position:absolute;z-index:3;width:92px;height:26px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0 4px,transparent 4px 9px),rgba(242,207,91,.86);clip-path:polygon(4% 0,96% 0,100% 18%,96% 36%,100% 54%,96% 72%,100% 90%,96% 100%,4% 100%,0 82%,4% 64%,0 46%,4% 28%,0 10%);pointer-events:none}
+.tape--denim{background:repeating-linear-gradient(90deg,rgba(44,66,96,.82) 0 7px,rgba(95,125,165,.82) 7px 14px)}
+.tape--top{top:-12px;left:50%;margin-left:-46px;rotate:-4deg}
+.tape--tl{top:-4px;left:-26px;rotate:-38deg}
+.tape--br{bottom:-4px;right:-26px;rotate:-38deg}
+.polaroid{position:relative;margin:0;padding:10px 10px 0;background:#fffdf7;box-shadow:0 1px 1px rgba(0,0,0,.12),0 12px 22px -8px rgba(50,30,10,.5)}
+.polaroid__shot{position:relative;aspect-ratio:1;overflow:hidden;background:var(--grid),#f7f1e3}
+.polaroid__img{width:100%;height:100%;object-fit:cover}
+.polaroid__cap{padding:4px 4px 8px;font:700 1.45rem/1.15 var(--font-display);text-align:center;color:var(--ink);overflow-wrap:anywhere}
+.sketch{display:flex;align-items:center;justify-content:center;gap:.1em;height:100%;font:700 4.6rem/1 var(--font-display);color:var(--denim)}
+.sketch svg{width:.55em;height:.55em;color:var(--red);rotate:-12deg}
+.sketch--one{font-size:7rem;rotate:-6deg}
+.sketch--date{padding:10px;font-size:2.6rem;text-align:center;rotate:-8deg;overflow-wrap:anywhere}
+.scrap{position:relative;padding:28px 22px;background:var(--paper);color:var(--ink)}
+.scrap--lined{background:linear-gradient(90deg,transparent 30px,rgba(227,154,149,.8) 30px 32px,transparent 32px),repeating-linear-gradient(transparent 0 27px,#cad9ea 27px 28px) 0 18px,var(--paper)}
+.scrap--torn{clip-path:var(--torn-b);padding-bottom:40px}
+.scrap--torn-top{clip-path:var(--torn-t);padding-top:36px}
+.dymo{display:inline-block;padding:.34rem .75rem;border-radius:3px;background:var(--denim-d);color:#fff;font:700 .74rem/1.2 var(--font-body);letter-spacing:.2em;text-transform:uppercase;text-shadow:0 1px 0 rgba(255,255,255,.28);box-shadow:inset 0 -2px 0 rgba(0,0,0,.25),0 2px 3px rgba(0,0,0,.25);rotate:-2deg}
+.dymo--red{background:var(--red)}
+.hl{background:linear-gradient(transparent 58%,rgba(242,207,91,.9) 58% 88%,transparent 88%)}
+
+/* ---------- cover: sampul album ---------- */
+.cover{position:relative;display:flex;min-height:100vh;min-height:100svh;overflow:hidden;perspective:1800px;z-index:2}
+.cover__page{position:absolute;inset:0;background:var(--kraft-l) url(kraft.svg)}
+.cover__doodle{position:absolute;top:44%;left:50%;width:70px;height:66px;margin-left:-35px;color:var(--red);opacity:.5}
+.cover__board{position:relative;flex:1;display:flex;margin:10px 10px 10px 0;border-radius:0 16px 16px 0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 5px),repeating-linear-gradient(-45deg,rgba(0,0,0,.09) 0 1px,transparent 1px 4px),linear-gradient(160deg,#4a6a94,#2c4260 70%);box-shadow:inset 16px 0 18px -12px rgba(0,0,0,.55),0 22px 40px rgba(0,0,0,.35);transform-origin:left center;backface-visibility:hidden}
+.cover__stitch{position:absolute;inset:14px 14px 14px 22px;border:2px dashed rgba(242,207,91,.6);border-radius:0 10px 10px 0;pointer-events:none}
+.cover__inner{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;max-width:420px;margin:0 auto;padding:46px 30px 40px;text-align:center}
+.cover__polaroid{width:190px;rotate:-5deg}
+.cover__label{position:relative;z-index:2;margin-top:-6px;padding:14px 22px 18px;background:var(--kraft-l) url(kraft.svg);clip-path:var(--torn-b);rotate:1.5deg;box-shadow:0 8px 16px rgba(0,0,0,.25)}
+.cover__eyebrow{font:700 .7rem var(--font-body);letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.cover__names{font:700 clamp(2.6rem,13vw,3.3rem)/1 var(--font-display);color:var(--denim-d)}
+.cover__names span{color:var(--red)}
+.cover__date{font:700 .8rem var(--font-body);color:var(--ink)}
+.luggage{position:relative;width:100%;max-width:300px;padding:12px 16px 12px 40px;background:var(--paper);clip-path:polygon(24px 0,100% 0,100% 100%,24px 100%,0 calc(100% - 22px),0 22px);text-align:left;rotate:-1.5deg}
+.luggage::before{content:"";position:absolute;left:12px;top:50%;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:#2c4260;box-shadow:0 0 0 3px var(--tape)}
+.guest__label{font-size:.72rem;color:var(--muted)}
+.guest__name{font:700 1.75rem/1.1 var(--font-display);color:var(--ink);overflow-wrap:anywhere}
+.guest__pax{font-size:.78rem;font-weight:700;color:var(--red)}
+.guest__note{font-size:.64rem;font-style:italic;color:var(--muted);line-height:1.35;margin-top:2px}
+.cover__open{margin-top:8px;rotate:-1deg}
+
+/* pembuka: sampul album dibuka */
+html.has-cover.is-opened .cover{transform:none}
+.has-cover .cover__board{transition:transform 1s cubic-bezier(.6,0,.3,1),opacity .25s linear .8s}
+.has-cover.is-opened .cover__board{transform:rotateY(-100deg);opacity:0}
+.has-cover .cover__page{transition:opacity .45s ease .6s}
+.has-cover.is-opened .cover__page{opacity:0}
+@media (prefers-reduced-motion:reduce){.has-cover .cover__board,.has-cover .cover__page{transition:none}}
+
+/* ---------- tata letak ---------- */
+.desk{display:none}
+.main{position:relative;z-index:1;max-width:var(--col);margin:0 auto;overflow:hidden}
+.page{position:relative;padding:46px 20px}
+.page--tight{padding-block:18px}
+.head{margin-bottom:26px;text-align:center}
+.title{margin-top:8px;font:700 2.9rem/1.05 var(--font-display);color:var(--ink)}
+.title::after{content:"";display:block;width:150px;height:12px;margin:0 auto;background:var(--tape);opacity:.9;clip-path:polygon(0 30%,100% 0,98% 70%,2% 100%)}
+.prose p+p{margin-top:.65em}
+.prose--kraft{margin:-10px auto 22px;max-width:36ch;text-align:center;color:var(--ink)}
+.prose:empty{display:none}
+.lead{margin:-10px auto 20px;max-width:34ch;text-align:center;color:var(--ink)}
+
+/* pembuka */
+#pembuka{padding-top:60px}
+#pembuka .scrap{padding:30px 22px 44px 46px;rotate:-1deg}
+.hand--greet{margin:10px 0 12px;font:700 2.2rem/1.08 var(--font-display);color:var(--denim-d)}
+#pembuka .prose{line-height:28px}
+.opening__star{position:absolute;top:34px;right:22px;width:46px;height:46px;color:var(--tape);rotate:14deg;filter:drop-shadow(1px 1px 0 var(--ink))}
+.guest-pax{display:inline-flex;align-items:center;gap:.45rem;margin-top:14px;padding:.2rem .7rem;background:var(--tape);font-weight:700;font-size:.82rem;rotate:1deg}
+
+/* kutipan */
+.quote{margin:0 8px;padding:24px 22px;background:var(--grid),var(--paper);rotate:1.2deg;text-align:center}
+.quote__text{font-style:italic;font-size:.98rem}
+.quote__source{margin-top:10px;font:700 1.35rem var(--font-display);color:var(--red)}
+
+/* mempelai */
+.duo{position:relative;display:flex;justify-content:center;align-items:flex-start;padding:12px 4px 24px}
+.duo__pic{width:50%;max-width:196px}
+.duo__pic--0{rotate:-6deg;margin-right:-10px;z-index:1}
+.duo__pic--1{rotate:5deg;margin-top:36px}
+.duo__heart{position:absolute;left:50%;bottom:0;width:48px;height:46px;margin-left:-24px;color:var(--red);z-index:2;rotate:-10deg}
+.person-wrap{position:relative;margin-top:22px}
+.person-wrap--0{margin-right:10%}
+.person-wrap--1{margin-left:10%}
+.person{padding:24px 20px 22px;background:var(--paper);rotate:-1.5deg}
+.person-wrap--1 .person{rotate:1.5deg;text-align:right;background:var(--grid),var(--paper)}
+.person__arrow{position:absolute;top:-30px;right:24px;width:54px;height:34px;color:var(--ink);rotate:-60deg}
+.person-wrap--1 .person__arrow{right:auto;left:24px;transform:scaleX(-1)}
+.person__role{font-weight:700;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+.person__name{margin:.1rem 0 .4rem;font:700 1.9rem/1.05 var(--font-display);color:var(--denim-d)}
+.person__child{font-size:.84rem;color:var(--muted)}
+.person__parent{font-weight:700;font-size:.88rem;line-height:1.45}
+.person__ig{display:inline-flex;align-items:center;gap:.35rem;margin-top:10px;font-size:.84rem;font-weight:700;color:var(--denim-d);text-decoration:underline wavy var(--tape);text-underline-offset:4px}
+
+/* kisah */
+.page--story{padding-bottom:30px}
+.story__item{position:relative;padding-bottom:40px}
+.story__pic{width:62%;max-width:240px;rotate:-4deg;margin-left:4px}
+.story__item:nth-child(even) .story__pic{margin:0 4px 0 auto;rotate:4deg}
+.story__item:nth-child(odd) .tape{background:repeating-linear-gradient(45deg,rgba(255,255,255,.22) 0 4px,transparent 4px 9px),rgba(242,207,91,.86)}
+.story__item:nth-child(even) .tape{background:repeating-linear-gradient(90deg,rgba(179,58,46,.72) 0 7px,rgba(230,140,120,.72) 7px 14px)}
+.story__note-wrap{position:relative;z-index:2;width:80%;margin:-54px 0 0 auto}
+.story__item:nth-child(even) .story__note-wrap{margin-left:0}
+.story__note{padding:18px 18px 22px;rotate:2deg;background:#fff3b0}
+.story__item:nth-child(even) .story__note{rotate:-2deg;background:var(--grid),var(--paper)}
+.story__title{font:700 1.75rem/1.1 var(--font-display);color:var(--denim-d)}
+.story__text{font-size:.88rem;line-height:1.55}
+.story__arrow{position:absolute;left:36%;bottom:0;width:54px;height:34px;color:var(--ink);rotate:70deg}
+.story__item:nth-child(even) .story__arrow{left:auto;right:36%;transform:scaleX(-1)}
+.story__item:last-child .story__arrow{display:none}
+.story__item:last-child{padding-bottom:10px}
+
+/* galeri */
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:24px 14px;padding:6px 4px}
+.gallery__item{padding:8px 8px 22px;background:#fffdf7;box-shadow:0 10px 18px -8px rgba(50,30,10,.5)}
+.gallery__img{height:auto;aspect-ratio:1}
+.gallery__item:nth-child(3n+1){rotate:-3deg}
+.gallery__item:nth-child(3n+2){rotate:2.5deg;translate:0 10px}
+.gallery__item:nth-child(3n){rotate:-1deg}
+.gallery__item:hover{rotate:0deg;z-index:2}
+.gallery__video .video{margin-top:22px;border:8px solid #fffdf7;box-shadow:0 10px 18px -8px rgba(50,30,10,.5);rotate:1deg}
+.gallery__video:empty{display:none}
+
+/* hitung mundur */
+.countdown__date{margin:-10px 0 20px;text-align:center;font-weight:700}
+.countdown{gap:10px}
+.countdown__item{position:relative;width:70px;padding:24px 0 8px;background:var(--paper);box-shadow:0 8px 12px -5px rgba(50,30,10,.45)}
+.countdown__item::before{content:"";position:absolute;top:0;left:0;right:0;height:15px;background:radial-gradient(circle at 25% 50%,var(--kraft) 3px,transparent 3.5px),radial-gradient(circle at 75% 50%,var(--kraft) 3px,transparent 3.5px),var(--red)}
+.countdown__item:nth-child(odd){rotate:-3deg}
+.countdown__item:nth-child(even){rotate:2.5deg}
+.countdown__num{font:700 2.5rem/1 var(--font-display);color:var(--ink)}
+.countdown__label{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.countdown__done{padding:.4rem 1rem;background:var(--paper);font:700 1.6rem var(--font-display)}
+.countdown__save{margin-top:26px;text-align:center}
+
+/* acara: kartu indeks */
+.event-wrap{margin-bottom:34px}
+.event-wrap:last-child{margin-bottom:0}
+.card{position:relative;padding:26px 18px 22px 50px;background:linear-gradient(90deg,transparent 36px,rgba(227,154,149,.9) 36px 38px,transparent 38px),repeating-linear-gradient(transparent 0 27px,#c3d4e8 27px 28px) 0 64px,var(--paper)}
+.event-wrap:nth-child(odd) .card{rotate:-1.2deg}
+.event-wrap:nth-child(even) .card{rotate:1deg}
+.event__name{font:700 2.2rem/1 var(--font-display);color:var(--denim-d);min-height:38px}
+.event__line{font-size:.9rem;line-height:28px}
+.event__line b{display:inline-block;min-width:5.2em;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.event__line--addr{padding-left:5.8em;line-height:1.5;padding-block:4px;font-size:.84rem;color:var(--muted)}
+.event__note{font-style:italic;font-size:.84rem;line-height:28px;color:var(--muted)}
+.event__actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.event.is-past{filter:grayscale(.5)}
+.badge-past{display:inline-block;font:700 1.3rem var(--font-display);color:var(--red);rotate:-4deg}
+
+/* live: kertas tempel */
+.sticky{max-width:330px;margin:0 auto;padding:26px 22px;background:#fbe98a;rotate:-2deg;box-shadow:0 16px 20px -12px rgba(50,30,10,.55);text-align:center}
+.sticky__hand{font:700 1.7rem/1.1 var(--font-display);color:var(--ink)}
+.live__badge{display:inline-flex;align-items:center;gap:.4rem;margin-top:10px;font-weight:700;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+.live__dot{width:9px;height:9px;border-radius:50%;background:var(--red)}
+@media (prefers-reduced-motion:no-preference){.live__dot{animation:sb-blink 1.2s steps(2) infinite}}
+@keyframes sb-blink{50%{opacity:.2}}
+.live__note{margin:4px 0 14px;font-size:.88rem}
+
+/* hadiah: label koper */
+.tags{filter:drop-shadow(0 8px 9px rgba(60,38,14,.3))}
+.gift__accounts{display:grid;gap:20px}
+.gift-card,.gift-address{position:relative;padding:18px 18px 18px 58px;background:#f6e8cc;clip-path:polygon(34px 0,100% 0,100% 100%,34px 100%,0 calc(100% - 26px),0 26px)}
+.gift-card::before,.gift-address::before{content:"";position:absolute;left:14px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--kraft);box-shadow:0 0 0 3px #fffdf7,0 0 0 4px rgba(0,0,0,.15)}
+.gift-card:nth-child(odd){rotate:-1.2deg}
+.gift-card:nth-child(even){rotate:1.2deg;background:#e3ecf6}
+.gift-card__provider{font:700 1.6rem/1 var(--font-display);color:var(--red)}
+.gift-card__number{margin-top:4px;font-weight:700;font-size:1.25rem;letter-spacing:.08em;overflow-wrap:anywhere}
+.gift-card__holder{font-size:.84rem;color:var(--muted)}
+.gift-card .btn,.gift-address .btn{margin-top:10px;padding:.45rem .75rem;font-size:.72rem}
+.gift-address{margin-top:20px;background:var(--paper);rotate:.8deg}
+.gift-address__title{display:flex;align-items:center;gap:.4rem;font:700 1.5rem/1 var(--font-display);color:var(--red);margin-bottom:4px}
+.gift-address__recipient{font-weight:700}
+.gift-address__phone,.gift-address__text{font-size:.86rem;color:var(--muted)}
+.gift-confirm{margin-top:28px;text-align:center}
+
+/* rsvp: buku catatan */
+.notebook{position:relative;padding:28px 18px 26px 50px;background:radial-gradient(circle at 18px 14px,var(--kraft) 6px,rgba(0,0,0,.22) 6.5px,transparent 7.5px) 0 0/36px 28px repeat-y,linear-gradient(90deg,transparent 36px,rgba(227,154,149,.9) 36px 38px,transparent 38px),repeating-linear-gradient(transparent 0 27px,#d1deec 27px 28px),var(--paper)}
+.rsvp__notice{margin-bottom:12px;padding:.4rem .7rem;background:#fff3b0;font-size:.82rem}
+.page>.rsvp__notice,.gift-confirm .rsvp__notice{background:#fff3b0;display:inline-block}
+.field__label{font:700 1.4rem/1 var(--font-display);color:var(--denim-d)}
+.field__input{padding:.45rem .2rem;border:0;border-bottom:2px dashed var(--denim);border-radius:0;background:transparent;outline:0;font-size:.95rem}
+.field__input:focus{border-bottom-style:solid;background:rgba(242,207,91,.18)}
+select.field__input{background:#fffdf7}
+.choice__box{padding:.3rem .3rem;border:2px solid var(--ink);border-radius:255px 15px 225px 15px/15px 225px 15px 255px;font:700 1.25rem/1.2 var(--font-display);background:#fffdf7;transition:.15s}
+.choice input:checked+.choice__box{background:var(--tape);rotate:-2deg}
+.choice input:focus-visible+.choice__box{outline:2px solid var(--denim-d);outline-offset:2px}
+.btn--submit{width:100%;margin-top:6px}
+.rsvp__status{margin-top:10px;font-size:.88rem;font-weight:700}
+.rsvp__status.is-ok{color:#2f6b3a}
+.wishes{margin-top:30px}
+.wishes__stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wishes__stat{display:grid;place-items:center;align-content:center;aspect-ratio:1;max-width:84px;margin:0 auto;border-radius:50%;background:var(--tape);border:2px dashed var(--ink);rotate:-6deg}
+.wishes__stat--tidak{background:#f5b8ab;rotate:5deg}
+.wishes__stat--ragu{background:#bcd3ea;rotate:-2deg}
+.wishes__stat-num{font:700 1.8rem/1 var(--font-display)}
+.wishes__stat-label{max-width:72%;font-size:.56rem;font-weight:700;text-transform:uppercase;line-height:1.1;text-align:center}
+.wishes__total{margin:14px 0 10px;text-align:center;font:700 1.3rem var(--font-display);color:var(--muted)}
+.wishes__list{max-height:460px;overflow-y:auto;padding:6px 6px 10px;overscroll-behavior:contain}
+.wish{padding:12px 14px;background:#fff3a8;box-shadow:0 6px 10px -6px rgba(50,30,10,.5);rotate:-.8deg}
+.wish:nth-child(3n+2){background:#ffdcd2;rotate:.8deg}
+.wish:nth-child(3n){background:#d9e7f5}
+.wish__avatar{border:2px solid var(--ink);font:700 1.3rem var(--font-display);background:#fffdf7}
+.wish__name{font:700 1.3rem/1.1 var(--font-display)}
+.wish__time{font-size:.7rem;color:var(--muted)}
+.wish__badge{flex:none;padding:0 6px;border:1.5px solid currentColor;font-size:.66rem;font-weight:700;text-transform:uppercase;rotate:3deg}
+.wish__badge--hadir{color:#2f6b3a}.wish__badge--tidak{color:var(--red)}.wish__badge--ragu{color:var(--denim-d)}
+.wish__msg{font-size:.88rem;line-height:1.5}
+.wishes__empty{margin-top:8px;text-align:center;font:700 1.3rem var(--font-display);color:var(--muted)}
+.btn--more{margin:14px auto 0;display:flex}
+
+/* tiket */
+.ticket{position:relative}
+.ticket::before{content:"";position:absolute;z-index:3;top:-12px;left:50%;width:100px;height:26px;margin-left:-50px;background:repeating-linear-gradient(90deg,rgba(179,58,46,.75) 0 7px,rgba(230,140,120,.75) 7px 14px);rotate:3deg;clip-path:polygon(4% 0,96% 0,100% 25%,96% 50%,100% 75%,96% 100%,4% 100%,0 75%,4% 50%,0 25%)}
+.ticket__card{padding:30px 26px 22px;background:var(--paper);box-shadow:0 12px 22px -8px rgba(50,30,10,.5);rotate:-1deg}
+.ticket__card::before,.ticket__card::after{content:"";position:absolute;top:0;bottom:0;width:14px;background:radial-gradient(circle,var(--kraft) 5px,transparent 5.5px) 0 4px/14px 16px repeat-y}
+.ticket__card::before{left:-7px}.ticket__card::after{right:-7px}
+.ticket__label{font-weight:700;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.ticket__event{font:700 2.3rem/1.05 var(--font-display);color:var(--denim-d)}
+.ticket__date{font-size:.85rem;color:var(--muted)}
+.ticket__name{margin-top:12px;padding-top:12px;border-top:2px dashed var(--line);font:700 1.7rem/1.1 var(--font-display)}
+.ticket__pax{font-size:.84rem;font-weight:700;color:var(--red)}
+.ticket__qr{margin:14px 0 12px;border-radius:0;box-shadow:0 0 0 2px var(--ink)}
+.ticket__code-label{font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.t-scrap .ticket__copy{margin-top:10px;padding:.42rem .8rem;font-size:.72rem}
+.ticket__hint{margin-top:12px;font-size:.84rem;color:var(--muted)}
+
+/* konfirmasi hadiah */
+.gift-form{padding:24px 18px 22px 50px;background:radial-gradient(circle at 18px 14px,var(--kraft) 6px,rgba(0,0,0,.22) 6.5px,transparent 7.5px) 0 0/36px 28px repeat-y,repeating-linear-gradient(transparent 0 27px,#d1deec 27px 28px),var(--paper);box-shadow:0 12px 22px -8px rgba(50,30,10,.5)}
+.gift-form__title{font:700 1.9rem var(--font-display);color:var(--denim-d)}
+.gift-form__drop{border:2px dashed var(--denim);background:#fffdf7;color:var(--denim-d);border-radius:4px}
+.gift-form__hint{color:var(--muted)}
+
+/* penutup */
+.page--closing{padding-top:56px;text-align:center}
+.closing__pic{width:74%;max-width:290px;margin:0 auto;rotate:-3deg;z-index:2}
+.polaroid__shot--thanks{display:grid;place-items:center;background:var(--grid),#fffaf0}
+.closing__thanks{font:700 3.3rem/1 var(--font-display);color:var(--red);rotate:-9deg;padding:0 10px}
+.closing__heart{position:absolute;right:18px;bottom:16px;width:44px;height:42px;color:var(--denim)}
+.closing{margin-top:-18px;padding:40px 22px 30px}
+.closing__signoff{margin-top:14px;font-style:italic;color:var(--denim-d)}
+.closing__from{margin-top:12px;font:700 1.5rem/1.15 var(--font-display)}
+.family{margin-top:18px;padding:12px;border:2px dashed var(--line)}
+.family__title{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--red)}
+.family__list li{font-size:.86rem}
+.closing__squiggle{width:120px;height:14px;margin:18px auto 0;color:var(--tape)}
+
+/* footer, dock, musik */
+.footer{padding:8px 16px calc(28px + var(--dock-h));text-align:center}
+.brand{font-size:.78rem;color:var(--ink)}
+.brand span{color:var(--red)}
+.dock{left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));max-width:440px;margin:0 auto;padding:2px 4px;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.04) 0 2px,transparent 2px 5px),var(--denim-d);color:#e9dcc4;border-radius:3px;box-shadow:0 10px 20px -6px rgba(0,0,0,.45)}
+.dock__link{font-family:var(--font-body);font-weight:700;font-size:.64rem}
+.dock__link.is-active,.dock__link:hover{color:var(--tape)}
+.music-toggle{background:var(--tape);border:2px solid var(--ink);color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+
+/* ---------- desktop: meja kraft dengan kenangan berserakan ---------- */
+@media (min-width:900px){
+  .desk{display:block;position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .desk__polaroid{position:absolute;top:16%;left:calc((50% - 240px) / 2 - 140px);width:280px;rotate:-7deg}
+  .desk__polaroid .sketch{font-size:5.4rem}
+  .desk__note{position:absolute;top:26%;right:calc((50% - 240px) / 2 - 120px);width:240px;padding:28px 20px;background:#fbe98a;rotate:4deg;font:700 1.9rem/1.15 var(--font-display);text-align:center;box-shadow:0 18px 22px -12px rgba(50,30,10,.55)}
+  .desk__note b{display:block;margin-top:8px;font:700 .95rem var(--font-body)}
+  .desk__star{position:absolute;bottom:18%;left:calc((50% - 240px) / 2 - 40px);width:80px;height:80px;color:var(--tape);rotate:-12deg}
+  .desk__flower{position:absolute;bottom:14%;right:calc((50% - 240px) / 2 - 20px);width:110px;height:110px;color:var(--denim-d)}
+  .desk__heart{position:absolute;top:8%;right:calc((50% - 240px) / 2 + 60px);width:60px;height:58px;color:var(--red);rotate:12deg}
+  .desk__tape{top:auto;bottom:34%;left:calc((50% - 240px) / 2 - 20px);width:150px;height:34px;rotate:28deg}
+  .cover__inner{max-width:460px;zoom:1.2}
+  .dock{max-width:440px}
+}
+@media (max-width:370px){
+  .page{padding-inline:16px}
+  .countdown{gap:7px}
+  .countdown__item{width:64px}
+  .card{padding-left:46px;padding-right:14px}
+  .event__line b{min-width:0;margin-right:.5em}
+  .event__line--addr{padding-left:0}
+}

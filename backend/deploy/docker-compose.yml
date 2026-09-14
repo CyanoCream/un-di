@@ -1,0 +1,75 @@
+# Satu VPS lengkap: PostgreSQL + backend + Caddy (SSL otomatis). Panduan: docs/DEPLOY.md
+#
+#   cd backend/deploy
+#   docker compose up -d --build
+#
+# Semua konfigurasi dibaca dari backend/.env (lihat .env.example bagian production).
+name: undangan
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    env_file: ../.env            # butuh POSTGRES_PASSWORD
+    environment:
+      POSTGRES_DB: undangan
+      POSTGRES_USER: undangan
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U undangan -d undangan"]
+      interval: 5s
+      retries: 20
+
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    environment:                          # path di dalam container (menimpa nilai dev dari .env)
+      API_ADDR: ":8080"
+      API_INTERNAL_ADDR: "0.0.0.0:8081"
+      THEMES_DIR: themes
+      LANDING_DIR: web/landing
+      ADMIN_DIST: dist/admin
+      PORTAL_DIST: dist/portal
+      UPLOAD_DIR: storage/uploads
+      PRIVATE_DIR: storage/private
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - storage:/app/storage              # foto, musik, bukti bayar/hadiah (STORAGE_DRIVER=local)
+      - ./backups:/app/backups            # hasil scripts/db-backup.sh
+      - ./dist/admin:/app/dist/admin:ro   # hasil build frontend (scripts: deploy/build-frontend.sh)
+      - ./dist/portal:/app/dist/portal:ro
+    expose:
+      - "8080"
+      - "8081"
+
+  caddy:
+    build:
+      context: .
+      dockerfile: caddy.Dockerfile
+    restart: unless-stopped
+    env_file: ../.env                     # butuh BASE_DOMAIN, ACME_EMAIL, CF_API_TOKEN
+    environment:
+      APP_UPSTREAM: app:8080
+      APP_INTERNAL: app:8081
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  pgdata:
+  storage:
+  caddy_data:
+  caddy_config:
