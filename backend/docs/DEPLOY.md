@@ -20,7 +20,7 @@ Internet ──► Caddy :443 ──► app :8080 ──► PostgreSQL
 | VPS | Ubuntu 24.04, **2 vCPU / 2 GB RAM / 40 GB SSD** (cukup untuk ribuan undangan). Lokasi Indonesia/Singapura |
 | Domain | mis. `undangin.id` |
 | Cloudflare (gratis) | Nameserver domain dipindah ke Cloudflare — dibutuhkan untuk SSL wildcard |
-| Git | Repo `backend` & `frontend` di-push ke GitHub/GitLab privat |
+| Git | Repo `github.com/CyanoCream/un-di` (berisi folder `backend/` & `frontend/`) |
 
 ## 1. DNS di Cloudflare
 
@@ -59,9 +59,8 @@ Login ulang sebagai `deploy`.
 ## 3. Ambil kode
 
 ```bash
-mkdir -p ~/undangan && cd ~/undangan
-git clone git@github.com:NAMA/undangan-backend.git backend
-git clone git@github.com:NAMA/undangan-frontend.git frontend
+git clone https://github.com/CyanoCream/un-di.git ~/undangan
+# repo privat: pakai Personal Access Token GitHub sebagai password, atau deploy key SSH
 ```
 
 ## 4. Isi konfigurasi `backend/.env`
@@ -140,7 +139,7 @@ Salin folder `deploy/backups` ke tempat lain secara berkala (object storage / ko
 ```bash
 cd ~/undangan/backend && ./deploy/update.sh
 ```
-Script: `git pull` kedua repo → backup database → build frontend → build & restart backend (migrasi otomatis).
+Script: `git pull` → backup database → build frontend → build & restart backend (migrasi otomatis).
 
 ## 9. Pindah server
 

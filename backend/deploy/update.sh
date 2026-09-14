@@ -10,7 +10,10 @@ cd "$BACKEND/deploy"
 
 echo "→ git pull"
 git -C "$BACKEND" pull --ff-only
-git -C "$FRONTEND" pull --ff-only
+# frontend repo terpisah? tarik juga (bila satu repo, perintah ini tidak mengubah apa-apa)
+if [ "$(git -C "$FRONTEND" rev-parse --show-toplevel)" != "$(git -C "$BACKEND" rev-parse --show-toplevel)" ]; then
+  git -C "$FRONTEND" pull --ff-only
+fi
 
 echo "→ backup sebelum update"
 docker compose exec -T app ./scripts/db-backup.sh

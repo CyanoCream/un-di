@@ -1,11 +1,11 @@
-# Undangan Digital
+# Undangan Digital (un-di)
 
-Folder kerja berisi **2 repo git terpisah**:
+Platform undangan pernikahan digital. Satu repo, dua bagian yang berdiri sendiri:
 
-| Repo | Isi |
+| Folder | Isi |
 |---|---|
-| [`backend/`](backend/README.md) | Go workspace: API, landing page, tema undangan, migrasi & script server |
-| [`frontend/`](frontend/README.md) | Vue 3: portal super admin, portal customer, package shared |
+| [`backend/`](backend/README.md) | Go workspace (DDD, siap microservice): API, landing page, 20 tema undangan, migrasi & script server |
+| [`frontend/`](frontend/README.md) | Vue 3: portal super admin, portal customer (+ stasiun check-in), package shared |
 
-Saat development jalankan keduanya berdampingan (backend :8080, portal :5173, admin :5174).
-Saat deploy, backend melayani hasil build frontend berdasarkan subdomain — satu server.
+- Development: backend `:8080`, portal `:5173`, admin `:5174` (lihat README masing-masing).
+- Deploy VPS: [`backend/docs/DEPLOY.md`](backend/docs/DEPLOY.md) — backend melayani hasil build frontend per subdomain, satu server.
