@@ -392,7 +392,9 @@ Token stasiun dikirim sebagai `Authorization: Bearer <token>`.
 
 ## 15. Notifikasi Telegram (opsional)
 
-Aktif bila `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_IDS` diisi. Port `kernel/notify.Notifier` dipakai service lain,
+Aktif bila `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_IDS` diisi (chat id personal = user id Telegram).
+Tanpa `TELEGRAM_WEBHOOK_URL` bot memakai **polling** (tidak butuh domain); bila diisi, aplikasi mendaftarkan webhook sendiri
+dan membuat secret otomatis saat `TELEGRAM_WEBHOOK_SECRET` kosong. Port `kernel/notify.Notifier` dipakai service lain,
 sehingga saluran lain (email/WA) tinggal menambah implementasi.
 
 | Peristiwa | Isi pesan | Tombol |

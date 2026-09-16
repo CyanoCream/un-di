@@ -95,12 +95,11 @@ CF_API_TOKEN=TOKEN_CLOUDFLARE
 
 STORAGE_DRIVER=local          # atau s3 + S3_* bila object storage sudah siap
 
-# Notifikasi Telegram (opsional)
+# Notifikasi Telegram (opsional) — cukup 3 baris ini
 ADMIN_URL=https://admin.undangin.id
 TELEGRAM_BOT_TOKEN=123456:ABC-token-dari-BotFather
 TELEGRAM_CHAT_IDS=123456789
-TELEGRAM_WEBHOOK_SECRET=HASIL_openssl_rand_-hex_24
-TELEGRAM_WEBHOOK_URL=https://undangin.id/api/v1/telegram/webhook
+# Opsional (hemat sumber daya bila sudah online): TELEGRAM_WEBHOOK_URL=https://undangin.id/api/v1/telegram/webhook
 ```
 
 Buat secret: `openssl rand -base64 48`. File `.env` jangan pernah di-commit.
@@ -135,8 +134,11 @@ Setelah itu kosongkan `SEED_ADMIN_PASSWORD` di `.env` (admin sudah dibuat).
 
 1. Chat [@BotFather](https://t.me/BotFather) → `/newbot` → salin token ke `TELEGRAM_BOT_TOKEN`.
 2. Kirim `/start` ke bot baru itu → bot membalas **Chat ID** Anda → isi `TELEGRAM_CHAT_IDS` (boleh beberapa, dipisah koma; bisa juga id grup).
-3. Isi `TELEGRAM_WEBHOOK_SECRET` (acak) dan `TELEGRAM_WEBHOOK_URL=https://<BASE_DOMAIN>/api/v1/telegram/webhook`, lalu `docker compose up -d app`.
-   Aplikasi mendaftarkan webhook ke Telegram otomatis saat start.
+3. `docker compose up -d app`. Selesai — bot langsung jalan dengan **mode polling** (aplikasi yang menanyai Telegram),
+   tanpa perlu webhook, secret, atau pengaturan tambahan di BotFather.
+   *Opsional:* bila ingin lebih hemat sumber daya, isi `TELEGRAM_WEBHOOK_URL=https://<BASE_DOMAIN>/api/v1/telegram/webhook`
+   (alamat aplikasi kamu sendiri yang akan dipanggil Telegram). Aplikasi mendaftarkannya otomatis dan membuat
+   `TELEGRAM_WEBHOOK_SECRET` sendiri bila dikosongkan.
 4. Uji: kirim `/pending` ke bot. Bot mengirim notifikasi saat customer mendaftar, membuat order, dan mengunggah bukti transfer;
    pesan bukti transfer punya tombol **Setujui / Tolak** (Tolak akan menanyakan alasan).
 

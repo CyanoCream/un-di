@@ -120,6 +120,10 @@ func run(log *slog.Logger) error {
 		BotToken: cfg.TelegramBotToken, ChatIDs: cfg.TelegramChatIDs, WebhookSecret: cfg.TelegramWebhookSecret,
 		WebhookURL: cfg.TelegramWebhookURL, APIBaseURL: cfg.TelegramAPIBase, AdminURL: cfg.AdminURL, AppName: cfg.AppName,
 	}
+	if notifyCfg.WebhookURL != "" && notifyCfg.WebhookSecret == "" {
+		// Secret hanya dipakai antara aplikasi & Telegram (dikirim saat setWebhook), jadi aman dibuat otomatis.
+		notifyCfg.WebhookSecret = security.RandomToken(24)
+	}
 	var notifier notify.Notifier = notify.Nop{}
 	var notifyService notifysvc.Service
 	if notifyCfg.Enabled() {
