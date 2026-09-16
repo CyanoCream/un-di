@@ -389,3 +389,24 @@ Token stasiun dikirim sebagai `Authorization: Bearer <token>`.
 - `/tema` = katalog lengkap. CTA → `PORTAL_URL/daftar?tema=<slug>`.
 - Tema: `theme.json.category` ∈ adat, islami, floral, modern, elegan, rustic, pastel, retro; thumbnail `themes/<slug>/assets/thumb.webp`
   (dibuat dengan `node tools/themeshot.mjs thumb <slug>`).
+
+## 15. Notifikasi Telegram (opsional)
+
+Aktif bila `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_IDS` diisi. Port `kernel/notify.Notifier` dipakai service lain,
+sehingga saluran lain (email/WA) tinggal menambah implementasi.
+
+| Peristiwa | Isi pesan | Tombol |
+|---|---|---|
+| Customer baru mendaftar | nama, email, WhatsApp | – |
+| Order dibuat | kode order, customer, paket, nominal + kode unik | – |
+| Bukti transfer diunggah | idem + ajakan cek mutasi | ✅ Setujui · ⛔ Tolak |
+| Order disetujui | pelaku, masa aktif langganan | – |
+| Order ditolak | pelaku, alasan | – |
+
+Perintah bot: `/start` atau `/id` (menampilkan chat id, boleh dari siapa saja), `/pending` (daftar order menunggu konfirmasi, khusus chat terdaftar).
+
+Keamanan:
+- Hanya chat di `TELEGRAM_CHAT_IDS` yang boleh menekan tombol; chat lain diabaikan tanpa balasan.
+- Webhook `POST /api/v1/telegram/webhook` diverifikasi header `X-Telegram-Bot-Api-Secret-Token` (dikecualikan dari CSRF guard karena tidak memakai cookie sesi).
+- Aksi bot dicatat di audit log sebagai super admin dengan nama pelaku Telegram.
+- Notifikasi dikirim asinkron; kegagalan Telegram tidak pernah menggagalkan order/pembayaran.

@@ -5,12 +5,13 @@ import (
 	"context"
 	"errors"
 
-	auditport "undangan/kernel/audit"
-	"undangan/services/user/domain"
 	"undangan/kernel/apperror"
-	"undangan/kernel/database"
-	"undangan/kernel/security"
+	auditport "undangan/kernel/audit"
 	"undangan/kernel/authctx"
+	"undangan/kernel/database"
+	"undangan/kernel/notify"
+	"undangan/kernel/security"
+	"undangan/services/user/domain"
 )
 
 type RegisterInput struct {
@@ -47,11 +48,16 @@ type service struct {
 	hasher   domain.PasswordHasher
 	sessions domain.SessionRevoker
 	audit    auditport.Recorder
+	notify   notify.Notifier
 	tx       database.TxManager
 }
 
-func New(repo domain.Repository, hasher domain.PasswordHasher, sessions domain.SessionRevoker, audit auditport.Recorder, tx database.TxManager) Service {
-	return &service{repo: repo, hasher: hasher, sessions: sessions, audit: audit, tx: tx}
+func New(repo domain.Repository, hasher domain.PasswordHasher, sessions domain.SessionRevoker, audit auditport.Recorder,
+	notifier notify.Notifier, tx database.TxManager) Service {
+	if notifier == nil {
+		notifier = notify.Nop{}
+	}
+	return &service{repo: repo, hasher: hasher, sessions: sessions, audit: audit, notify: notifier, tx: tx}
 }
 
 func (s *service) create(ctx context.Context, in RegisterInput, role string) (*domain.User, error) {
@@ -73,6 +79,13 @@ func (s *service) create(ctx context.Context, in RegisterInput, role string) (*d
 	u.PasswordHash = hash
 	if err := s.repo.Create(ctx, u); err != nil {
 		return nil, err
+	}
+	if u.Role == authctx.RoleCustomer {
+		lines := []string{"Nama: " + u.Name, "Email: " + u.Email}
+		if u.Phone != "" {
+			lines = append(lines, "WhatsApp: +"+u.Phone)
+		}
+		s.notify.Notify(ctx, notify.Notification{Kind: notify.KindUserRegister, Title: "Customer baru mendaftar", Lines: lines})
 	}
 	return u, nil
 }

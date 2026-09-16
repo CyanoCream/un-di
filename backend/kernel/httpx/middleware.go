@@ -10,10 +10,18 @@ import (
 
 // CSRFGuard: request non-GET wajib header X-Requested-With (form lintas situs tidak bisa menambahkannya).
 // Dipasang di /api karena token disimpan di cookie HttpOnly.
-func CSRFGuard(next http.Handler) http.Handler {
+//
+// exempt = path yang dikecualikan (mis. webhook pihak ketiga yang punya pengaman sendiri dan
+// tidak memakai cookie sesi, sehingga tidak bisa jadi sasaran CSRF).
+func CSRFGuard(next http.Handler, exempt ...string) http.Handler {
+	skip := make(map[string]bool, len(exempt))
+	for _, p := range exempt {
+		skip[p] = true
+	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case http.MethodGet, http.MethodHead, http.MethodOptions:
+		switch {
+		case r.Method == http.MethodGet || r.Method == http.MethodHead || r.Method == http.MethodOptions:
+		case skip[r.URL.Path]:
 		default:
 			if r.Header.Get("X-Requested-With") == "" && !strings.HasPrefix(r.Header.Get("Authorization"), "Bearer ") {
 				JSON(w, http.StatusForbidden, map[string]any{"error": map[string]string{"code": "csrf", "message": "Header X-Requested-With wajib"}})

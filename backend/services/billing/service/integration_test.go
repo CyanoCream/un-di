@@ -14,18 +14,19 @@ import (
 	"sync"
 	"testing"
 	"time"
+	"undangan/kernel/notify"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"undangan/services/billing/controller"
-	"undangan/services/billing/domain"
-	"undangan/services/billing/repository"
-	"undangan/services/billing/service"
+	"undangan/kernel/authctx"
 	"undangan/kernel/database"
 	"undangan/kernel/httpx"
 	"undangan/kernel/security"
 	"undangan/kernel/storage"
-	"undangan/kernel/authctx"
+	"undangan/services/billing/controller"
+	"undangan/services/billing/domain"
+	"undangan/services/billing/repository"
+	"undangan/services/billing/service"
 )
 
 // Jalankan dengan BILLING_TEST_DATABASE_URL=postgres://... (database yang sudah dimigrasi).
@@ -102,7 +103,7 @@ func setup(t *testing.T) *env {
 	e := &env{pool: pool, inv: &stubInvitations{}}
 	e.plans = service.NewPlanService(planRepo, locker, audit, tx)
 	e.subs = service.NewSubscriptionService(subRepo, planRepo, e.inv, locker, audit, tx)
-	e.orders = service.NewOrderService(orderRepo, planRepo, e.subs, files, locker, audit, tx)
+	e.orders = service.NewOrderService(orderRepo, planRepo, e.subs, files, locker, audit, notify.Nop{}, "", tx)
 	e.settings = service.NewSettingsService(repository.NewSettings(pool), audit)
 	e.lifecycle = service.NewLifecycle(orderRepo, subRepo, repository.NewNotifications(pool), e.inv, locker, tx, log)
 	e.quota = service.NewInvitationQuotaAdapter(subRepo, planRepo)

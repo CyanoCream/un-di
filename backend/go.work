@@ -11,6 +11,7 @@ use (
 	./services/invitation
 	./services/landing
 	./services/media
+	./services/notify
 	./services/theme
 	./services/user
 )

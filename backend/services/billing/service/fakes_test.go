@@ -10,9 +10,10 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"undangan/kernel/notify"
 
-	"undangan/services/billing/domain"
 	"undangan/kernel/apperror"
+	"undangan/services/billing/domain"
 )
 
 // ---- infrastruktur palsu ----
@@ -332,6 +333,7 @@ type harness struct {
 	store       *memStore
 	clock       time.Time
 	audit       *fakeAudit
+	notify      *fakeNotify
 	invitations *fakeInvitations
 	files       *fakeStorage
 	locker      *fakeLocker
@@ -346,6 +348,7 @@ func newHarness() *harness {
 		store:       newMemStore(),
 		clock:       time.Date(2026, 9, 13, 10, 0, 0, 0, time.UTC),
 		audit:       &fakeAudit{},
+		notify:      &fakeNotify{},
 		invitations: &fakeInvitations{},
 		files:       &fakeStorage{files: map[string][]byte{}},
 		locker:      &fakeLocker{},
@@ -355,9 +358,22 @@ func newHarness() *harness {
 	h.plans = NewPlanService(plans, h.locker, h.audit, fakeTx{})
 	h.subs = NewSubscriptionService(subs, plans, h.invitations, h.locker, h.audit, fakeTx{}).(*subscriptionService)
 	h.subs.now = now
-	h.orders = NewOrderService(orders, plans, h.subs, h.files, h.locker, h.audit, fakeTx{}).(*orderService)
+	h.orders = NewOrderService(orders, plans, h.subs, h.files, h.locker, h.audit, h.notify, "", fakeTx{}).(*orderService)
 	h.orders.now = now
 	h.lifecycle = NewLifecycle(orders, subs, notifs, h.invitations, h.locker, fakeTx{}, slog.New(slog.NewTextHandler(io.Discard, nil)))
 	h.lifecycle.now = now
 	return h
+}
+
+// fakeNotify menampung notifikasi yang dikirim service (Telegram dsb).
+type fakeNotify struct{ sent []notify.Notification }
+
+func (f *fakeNotify) Notify(_ context.Context, n notify.Notification) { f.sent = append(f.sent, n) }
+
+func (f *fakeNotify) kinds() []string {
+	out := make([]string, 0, len(f.sent))
+	for _, n := range f.sent {
+		out = append(out, n.Kind)
+	}
+	return out
 }

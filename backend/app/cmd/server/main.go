@@ -14,11 +14,12 @@ import (
 
 	"undangan/app/internal/adapters"
 	"undangan/app/internal/config"
-	"undangan/migrations"
+	"undangan/app/internal/server"
 	"undangan/kernel/database"
+	"undangan/kernel/notify"
 	"undangan/kernel/security"
 	"undangan/kernel/storage"
-	"undangan/app/internal/server"
+	"undangan/migrations"
 
 	auditctl "undangan/services/audit/controller"
 	auditrepo "undangan/services/audit/repository"
@@ -37,8 +38,8 @@ import (
 	billingrepo "undangan/services/billing/repository"
 	billingsvc "undangan/services/billing/service"
 
-	themectl "undangan/services/theme/controller"
 	"undangan/services/invitation/renderer"
+	themectl "undangan/services/theme/controller"
 	themerepo "undangan/services/theme/repository"
 	themesvc "undangan/services/theme/service"
 
@@ -58,6 +59,8 @@ import (
 	dashsvc "undangan/services/dashboard/service"
 	landingctl "undangan/services/landing/controller"
 	landingsvc "undangan/services/landing/service"
+	notifyctl "undangan/services/notify/controller"
+	notifysvc "undangan/services/notify/service"
 )
 
 func main() {
@@ -110,15 +113,30 @@ func run(log *slog.Logger) error {
 	// ---- Audit ----
 	audit := auditsvc.New(auditrepo.NewPostgres(pool), log)
 
+	// ---- Notifikasi (Telegram, opsional) ----
+	users := userrepo.NewPostgres(pool)
+	telegramOrders := &adapters.TelegramOrders{}
+	notifyCfg := notifysvc.Config{
+		BotToken: cfg.TelegramBotToken, ChatIDs: cfg.TelegramChatIDs, WebhookSecret: cfg.TelegramWebhookSecret,
+		WebhookURL: cfg.TelegramWebhookURL, APIBaseURL: cfg.TelegramAPIBase, AdminURL: cfg.AdminURL, AppName: cfg.AppName,
+	}
+	var notifier notify.Notifier = notify.Nop{}
+	var notifyService notifysvc.Service
+	if notifyCfg.Enabled() {
+		notifyService = notifysvc.New(notifyCfg, telegramOrders, adapters.SystemAdmin{Repo: users}, log)
+		notifier = notifyService
+	} else {
+		log.Info("telegram nonaktif (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_IDS kosong)")
+	}
+
 	// ---- Auth & User ----
 	tokens, err := authjwt.NewHS256(cfg.JWTSecret, cfg.AccessTTL)
 	if err != nil {
 		return err
 	}
 	refreshRepo := authrepo.NewPostgres(pool)
-	users := userrepo.NewPostgres(pool)
 	// SessionRevoker user → repository refresh token (hindari siklus konstruktor auth ↔ user).
-	userService := usersvc.New(users, hasher, refreshRepo, audit, tx)
+	userService := usersvc.New(users, hasher, refreshRepo, audit, notifier, tx)
 	accounts := adapters.Accounts{Repo: users, Svc: userService}
 	authService := authsvc.New(tokens, refreshRepo, accounts, hasher, tx, cfg.RefreshTTL)
 
@@ -148,7 +166,8 @@ func run(log *slog.Logger) error {
 
 	planService := billingsvc.NewPlanService(plans, locker, audit, tx)
 	subscriptionService := billingsvc.NewSubscriptionService(subs, plans, invitationService, locker, audit, tx)
-	orderService := billingsvc.NewOrderService(orders, plans, subscriptionService, files, locker, audit, tx)
+	orderService := billingsvc.NewOrderService(orders, plans, subscriptionService, files, locker, audit, notifier, cfg.AdminURL, tx)
+	telegramOrders.Svc = orderService
 	settingsService := billingsvc.NewSettingsService(billingrepo.NewSettings(pool), audit)
 	lifecycle := billingsvc.NewLifecycle(orders, subs, billingrepo.NewNotifications(pool), invitationService, locker, tx, log)
 	userAdapter := billingsvc.NewUserAdapter(subscriptionService)
@@ -174,11 +193,17 @@ func run(log *slog.Logger) error {
 	customDomainService := invsvc.NewCustomDomainService(invitationService, invitations, quota, net.DefaultResolver, domainCfg, audit)
 	siteController := invctl.NewSiteController(siteService, render, cfg.BaseDomain)
 
+	registrars := []server.Registrar{}
+	var csrfExempt []string
+	if notifyService != nil {
+		registrars = append(registrars, notifyctl.New(notifyService))
+		csrfExempt = append(csrfExempt, notifyctl.WebhookPath) // dijaga secret token dari Telegram
+	}
 	deps := server.Deps{
 		Log:            log,
 		BaseDomain:     cfg.BaseDomain,
 		AuthMiddleware: authController.Middleware,
-		API: []server.Registrar{
+		API: append([]server.Registrar{
 			authController,
 			userctl.New(userService, userAdapter, userAdapter, invitationController),
 			auditctl.New(audit),
@@ -192,13 +217,14 @@ func run(log *slog.Logger) error {
 			billingctl.New(planService, orderService, subscriptionService, settingsService),
 			mediaController,
 			dashctl.New(dashsvc.New(dashrepo.NewPostgres(pool))),
-		},
+		}, registrars...),
 		ThemePreview: themeSite.Preview,
 		ThemeShared:  themeSite.ServeShared,
 		ThemeAsset:   themeSite.ServeAsset,
 		Uploads:      mediaController.ServeUploads,
 		Site:         siteController,
 		TLSAsk:       siteController.TLSAsk,
+		CSRFExempt:   csrfExempt,
 		AdminApp:     server.SPA(cfg.AdminDist, "Portal admin"),
 		Landing: landingctl.New(landingsvc.New(adapters.LandingThemes{Svc: themeService}, adapters.LandingPlans{Svc: planService},
 			adapters.LandingContact{Svc: settingsService},
@@ -207,6 +233,14 @@ func run(log *slog.Logger) error {
 	}
 
 	go lifecycle.Start(ctx, time.Hour)
+	if notifyService != nil {
+		notifyService.Start(ctx)
+		if err := notifyService.SetupWebhook(ctx); err != nil {
+			log.Error("telegram setup webhook", "err", err)
+		} else {
+			log.Info("telegram siap", "mode", map[bool]string{true: "webhook", false: "polling"}[cfg.TelegramWebhookURL != ""], "chat_ids", len(cfg.TelegramChatIDs))
+		}
+	}
 
 	public := &http.Server{Addr: cfg.Addr, Handler: server.NewPublic(deps), ReadHeaderTimeout: 5 * time.Second}
 	internal := &http.Server{Addr: cfg.InternalAddr, Handler: server.NewInternal(deps), ReadHeaderTimeout: 5 * time.Second}

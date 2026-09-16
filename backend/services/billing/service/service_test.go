@@ -5,12 +5,15 @@ import (
 	"errors"
 	"io"
 	"reflect"
+	"slices"
+	"strings"
 	"testing"
 	"time"
+	"undangan/kernel/notify"
 
-	"undangan/services/billing/domain"
 	"undangan/kernel/apperror"
 	"undangan/kernel/authctx"
+	"undangan/services/billing/domain"
 )
 
 const day = 24 * time.Hour
@@ -407,5 +410,55 @@ func TestNormalizePaymentSettings(t *testing.T) {
 	}
 	if _, err := NormalizePaymentSettings(domain.PaymentSettings{AdminWhatsApp: "+62 21 5550 1234"}); code(err) != "validation" {
 		t.Fatalf("landline must fail: %v", err)
+	}
+}
+
+// Notifikasi (Telegram) dikirim pada peristiwa order, dan tombol Setujui/Tolak hanya ada saat bukti masuk.
+func TestOrderNotifications(t *testing.T) {
+	ctx := context.Background()
+	h := newHarness()
+	p := basicPlan(t, h)
+
+	o, err := h.orders.Create(ctx, customer, p.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := h.orders.UploadProof(ctx, customer, o.ID, pngBytes); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := h.orders.Approve(ctx, admin, o.ID); err != nil {
+		t.Fatal(err)
+	}
+
+	want := []string{notify.KindOrderCreated, notify.KindOrderProof, notify.KindOrderApproved}
+	if got := h.notify.kinds(); !slices.Equal(got, want) {
+		t.Fatalf("kinds = %v, want %v", got, want)
+	}
+	proof := h.notify.sent[1]
+	if len(proof.Actions) != 2 || proof.Actions[0].Data != "order:approve:"+o.ID || proof.Actions[1].Data != "order:reject:"+o.ID {
+		t.Errorf("tombol aksi = %+v", proof.Actions)
+	}
+	if len(h.notify.sent[0].Actions) != 0 || len(h.notify.sent[2].Actions) != 0 {
+		t.Error("notifikasi selain bukti transfer tidak boleh punya tombol")
+	}
+	joined := strings.Join(proof.Lines, "|")
+	if !strings.Contains(joined, o.Code) || !strings.Contains(joined, "Rp") {
+		t.Errorf("isi notifikasi: %v", proof.Lines)
+	}
+
+	// Order kedua yang ditolak → notifikasi penolakan berisi alasan.
+	o2, err := h.orders.Create(ctx, other, p.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := h.orders.UploadProof(ctx, other, o2.ID, pngBytes); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := h.orders.Reject(ctx, admin, o2.ID, "nominal tidak sesuai"); err != nil {
+		t.Fatal(err)
+	}
+	last := h.notify.sent[len(h.notify.sent)-1]
+	if last.Kind != notify.KindOrderRejected || !strings.Contains(strings.Join(last.Lines, "|"), "nominal tidak sesuai") {
+		t.Errorf("notifikasi tolak = %+v", last)
 	}
 }

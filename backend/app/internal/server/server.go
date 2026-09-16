@@ -22,6 +22,8 @@ type Deps struct {
 	// AuthMiddleware membaca JWT → authctx (modul auth).
 	AuthMiddleware func(http.Handler) http.Handler
 	API            []Registrar
+	// CSRFExempt = path API yang tidak butuh header X-Requested-With (mis. webhook Telegram).
+	CSRFExempt []string
 
 	ThemePreview httpx.HandlerFunc // GET /_preview/{theme}
 	ThemeShared  http.HandlerFunc  // GET /_shared/{path...}
@@ -50,7 +52,7 @@ func NewPublic(d Deps) http.Handler {
 	apiMux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		httpx.JSON(w, http.StatusNotFound, map[string]any{"error": map[string]string{"code": "not_found", "message": "Endpoint tidak ditemukan"}})
 	})
-	api := httpx.CSRFGuard(d.AuthMiddleware(apiMux))
+	api := httpx.CSRFGuard(d.AuthMiddleware(apiMux), d.CSRFExempt...)
 
 	assets := http.NewServeMux()
 	assets.HandleFunc("GET /_shared/{path...}", d.ThemeShared)

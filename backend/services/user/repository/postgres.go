@@ -7,9 +7,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"undangan/services/user/domain"
 	"undangan/kernel/apperror"
 	"undangan/kernel/database"
+	"undangan/services/user/domain"
 )
 
 type Postgres struct{ pool *pgxpool.Pool }

@@ -28,6 +28,12 @@ go run ./app/cmd/server         # migrasi otomatis, sinkron tema, buat super adm
 - Pengembangan tema tanpa DB: `go run ./app/cmd/themedev` → http://localhost:8090 · thumbnail: `node tools/themeshot.mjs thumb <slug>`
 - Landing tanpa DB: `go run ./app/cmd/landingdev` → http://localhost:8095
 
+## Notifikasi Telegram (opsional)
+
+Isi `TELEGRAM_BOT_TOKEN` & `TELEGRAM_CHAT_IDS` di `.env` → bot mengirim notifikasi order/pembayaran/pendaftaran
+dan menyediakan tombol **Setujui/Tolak** langsung dari chat (`docs/SPEC.md` §15, setup di `docs/DEPLOY.md` §6b).
+Saat dev tanpa URL publik, bot otomatis memakai mode polling.
+
 ## Test
 
 ```bash

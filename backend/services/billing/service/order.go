@@ -7,16 +7,18 @@ import (
 	"io/fs"
 	"math/rand/v2"
 	"path"
+	"strconv"
 	"strings"
 	"time"
 
-	auditport "undangan/kernel/audit"
-	"undangan/services/billing/domain"
 	"undangan/kernel/apperror"
+	auditport "undangan/kernel/audit"
+	"undangan/kernel/authctx"
 	"undangan/kernel/database"
+	"undangan/kernel/notify"
 	"undangan/kernel/security"
 	"undangan/kernel/storage"
-	"undangan/kernel/authctx"
+	"undangan/services/billing/domain"
 )
 
 // ProofFile = bukti bayar yang siap di-stream; pemanggil wajib menutup Body.
@@ -46,14 +48,60 @@ type orderService struct {
 	files  storage.FileStorage
 	locker domain.Locker
 	audit  auditport.Recorder
+	notify notify.Notifier
 	tx     database.TxManager
 	now    func() time.Time
+	// adminURL dipakai untuk tautan di notifikasi (boleh kosong).
+	adminURL string
 }
 
 func NewOrderService(orders domain.OrderRepository, plans domain.PlanRepository, subs SubscriptionService, files storage.FileStorage,
-	locker domain.Locker, audit auditport.Recorder, tx database.TxManager) OrderService {
-	return &orderService{orders: orders, plans: plans, subs: subs, files: files, locker: locker, audit: audit, tx: tx, now: time.Now}
+	locker domain.Locker, audit auditport.Recorder, notifier notify.Notifier, adminURL string, tx database.TxManager) OrderService {
+	if notifier == nil {
+		notifier = notify.Nop{}
+	}
+	return &orderService{orders: orders, plans: plans, subs: subs, files: files, locker: locker, audit: audit,
+		notify: notifier, adminURL: adminURL, tx: tx, now: time.Now}
 }
+
+// notifyOrder mengirim notifikasi (Telegram) setelah transaksi selesai.
+func (s *orderService) notifyOrder(ctx context.Context, kind, title string, o *domain.Order, extra []string, withActions bool) {
+	if o == nil {
+		return
+	}
+	lines := append([]string{
+		"Order: " + o.Code,
+		"Customer: " + o.UserName + " (" + o.UserEmail + ")",
+		"Paket: " + o.PlanName,
+		"Nominal: " + formatRupiah(o.Amount),
+	}, extra...)
+	n := notify.Notification{Kind: kind, Title: title, Lines: lines}
+	if s.adminURL != "" {
+		n.Link = strings.TrimRight(s.adminURL, "/") + "/orders?id=" + o.ID
+	}
+	if withActions {
+		n.Actions = []notify.Action{
+			{Label: "✅ Setujui", Data: "order:approve:" + o.ID},
+			{Label: "⛔ Tolak", Data: "order:reject:" + o.ID},
+		}
+	}
+	s.notify.Notify(ctx, n)
+}
+
+func formatRupiah(n int64) string {
+	s := strconv.FormatInt(n, 10)
+	var b strings.Builder
+	b.WriteString("Rp")
+	for i, c := range s {
+		if i > 0 && (len(s)-i)%3 == 0 {
+			b.WriteByte('.')
+		}
+		b.WriteRune(c)
+	}
+	return b.String()
+}
+
+var wib = time.FixedZone("WIB", 7*3600)
 
 var errOrderNotFound = apperror.NotFound("Order tidak ditemukan")
 
@@ -133,7 +181,12 @@ func (s *orderService) Create(ctx context.Context, actor authctx.Principal, plan
 	if err != nil {
 		return nil, err
 	}
-	return s.find(ctx, id, false)
+	o, err := s.find(ctx, id, false)
+	if err == nil {
+		s.notifyOrder(ctx, notify.KindOrderCreated, "Order baru menunggu pembayaran", o,
+			[]string{"Kode unik: " + strconv.Itoa(o.UniqueCode), "Menunggu transfer & bukti dari customer."}, false)
+	}
+	return o, err
 }
 
 func (s *orderService) Get(ctx context.Context, actor authctx.Principal, id string) (*domain.Order, error) {
@@ -183,7 +236,12 @@ func (s *orderService) UploadProof(ctx context.Context, actor authctx.Principal,
 	if err != nil {
 		return nil, err
 	}
-	return s.find(ctx, id, false)
+	withProof, err := s.find(ctx, id, false)
+	if err == nil {
+		s.notifyOrder(ctx, notify.KindOrderProof, "Bukti transfer diunggah — perlu dicek", withProof,
+			[]string{"Cek mutasi, lalu setujui atau tolak lewat tombol di bawah."}, true)
+	}
+	return withProof, err
 }
 
 func (s *orderService) OpenProof(ctx context.Context, actor authctx.Principal, id string) (*ProofFile, error) {
@@ -245,6 +303,10 @@ func (s *orderService) Approve(ctx context.Context, actor authctx.Principal, id 
 		"code": approved.Code, "amount": approved.Amount, "user_id": approved.UserID,
 		"subscription_id": sub.ID, "ends_at": sub.EndsAt,
 	})
+	s.notifyOrder(ctx, notify.KindOrderApproved, "Order disetujui", approved, []string{
+		"Oleh: " + actor.Name,
+		"Langganan aktif sampai: " + sub.EndsAt.In(wib).Format("2 Jan 2006 15:04") + " WIB",
+	}, false)
 	return s.find(ctx, id, false)
 }
 
@@ -271,5 +333,7 @@ func (s *orderService) Reject(ctx context.Context, actor authctx.Principal, id, 
 	s.audit.Record(ctx, actor.UserID, "order.reject", "order:"+id, map[string]any{
 		"code": rejected.Code, "user_id": rejected.UserID, "reason": reason,
 	})
+	s.notifyOrder(ctx, notify.KindOrderRejected, "Order ditolak", rejected,
+		[]string{"Oleh: " + actor.Name, "Alasan: " + reason}, false)
 	return s.find(ctx, id, false)
 }
